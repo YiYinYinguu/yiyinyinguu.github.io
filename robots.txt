@@ -1,3 +1,0 @@
-User-agent: *
-
-Sitemap: https://yiyinyinguu.github.io/sitemap.xml
