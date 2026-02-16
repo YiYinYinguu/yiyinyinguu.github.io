@@ -135,7 +135,7 @@ export const siteConfig: SiteConfig = {
     researchInterests: [
       "Data Visualization 📊",
       "Human-Computer Interaction 🖥",
-      "Data-driven Storytelling 👩‍🎨",
+      "Data-driven Storytelling 📖",
     ],
   },
 
@@ -172,7 +172,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
     {
       id: "news-2025-12",
       date: "12/2025",
-      content: "🎓 I successfully defend my PhD on [AI-Driven Generation of Infographics]() !",
+      content: "🎓 I successfully defended my PhD on [AI-Driven Generation of Infographics]() !",
     },
     {
       id: "news-2025-11",
@@ -188,7 +188,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
     {
       id: "news-2024-10",
       date: "10/2024",
-      content: "I serve as a student volunteer for IEEE VIS 2024. See you in Tampa (Updated: Virtual). I'll also present our TVCG paper [Reviving Static Charts into Live Charts](https://ieeexplore.ieee.org/abstract/document/10530507/). Excited to share that I **designed the VIS 2024 SV T-shirt!** Looking forward to seeing you at VIS!",
+      content: "I served as a student volunteer for IEEE VIS 2024. See you in Tampa (Updated: Virtual). I'll also present our TVCG paper [Reviving Static Charts into Live Charts](https://ieeexplore.ieee.org/abstract/document/10530507/). Excited to share that I **designed the VIS 2024 SV T-shirt!** Looking forward to seeing you at VIS!",
     },
     {
       id: "news-2024-05",
