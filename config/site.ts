@@ -160,7 +160,7 @@ export const siteConfig: SiteConfig = {
   // About Me 内容
   // ============================================================
   aboutDescription: `
-I am a Ph.D. of computer science at the [State Key Lab of CAD&CG, Zhejiang University](http://www.cad.zju.edu.cn) and a [ZJUIDG](http://zjuidg.org) member supervised by [Prof. Yingcai Wu](http://ycwu.org). And I was a visiting student at [Université Paris-Saclay](https://www.universite-paris-saclay.fr/en) and a member of the [AVIZ team](https://www.aviz.fr/) at [Inria](https://www.inria.fr/en), supervised by [Jean-Daniel Fekete](http://www.aviz.fr/~fekete/).
+  I received my Ph.D. in Computer Science from the [State Key Lab of CAD&CG, Zhejiang University](http://www.cad.zju.edu.cn), where I was advised by [Prof. Yingcai Wu](http://ycwu.org) and was a member of [ZJUIDG](http://zjuidg.org). And I was a visiting student at [Université Paris-Saclay](https://www.universite-paris-saclay.fr/en) and a member of the [AVIZ team](https://www.aviz.fr/) at [Inria](https://www.inria.fr/en), supervised by [Jean-Daniel Fekete](http://www.aviz.fr/~fekete/).
 
 My research lies at the intersection of human–AI interaction, visualization, and machine learning, where I design human-centered AI systems that empower people in sensemaking and decision-making. Collaborating with experts in areas like climate change and social media, I pursue interdisciplinary solutions that respond to complex and impactful real-world challenges.
   `,
