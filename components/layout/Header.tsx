@@ -80,6 +80,7 @@ export default function Header() {
           <button
             onClick={(e) => handleClick(e, "#about")}
             className="text-2xl font-extrabold text-gray-900 hover:text-primary transition-colors"
+            style={{ cursor: 'pointer' }}
           >
             {site.name}
           </button>
@@ -100,6 +101,7 @@ export default function Header() {
                     ? "text-primary font-bold"
                     : "text-gray-700 hover:text-primary font-medium"
                 }`}
+                style={{ cursor: 'pointer' }}
               >
                 {item.name}
               </a>
@@ -112,6 +114,7 @@ export default function Header() {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="text-gray-700 hover:text-primary focus:outline-none"
+            style={{ cursor: 'pointer' }}
             aria-label="Toggle menu"
           >
             <svg
@@ -149,6 +152,7 @@ export default function Header() {
                     ? "text-primary font-extrabold"
                     : "text-gray-700 hover:text-primary font-medium"
                 }`}
+                style={{ cursor: 'pointer' }}
               >
                 {item.name}
               </a>

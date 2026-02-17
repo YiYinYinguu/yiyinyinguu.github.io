@@ -32,6 +32,7 @@ export default function Sidebar() {
         <a
           href={`mailto:${profile.email}`}
           className="block text-primary hover:underline"
+          style={{ cursor: 'pointer' }}
         >
           📧 {profile.email}
         </a>
@@ -59,6 +60,7 @@ export default function Sidebar() {
               <span
                 key={index}
                 className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 hover:bg-primary hover:text-white transition-colors"
+                style={{ cursor: 'pointer' }}
               >
                 {interest}
               </span>
@@ -72,6 +74,7 @@ export default function Sidebar() {
         <a
           href={social.googleScholar}
           className="flex items-center gap-3 text-gray-700 hover:text-primary transition-colors text-base"
+          style={{ cursor: 'pointer' }}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -84,6 +87,7 @@ export default function Sidebar() {
         <a
           href={social.twitter}
           className="flex items-center gap-3 text-gray-700 hover:text-primary transition-colors text-base"
+          style={{ cursor: 'pointer' }}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -96,6 +100,7 @@ export default function Sidebar() {
         <a
           href={social.linkedin}
           className="flex items-center gap-3 text-gray-700 hover:text-primary transition-colors text-base"
+          style={{ cursor: 'pointer' }}
           target="_blank"
           rel="noopener noreferrer"
         >
@@ -109,6 +114,7 @@ export default function Sidebar() {
           <a
             href={social.github}
             className="flex items-center gap-3 text-gray-700 hover:text-primary transition-colors text-base"
+          style={{ cursor: 'pointer' }}
             target="_blank"
             rel="noopener noreferrer"
           >
