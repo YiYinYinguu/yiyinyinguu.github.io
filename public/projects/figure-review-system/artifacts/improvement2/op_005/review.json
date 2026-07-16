@@ -1,0 +1,108 @@
+{
+  "operationId": "op_005",
+  "index": 5,
+  "total": 6,
+  "beforeCommit": "d5975e67d0f8c3c292c30cc902b5b3dac4ae2841",
+  "afterCommit": "20cd8efc7da363e5f3e4f3fa7bcf35e237175378",
+  "message": "line: improve separation between natural-only and human+natural trajectories",
+  "artifacts": {
+    "beforePng": "/artifacts/improvement2/op_005/before.png",
+    "afterPng": "/artifacts/improvement2/op_005/after.png",
+    "beforeSvg": "/artifacts/improvement2/op_005/before.svg",
+    "afterSvg": "/artifacts/improvement2/op_005/after.svg",
+    "codeDiff": "/artifacts/improvement2/op_005/code.diff"
+  },
+  "pngLayer": {
+    "diffBoxes": []
+  },
+  "svgLayer": [
+    {
+      "selector": "(stroke-width)",
+      "property": "stroke-width",
+      "oldValue": "—",
+      "newValue": "1.7",
+      "description": "new stroke-width 1.7 introduced (2 element(s))"
+    }
+  ],
+  "diffRegions": [
+    {
+      "gid": "b.human-natural-line",
+      "label": "Human & natural line",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.5375,
+        "y": 0.52717,
+        "w": 0.36036,
+        "h": 0.25642
+      },
+      "deltas": [
+        "new stroke-width 1.7 introduced (1 element(s))"
+      ]
+    },
+    {
+      "gid": "b.natural-only-line",
+      "label": "Natural-only line",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.5375,
+        "y": 0.72,
+        "w": 0.36036,
+        "h": 0.06888
+      },
+      "deltas": [
+        "new stroke-width 1.7 introduced (1 element(s))"
+      ]
+    }
+  ],
+  "otherDeltas": [],
+  "codeLayer": {
+    "stats": {
+      "added": 4,
+      "removed": 2
+    },
+    "source": "figure1.py",
+    "summary": [
+      {
+        "kind": "call-arg",
+        "func": "plot_right_line_plot",
+        "call": "tag",
+        "arg": "#0",
+        "oldValue": "ax.plot(years_short, gsta_green_line, color=green_line_color, label='gsta_green_line_hist_ssp245', linewidth=1)[0]",
+        "newValue": "ax.plot(years_short, gsta_green_line, color=green_line_color, label='gsta_green_line_hist_ssp245', linewidth=1.7, zorder=3)[0]",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          441
+        ],
+        "oldLines": [
+          441
+        ]
+      },
+      {
+        "kind": "call-arg",
+        "func": "plot_right_line_plot",
+        "call": "tag",
+        "arg": "#0",
+        "oldValue": "ax.plot(years_short, gsta_brown_line, color=brown_line_color, label='gsta_brown_line_hist_ssp245', linewidth=1)[0]",
+        "newValue": "ax.plot(years_short, gsta_brown_line, color=brown_line_color, label='gsta_brown_line_hist_ssp245', linewidth=1.7, zorder=3)[0]",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          459
+        ],
+        "oldLines": [
+          458
+        ]
+      }
+    ]
+  },
+  "consistency": {
+    "overall": "unknown",
+    "png": "unknown",
+    "svg": "ok",
+    "code": "ok",
+    "message": "PNG diff and cross-layer consistency analysis pending."
+  }
+}

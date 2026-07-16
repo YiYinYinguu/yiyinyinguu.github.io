@@ -1,0 +1,32 @@
+diff --git a/figure1.py b/figure1.py
+index 8ac9848..5f9a5ff 100644
+--- a/figure1.py
++++ b/figure1.py
+@@ -32,6 +32,7 @@ PALETTE = {
+     "observed":      {"line": "#000000",                    "label": "#000000"},
+     "human_natural": {"line": "#74491C", "fill": "#D19962", "label": "#82572C"},
+     "natural_only":  {"line": "#22655D", "fill": "#4C9088", "label": "#4D948A"},
++    "warm":          {"edge": "#BA3832"},
+ }
+ 
+ AXES = {
+@@ -122,6 +123,7 @@ green_line_color = PALETTE["natural_only"]["line"]
+ green_fill_color = PALETTE["natural_only"]["fill"]
+ green_label_color = PALETTE["natural_only"]["label"]
+ brown_label_color = PALETTE["human_natural"]["label"]
++warm_color      = PALETTE["warm"]["edge"]
+ 
+ tick_length = AXES["tick_length"]
+ 
+@@ -279,9 +281,9 @@ def plot_left_bar_chart(ax):
+         bottom=bar_bottom,
+         width=0.25,
+         color=blue_fill_color,
+-        edgecolor=edge_color,
++        edgecolor=warm_color,
+         alpha=1,
+-        hatch="//////",
++        hatch="////",
+         linewidth=0,
+         clip_on=False,
+     )[0], "bar.fill")

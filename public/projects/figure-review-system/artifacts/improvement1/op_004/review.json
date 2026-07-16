@@ -1,0 +1,217 @@
+{
+  "operationId": "op_004",
+  "index": 4,
+  "total": 8,
+  "beforeCommit": "4d085ba826b441dd55adbd8134fad28278c15a0d",
+  "afterCommit": "2cd1d35ce155e357ae1bb4dfca456b29834a0d41",
+  "message": "annotation: redo warmest-period callout (remove arrow, shorten, reposition, recolor)",
+  "artifacts": {
+    "beforePng": "/artifacts/improvement1/op_004/before.png",
+    "afterPng": "/artifacts/improvement1/op_004/after.png",
+    "beforeSvg": "/artifacts/improvement1/op_004/before.svg",
+    "afterSvg": "/artifacts/improvement1/op_004/after.svg",
+    "codeDiff": "/artifacts/improvement1/op_004/code.diff"
+  },
+  "pngLayer": {
+    "diffBoxes": []
+  },
+  "svgLayer": [
+    {
+      "selector": "<path>",
+      "property": "count",
+      "oldValue": "414",
+      "newValue": "412",
+      "description": "2 path element(s) removed"
+    },
+    {
+      "selector": "<use>",
+      "property": "count",
+      "oldValue": "758",
+      "newValue": "730",
+      "description": "28 use element(s) removed"
+    },
+    {
+      "selector": "(stroke)",
+      "property": "stroke:#a4a5a6",
+      "oldValue": "6× used",
+      "newValue": "4× used",
+      "description": "stroke #a4a5a6 usage count changed 6 → 4"
+    }
+  ],
+  "diffRegions": [
+    {
+      "gid": "bar.arrow",
+      "label": "Left bar arrow",
+      "kind": "removed",
+      "side": "before",
+      "box": {
+        "x": 0.07005,
+        "y": 0.49217,
+        "w": 0.05864,
+        "h": 0.04704
+      },
+      "deltas": [
+        "2 element(s) removed"
+      ]
+    },
+    {
+      "gid": "a.anno.warmest",
+      "label": "Warmest-period annotation",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.04205,
+        "y": 0.48488,
+        "w": 0.06838,
+        "h": 0.06237
+      },
+      "deltas": [
+        "moved Δ(-414,0)px",
+        "resized Δ(-212,0)px"
+      ]
+    }
+  ],
+  "otherDeltas": [
+    "1 path element(s) removed",
+    "stroke #a4a5a6 usage count changed 6 → 4"
+  ],
+  "codeLayer": {
+    "stats": {
+      "added": 4,
+      "removed": 14
+    },
+    "source": "figure1.py",
+    "summary": [
+      {
+        "kind": "value",
+        "name": "TEXTS",
+        "oldValue": "{'title': 'Human influence has warmed the climate at a rate that is unprecedented\\nin at least the last 2000 years', 'subtitle': 'Changes in global surface temperature relative to 1850-1900', 'panel_a_up': '<name: Arial, size: 11>(a) Changes in global surface temperature (decadal average)</>', 'panel_a_down': '<name: Arial, size: 11>as </>' + '<name: Arial, size: 11, weight: bold, color: #647A88>reconstructed </>' + '<name: Arial, size: 11>(1-2000) and </>' + '<name: Arial, size: 11, weight: bold>observed </>' + '<name: Arial, size: 11>(1850-2020)</>', 'panel_b_up': '<name: Arial, size: 11>(b) Change in global surface temperature (annual average) as </>' + '<name: Arial, size: 11, weight: bold>observed </>' + '<name: Arial, size: 11> and</>', 'panel_b_down': '<name: Arial, size: 11>simulated using </>' + '<name: Arial, size: 11, weight: bold, color: #82572C>human & natural </>' + '<name: Arial, size: 11> and </>' + '<name: Arial, size: 11, weight: bold, color: #4D948A>only natural </>' + '<name: Arial, size: 11>factors (both 1850-2020)</>', 'annotations_a': [{'gid': 'a.anno.warmest', 'xy': (1, 1.1), 'text': 'Warmest multi-century\\nperiod in more than\\n100,000 years'}, {'gid': 'a.anno.unprecedented', 'xy': (700, 1.6), 'text': 'Warming is unprecedented\\nin more than 2000 years'}, {'gid': 'a.anno.observed', 'xy': (1550, 0.8), 'text': 'observed'}, {'gid': 'a.anno.reconstructed', 'xy': (700, -0.4), 'text': 'reconstructed'}], 'labels_b': [{'gid': 'b.label.observed', 'xy': (2022, 1.25), 'text': 'observed'}, {'gid': 'b.label.human_natural', 'xy': (2022, 0.75), 'text': 'simulated\\nhuman &\\nnatural'}, {'gid': 'b.label.natural_only', 'xy': (2022, -0.2), 'text': 'simulated\\nnatural only\\n(solar &\\nvolcanic)'}]}",
+        "newValue": "{'title': 'Human influence has warmed the climate at a rate that is unprecedented\\nin at least the last 2000 years', 'subtitle': 'Changes in global surface temperature relative to 1850-1900', 'panel_a_up': '<name: Arial, size: 11>(a) Changes in global surface temperature (decadal average)</>', 'panel_a_down': '<name: Arial, size: 11>as </>' + '<name: Arial, size: 11, weight: bold, color: #647A88>reconstructed </>' + '<name: Arial, size: 11>(1-2000) and </>' + '<name: Arial, size: 11, weight: bold>observed </>' + '<name: Arial, size: 11>(1850-2020)</>', 'panel_b_up': '<name: Arial, size: 11>(b) Change in global surface temperature (annual average) as </>' + '<name: Arial, size: 11, weight: bold>observed </>' + '<name: Arial, size: 11> and</>', 'panel_b_down': '<name: Arial, size: 11>simulated using </>' + '<name: Arial, size: 11, weight: bold, color: #82572C>human & natural </>' + '<name: Arial, size: 11> and </>' + '<name: Arial, size: 11, weight: bold, color: #4D948A>only natural </>' + '<name: Arial, size: 11>factors (both 1850-2020)</>', 'annotations_a': [{'gid': 'a.anno.warmest', 'xy': (-400, 1.1), 'text': 'Warmest\\nmulti-century\\nperiod'}, {'gid': 'a.anno.unprecedented', 'xy': (700, 1.6), 'text': 'Warming is unprecedented\\nin more than 2000 years'}, {'gid': 'a.anno.observed', 'xy': (1550, 0.8), 'text': 'observed'}, {'gid': 'a.anno.reconstructed', 'xy': (700, -0.4), 'text': 'reconstructed'}], 'labels_b': [{'gid': 'b.label.observed', 'xy': (2022, 1.25), 'text': 'observed'}, {'gid': 'b.label.human_natural', 'xy': (2022, 0.75), 'text': 'simulated\\nhuman &\\nnatural'}, {'gid': 'b.label.natural_only', 'xy': (2022, -0.2), 'text': 'simulated\\nnatural only\\n(solar &\\nvolcanic)'}]}",
+        "valueKind": "expr",
+        "newLines": [
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99
+        ],
+        "oldLines": [
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99
+        ]
+      },
+      {
+        "kind": "call-delta",
+        "direction": "removed",
+        "func": "plot_left_bar_chart",
+        "name": "tag",
+        "count": 1,
+        "newLines": [],
+        "oldLines": [
+          328,
+          329,
+          330,
+          331,
+          332,
+          333,
+          334,
+          335,
+          336,
+          337,
+          338,
+          339
+        ]
+      },
+      {
+        "kind": "call-arg",
+        "func": "plot_left_line_plot",
+        "call": "tag",
+        "arg": "#0",
+        "oldValue": "ax.text(TEXTS['annotations_a'][0]['xy'][0], TEXTS['annotations_a'][0]['xy'][1], TEXTS['annotations_a'][0]['text'], fontsize=FONTS['body'], color=black_color)",
+        "newValue": "ax.text(TEXTS['annotations_a'][0]['xy'][0], TEXTS['annotations_a'][0]['xy'][1], TEXTS['annotations_a'][0]['text'], fontsize=FONTS['body'], color=warm_color, horizontalalignment='center')",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          444
+        ],
+        "oldLines": [
+          455
+        ]
+      }
+    ]
+  },
+  "consistency": {
+    "overall": "unknown",
+    "png": "unknown",
+    "svg": "ok",
+    "code": "ok",
+    "message": "PNG diff and cross-layer consistency analysis pending."
+  }
+}

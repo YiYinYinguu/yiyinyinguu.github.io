@@ -1,0 +1,120 @@
+{
+  "operationId": "op_008",
+  "index": 8,
+  "total": 8,
+  "beforeCommit": "838c79e0b342d947a4b9098a683af9703dbc55b2",
+  "afterCommit": "34f7f24001aeeb8355e68d4a2240032a78e90b8f",
+  "message": "background: tint 1850-2020 span in (a) and (b)",
+  "artifacts": {
+    "beforePng": "/artifacts/improvement1/op_008/before.png",
+    "afterPng": "/artifacts/improvement1/op_008/after.png",
+    "beforeSvg": "/artifacts/improvement1/op_008/before.svg",
+    "afterSvg": "/artifacts/improvement1/op_008/after.svg",
+    "codeDiff": "/artifacts/improvement1/op_008/code.diff"
+  },
+  "pngLayer": {
+    "diffBoxes": []
+  },
+  "svgLayer": [
+    {
+      "selector": "(fill)",
+      "property": "fill",
+      "oldValue": "#cecfcf",
+      "newValue": "#cbb4b4",
+      "description": "fill changed across 8 element(s)"
+    },
+    {
+      "selector": "(stroke)",
+      "property": "stroke",
+      "oldValue": "#cecfcf",
+      "newValue": "#cbb4b4",
+      "description": "stroke changed across 9 element(s)"
+    }
+  ],
+  "diffRegions": [
+    {
+      "gid": "a.span",
+      "label": "1850–2020 shaded span (panel a)",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.43769,
+        "y": 0.38,
+        "w": 0.02731,
+        "h": 0.545
+      },
+      "deltas": [
+        "fill changed across 1 element(s)",
+        "stroke changed across 1 element(s)"
+      ]
+    },
+    {
+      "gid": "b.span",
+      "label": "1850–2020 shaded span (panel b)",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.5375,
+        "y": 0.38,
+        "w": 0.3625,
+        "h": 0.545
+      },
+      "deltas": [
+        "fill changed across 1 element(s)",
+        "stroke changed across 1 element(s)"
+      ]
+    }
+  ],
+  "otherDeltas": [
+    "matplotlib.axis_2 (modified): fill changed across 6 element(s); stroke changed across 7 element(s)"
+  ],
+  "codeLayer": {
+    "stats": {
+      "added": 1,
+      "removed": 1
+    },
+    "source": "figure1.py",
+    "summary": [
+      {
+        "kind": "value",
+        "name": "AXES",
+        "oldValue": "{'axis': '#A4A5A6', 'grid': '#CECFCF', 'edge': '#D4DADF', 'label': '#646464', 'ylim': (-1, 2), 'xlim_a': (1, 2020), 'xlim_b': (1850, 2020), 'span': (1850, 2020), 'tick_length': 5.5}",
+        "newValue": "{'axis': '#A4A5A6', 'grid': '#CBB4B4', 'edge': '#D4DADF', 'label': '#646464', 'ylim': (-1, 2), 'xlim_a': (1, 2020), 'xlim_b': (1850, 2020), 'span': (1850, 2020), 'tick_length': 5.5}",
+        "valueKind": "expr",
+        "newLines": [
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48
+        ],
+        "oldLines": [
+          38,
+          39,
+          40,
+          41,
+          42,
+          43,
+          44,
+          45,
+          46,
+          47,
+          48
+        ]
+      }
+    ]
+  },
+  "consistency": {
+    "overall": "unknown",
+    "png": "unknown",
+    "svg": "ok",
+    "code": "ok",
+    "message": "PNG diff and cross-layer consistency analysis pending."
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "improvements": [
+    {
+      "id": "improvement1",
+      "label": "improvement1",
+      "repo": "ipcc_sum_figure",
+      "from": "e0ef0b9a8b5a83e48ec3a05c23cb5ef4e0e88b6c",
+      "to": "34f7f24001aeeb8355e68d4a2240032a78e90b8f",
+      "ops": 8,
+      "projectPath": "/artifacts/improvement1/project.json"
+    },
+    {
+      "id": "improvement2",
+      "label": "improvement2",
+      "repo": "ipcc_sum_figure",
+      "from": "e0ef0b9a8b5a83e48ec3a05c23cb5ef4e0e88b6c",
+      "to": "f56ab9a927df816118b175e0441339d3deb54de3",
+      "ops": 6,
+      "projectPath": "/artifacts/improvement2/project.json"
+    }
+  ]
+}

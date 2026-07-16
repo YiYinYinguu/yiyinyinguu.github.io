@@ -1,0 +1,52 @@
+diff --git a/figure1.py b/figure1.py
+index da06ead..0d78045 100644
+--- a/figure1.py
++++ b/figure1.py
+@@ -269,10 +269,21 @@ def plot_left_line_plot(
+     tag(ax.plot(
+         years, obs_temperature, color=black_color, label="Obs Temperature", linewidth=1
+     )[0], "a.obs-line")
++    # Lightly smooth the displayed uncertainty boundaries to take the year-to-year
++    # jitter off the band for readability, while staying close to the original
++    # shape. Operates on a copy of the band data only â€” the central reconstructed
++    # line and the source CSVs are left untouched.
++    uncertainty_display = pd.DataFrame({"lower": lower_bound, "upper": upper_bound})
++    uncertainty_display["upper"] = uncertainty_display["upper"].rolling(
++        window=41, center=True, min_periods=1
++    ).mean()
++    uncertainty_display["lower"] = uncertainty_display["lower"].rolling(
++        window=41, center=True, min_periods=1
++    ).mean()
+     tag(ax.fill_between(
+         years,
+-        lower_bound,
+-        upper_bound,
++        uncertainty_display["lower"],
++        uncertainty_display["upper"],
+         color=blue_fill_color,
+         edgecolor=edge_color,
+         alpha=1,
+@@ -408,6 +419,23 @@ def plot_right_line_plot(
+     gsta_green_shading_top,
+     gsta_black_obs,
+ ):
++    # Lightly smooth the displayed uncertainty boundaries to take the year-to-year
++    # jitter off the bands for readability, while staying close to the original
++    # shape. Only the band boundaries are smoothed (copies); the central simulated
++    # lines and the source CSVs are left untouched.
++    gsta_green_shading_bottom = gsta_green_shading_bottom.rolling(
++        window=11, center=True, min_periods=1
++    ).mean()
++    gsta_green_shading_top = gsta_green_shading_top.rolling(
++        window=11, center=True, min_periods=1
++    ).mean()
++    gsta_brown_shading_bottom = gsta_brown_shading_bottom.rolling(
++        window=11, center=True, min_periods=1
++    ).mean()
++    gsta_brown_shading_top = gsta_brown_shading_top.rolling(
++        window=11, center=True, min_periods=1
++    ).mean()
++
+     tag(ax.axvspan(*AXES["span"], color=grid_color, alpha=0.15), "b.span")
+ 
+     tag(ax.plot(

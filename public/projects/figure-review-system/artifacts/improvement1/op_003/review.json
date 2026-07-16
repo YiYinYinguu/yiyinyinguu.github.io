@@ -1,0 +1,79 @@
+{
+  "operationId": "op_003",
+  "index": 3,
+  "total": 8,
+  "beforeCommit": "c907dafa0ed04f6244c667f7c619059602e96378",
+  "afterCommit": "4d085ba826b441dd55adbd8134fad28278c15a0d",
+  "message": "axis-label: add \"100,000 years ago\" label below left bar",
+  "artifacts": {
+    "beforePng": "/artifacts/improvement1/op_003/before.png",
+    "afterPng": "/artifacts/improvement1/op_003/after.png",
+    "beforeSvg": "/artifacts/improvement1/op_003/before.svg",
+    "afterSvg": "/artifacts/improvement1/op_003/after.svg",
+    "codeDiff": "/artifacts/improvement1/op_003/code.diff"
+  },
+  "pngLayer": {
+    "diffBoxes": []
+  },
+  "svgLayer": [
+    {
+      "selector": "<path>",
+      "property": "count",
+      "oldValue": "412",
+      "newValue": "414",
+      "description": "2 path element(s) added"
+    },
+    {
+      "selector": "<use>",
+      "property": "count",
+      "oldValue": "735",
+      "newValue": "758",
+      "description": "23 use element(s) added"
+    }
+  ],
+  "diffRegions": [],
+  "otherDeltas": [
+    "12 path element(s) added",
+    "23 use element(s) added"
+  ],
+  "codeLayer": {
+    "stats": {
+      "added": 14,
+      "removed": 0
+    },
+    "source": "figure1.py",
+    "summary": [
+      {
+        "kind": "call-delta",
+        "direction": "added",
+        "func": "plot_left_bar_chart",
+        "name": "ax.text",
+        "count": 2,
+        "newLines": [
+          340,
+          341,
+          342,
+          343,
+          344,
+          345,
+          346,
+          347,
+          348,
+          349,
+          350,
+          351,
+          352,
+          353
+        ],
+        "oldLines": []
+      }
+    ]
+  },
+  "consistency": {
+    "overall": "unknown",
+    "png": "unknown",
+    "svg": "ok",
+    "code": "ok",
+    "message": "PNG diff and cross-layer consistency analysis pending."
+  }
+}
