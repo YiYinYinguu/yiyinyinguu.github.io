@@ -1,0 +1,13 @@
+diff --git a/figure1.py b/figure1.py
+index 8b2462e..7038b2d 100644
+--- a/figure1.py
++++ b/figure1.py
+@@ -37,7 +37,7 @@ PALETTE = {
+ 
+ AXES = {
+     "axis": "#A4A5A6",
+-    "grid": "#CECFCF",
++    "grid": "#CBB4B4",
+     "edge": "#D4DADF",
+     "label": "#646464",
+     "ylim": (-1, 2),

@@ -1,0 +1,230 @@
+{
+  "operationId": "op_006",
+  "index": 6,
+  "total": 8,
+  "beforeCommit": "657ed195b53b04fbba9410cc380bffa13b0ec897",
+  "afterCommit": "172354b571eaea2a02f30e1602d2bf6753367349",
+  "message": "axis-grid: rebuild gridlines, emphasize y=0 (black dashed)",
+  "artifacts": {
+    "beforePng": "/artifacts/improvement1/op_006/before.png",
+    "afterPng": "/artifacts/improvement1/op_006/after.png",
+    "beforeSvg": "/artifacts/improvement1/op_006/before.svg",
+    "afterSvg": "/artifacts/improvement1/op_006/after.svg",
+    "codeDiff": "/artifacts/improvement1/op_006/code.diff"
+  },
+  "pngLayer": {
+    "diffBoxes": []
+  },
+  "svgLayer": [
+    {
+      "selector": "<path>",
+      "property": "count",
+      "oldValue": "412",
+      "newValue": "420",
+      "description": "8 path element(s) added"
+    },
+    {
+      "selector": "<rect>",
+      "property": "count",
+      "oldValue": "3",
+      "newValue": "4",
+      "description": "1 rect element(s) added"
+    },
+    {
+      "selector": "(stroke)",
+      "property": "stroke",
+      "oldValue": "#b0b0b0",
+      "newValue": "—",
+      "description": "stroke #b0b0b0 no longer used (14 element(s))"
+    },
+    {
+      "selector": "(stroke)",
+      "property": "stroke:#000000",
+      "oldValue": "11× used",
+      "newValue": "14× used",
+      "description": "stroke #000000 usage count changed 11 → 14"
+    },
+    {
+      "selector": "(stroke)",
+      "property": "stroke:#808080",
+      "oldValue": "21× used",
+      "newValue": "40× used",
+      "description": "stroke #808080 usage count changed 21 → 40"
+    },
+    {
+      "selector": "(stroke-width)",
+      "property": "stroke-width:0.8",
+      "oldValue": "15× used",
+      "newValue": "1× used",
+      "description": "stroke-width 0.8 usage count changed 15 → 1"
+    },
+    {
+      "selector": "(stroke-width)",
+      "property": "stroke-width:1.5",
+      "oldValue": "2× used",
+      "newValue": "5× used",
+      "description": "stroke-width 1.5 usage count changed 2 → 5"
+    },
+    {
+      "selector": "(stroke-dasharray)",
+      "property": "stroke-dasharray",
+      "oldValue": "—",
+      "newValue": "5.55,2.4",
+      "description": "new stroke-dasharray 5.55,2.4 introduced (3 element(s))"
+    },
+    {
+      "selector": "(stroke-opacity)",
+      "property": "stroke-opacity",
+      "oldValue": "0.8",
+      "newValue": "—",
+      "description": "stroke-opacity 0.8 no longer used (7 element(s))"
+    },
+    {
+      "selector": "(stroke-opacity)",
+      "property": "stroke-opacity:0.5",
+      "oldValue": "7× used",
+      "newValue": "19× used",
+      "description": "stroke-opacity 0.5 usage count changed 7 → 19"
+    }
+  ],
+  "diffRegions": [],
+  "otherDeltas": [
+    "22 path element(s) added",
+    "1 rect element(s) added",
+    "new stroke #808080 introduced (19 element(s))",
+    "stroke #000000 usage count changed 4 → 7",
+    "stroke-width 1.5 usage count changed 2 → 5",
+    "new stroke-dasharray 5.55,2.4 introduced (3 element(s))",
+    "new stroke-opacity 0.5 introduced (19 element(s))",
+    "matplotlib.axis_4 (modified): stroke #b0b0b0 no longer used (7 element(s)); stroke-width 0.8 no longer used (7 element(s)); stroke-opacity 0.5 no longer used (7 element(s))",
+    "matplotlib.axis_6 (modified): stroke #b0b0b0 no longer used (7 element(s)); stroke-width 0.8 no longer used (7 element(s)); stroke-opacity 0.8 no longer used (7 element(s))"
+  ],
+  "codeLayer": {
+    "stats": {
+      "added": 28,
+      "removed": 2
+    },
+    "source": "figure1.py",
+    "summary": [
+      {
+        "kind": "call-delta",
+        "direction": "added",
+        "func": "plot_left_bar_chart",
+        "name": "ax.axhline",
+        "count": 2,
+        "newLines": [
+          335,
+          332
+        ],
+        "oldLines": []
+      },
+      {
+        "kind": "call-delta",
+        "direction": "added",
+        "func": "plot_left_bar_chart",
+        "name": "ax.yaxis.get_minorticklocs",
+        "count": 1,
+        "newLines": [
+          330
+        ],
+        "oldLines": []
+      },
+      {
+        "kind": "call-delta",
+        "direction": "added",
+        "func": "plot_left_bar_chart",
+        "name": "ax.yaxis.grid",
+        "count": 1,
+        "newLines": [
+          327
+        ],
+        "oldLines": []
+      },
+      {
+        "kind": "call-delta",
+        "direction": "added",
+        "func": "plot_left_line_plot",
+        "name": "ax.axhline",
+        "count": 2,
+        "newLines": [
+          448,
+          445
+        ],
+        "oldLines": []
+      },
+      {
+        "kind": "call-delta",
+        "direction": "added",
+        "func": "plot_left_line_plot",
+        "name": "ax.get_yticks",
+        "count": 1,
+        "newLines": [
+          443
+        ],
+        "oldLines": []
+      },
+      {
+        "kind": "call-delta",
+        "direction": "added",
+        "func": "plot_right_line_plot",
+        "name": "ax.axhline",
+        "count": 2,
+        "newLines": [
+          622,
+          619
+        ],
+        "oldLines": []
+      },
+      {
+        "kind": "call-delta",
+        "direction": "added",
+        "func": "plot_right_line_plot",
+        "name": "ax.get_yticks",
+        "count": 1,
+        "newLines": [
+          617
+        ],
+        "oldLines": []
+      },
+      {
+        "kind": "call-arg",
+        "func": "plot_left_line_plot",
+        "call": "ax.yaxis.grid",
+        "arg": "#0",
+        "oldValue": "True",
+        "newValue": "False",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          440
+        ],
+        "oldLines": [
+          430
+        ]
+      },
+      {
+        "kind": "call-arg",
+        "func": "plot_right_line_plot",
+        "call": "ax.yaxis.grid",
+        "arg": "#0",
+        "oldValue": "True",
+        "newValue": "False",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          614
+        ],
+        "oldLines": [
+          596
+        ]
+      }
+    ]
+  },
+  "consistency": {
+    "overall": "unknown",
+    "png": "unknown",
+    "svg": "ok",
+    "code": "ok",
+    "message": "PNG diff and cross-layer consistency analysis pending."
+  }
+}

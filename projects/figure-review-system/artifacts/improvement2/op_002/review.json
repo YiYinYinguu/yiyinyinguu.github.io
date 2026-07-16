@@ -1,0 +1,109 @@
+{
+  "operationId": "op_002",
+  "index": 2,
+  "total": 6,
+  "beforeCommit": "1c93317cd241a0a1e6b8f0ea697cfb9951a04af6",
+  "afterCommit": "2e7769799a9a7a8d5f4078bc45148598051a81f1",
+  "message": "bar: emphasize the 100,000-year reference marker",
+  "artifacts": {
+    "beforePng": "/artifacts/improvement2/op_002/before.png",
+    "afterPng": "/artifacts/improvement2/op_002/after.png",
+    "beforeSvg": "/artifacts/improvement2/op_002/before.svg",
+    "afterSvg": "/artifacts/improvement2/op_002/after.svg",
+    "codeDiff": "/artifacts/improvement2/op_002/code.diff"
+  },
+  "pngLayer": {
+    "diffBoxes": []
+  },
+  "svgLayer": [
+    {
+      "selector": "(fill)",
+      "property": "fill",
+      "oldValue": "#d4dadf",
+      "newValue": "—",
+      "description": "fill #d4dadf no longer used (1 element(s))"
+    },
+    {
+      "selector": "(fill)",
+      "property": "fill:#647a88",
+      "oldValue": "2× used",
+      "newValue": "3× used",
+      "description": "fill #647a88 usage count changed 2 → 3"
+    },
+    {
+      "selector": "(stroke)",
+      "property": "stroke",
+      "oldValue": "#d4dadf",
+      "newValue": "—",
+      "description": "stroke #d4dadf no longer used (1 element(s))"
+    },
+    {
+      "selector": "(stroke)",
+      "property": "stroke:#647a88",
+      "oldValue": "4× used",
+      "newValue": "6× used",
+      "description": "stroke #647a88 usage count changed 4 → 6"
+    },
+    {
+      "selector": "(stroke-width)",
+      "property": "stroke-width",
+      "oldValue": "—",
+      "newValue": "1.4",
+      "description": "new stroke-width 1.4 introduced (1 element(s))"
+    }
+  ],
+  "diffRegions": [
+    {
+      "gid": "bar.fill",
+      "label": "Left bar (warming range)",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.06721,
+        "y": 0.56167,
+        "w": 0.00955,
+        "h": 0.14533
+      },
+      "deltas": [
+        "new stroke #647a88 introduced (1 element(s))",
+        "new stroke-width 1.4 introduced (1 element(s))"
+      ]
+    }
+  ],
+  "otherDeltas": [
+    "fill changed across 1 element(s)",
+    "stroke changed across 1 element(s)"
+  ],
+  "codeLayer": {
+    "stats": {
+      "added": 2,
+      "removed": 2
+    },
+    "source": "figure1.py",
+    "summary": [
+      {
+        "kind": "call-arg",
+        "func": "plot_left_bar_chart",
+        "call": "tag",
+        "arg": "#0",
+        "oldValue": "ax.bar(bar_x, bar_heights, bottom=bar_bottom, width=0.25, color=blue_fill_color, edgecolor=edge_color, alpha=1, hatch='//////', linewidth=0, clip_on=False)[0]",
+        "newValue": "ax.bar(bar_x, bar_heights, bottom=bar_bottom, width=0.25, color=blue_fill_color, edgecolor=blue_line_color, alpha=1, hatch='//////', linewidth=1.4, clip_on=False)[0]",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          197
+        ],
+        "oldLines": [
+          197
+        ]
+      }
+    ]
+  },
+  "consistency": {
+    "overall": "unknown",
+    "png": "unknown",
+    "svg": "ok",
+    "code": "ok",
+    "message": "PNG diff and cross-layer consistency analysis pending."
+  }
+}

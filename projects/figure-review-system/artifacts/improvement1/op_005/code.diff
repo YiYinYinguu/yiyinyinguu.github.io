@@ -1,0 +1,52 @@
+diff --git a/figure1.py b/figure1.py
+index 1e3535d..046fb35 100644
+--- a/figure1.py
++++ b/figure1.py
+@@ -30,7 +30,7 @@ LAYOUT = {
+ PALETTE = {
+     "reconstructed": {"line": "#647A88", "fill": "#ADBAC1", "label": "#647A88"},
+     "observed":      {"line": "#000000",                    "label": "#000000"},
+-    "human_natural": {"line": "#74491C", "fill": "#D19962", "label": "#82572C"},
++    "human_natural": {"line": "#C97C00", "fill": "#D19962", "label": "#D17B25"},
+     "natural_only":  {"line": "#22655D", "fill": "#4C9088", "label": "#4D948A"},
+     "warm":          {"edge": "#BA3832"},
+ }
+@@ -80,7 +80,7 @@ TEXTS = {
+     ),
+     "panel_b_down": (
+           "<name: Arial, size: 11>simulated using </>"
+-        + "<name: Arial, size: 11, weight: bold, color: #82572C>human & natural </>"
++        + "<name: Arial, size: 11, weight: bold, color: #D17B25>human & natural </>"
+         + "<name: Arial, size: 11> and </>"
+         + "<name: Arial, size: 11, weight: bold, color: #4D948A>only natural </>"
+         + "<name: Arial, size: 11>factors (both 1850-2020)</>"
+@@ -536,14 +536,6 @@ def plot_right_line_plot(
+         clip_center=True,
+         zorder=1
+     )
+-    tag(ax.plot(
+-        years_short,
+-        gsta_black_obs,
+-        color=black_color,
+-        label="gsta_black_obs",
+-        linewidth=1,
+-    )[0], "b.obs-line")
+-
+     # set axis limits and labels
+     ax.set_xlim(*AXES["xlim_b"])
+     ax.set_ylim(*AXES["ylim"])
+@@ -621,6 +613,14 @@ def plot_right_line_plot(
+         fontweight="bold",
+     ), TEXTS["labels_b"][2]["gid"])
+ 
++    tag(ax.plot(
++        years_short,
++        gsta_black_obs,
++        color=black_color,
++        label="gsta_black_obs",
++        linewidth=1,
++    )[0], "b.obs-line")
++
+     flexitext(LAYOUT["panel_b_x"],0.715, title_b_up, va="bottom", xycoords="figure fraction")
+     flexitext(LAYOUT["panel_b_x"],0.69, title_b_down, va="bottom", xycoords="figure fraction")
+ 

@@ -1,0 +1,330 @@
+{
+  "operationId": "op_005",
+  "index": 5,
+  "total": 8,
+  "beforeCommit": "2cd1d35ce155e357ae1bb4dfca456b29834a0d41",
+  "afterCommit": "657ed195b53b04fbba9410cc380bffa13b0ec897",
+  "message": "line: recolor (b) human & natural brown->orange (line, label, legend text)",
+  "artifacts": {
+    "beforePng": "/artifacts/improvement1/op_005/before.png",
+    "afterPng": "/artifacts/improvement1/op_005/after.png",
+    "beforeSvg": "/artifacts/improvement1/op_005/before.svg",
+    "afterSvg": "/artifacts/improvement1/op_005/after.svg",
+    "codeDiff": "/artifacts/improvement1/op_005/code.diff"
+  },
+  "pngLayer": {
+    "diffBoxes": []
+  },
+  "svgLayer": [
+    {
+      "selector": "(fill)",
+      "property": "fill",
+      "oldValue": "#74491c",
+      "newValue": "#c97c00",
+      "description": "fill changed across 100 element(s)"
+    },
+    {
+      "selector": "(stroke)",
+      "property": "stroke",
+      "oldValue": "#74491c",
+      "newValue": "#c97c00",
+      "description": "stroke changed across 1 element(s)"
+    }
+  ],
+  "diffRegions": [
+    {
+      "gid": "b.human-natural-line",
+      "label": "Human & natural line",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.5375,
+        "y": 0.52717,
+        "w": 0.36036,
+        "h": 0.25642
+      },
+      "deltas": [
+        "stroke changed across 1 element(s)"
+      ]
+    }
+  ],
+  "otherDeltas": [
+    "fill changed across 100 element(s)"
+  ],
+  "codeLayer": {
+    "stats": {
+      "added": 10,
+      "removed": 10
+    },
+    "source": "figure1.py",
+    "summary": [
+      {
+        "kind": "value",
+        "name": "PALETTE",
+        "oldValue": "{'reconstructed': {'line': '#647A88', 'fill': '#ADBAC1', 'label': '#647A88'}, 'observed': {'line': '#000000', 'label': '#000000'}, 'human_natural': {'line': '#74491C', 'fill': '#D19962', 'label': '#82572C'}, 'natural_only': {'line': '#22655D', 'fill': '#4C9088', 'label': '#4D948A'}, 'warm': {'edge': '#BA3832'}}",
+        "newValue": "{'reconstructed': {'line': '#647A88', 'fill': '#ADBAC1', 'label': '#647A88'}, 'observed': {'line': '#000000', 'label': '#000000'}, 'human_natural': {'line': '#C97C00', 'fill': '#D19962', 'label': '#D17B25'}, 'natural_only': {'line': '#22655D', 'fill': '#4C9088', 'label': '#4D948A'}, 'warm': {'edge': '#BA3832'}}",
+        "valueKind": "expr",
+        "newLines": [
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36
+        ],
+        "oldLines": [
+          30,
+          31,
+          32,
+          33,
+          34,
+          35,
+          36
+        ]
+      },
+      {
+        "kind": "value",
+        "name": "TEXTS",
+        "oldValue": "{'title': 'Human influence has warmed the climate at a rate that is unprecedented\\nin at least the last 2000 years', 'subtitle': 'Changes in global surface temperature relative to 1850-1900', 'panel_a_up': '<name: Arial, size: 11>(a) Changes in global surface temperature (decadal average)</>', 'panel_a_down': '<name: Arial, size: 11>as </>' + '<name: Arial, size: 11, weight: bold, color: #647A88>reconstructed </>' + '<name: Arial, size: 11>(1-2000) and </>' + '<name: Arial, size: 11, weight: bold>observed </>' + '<name: Arial, size: 11>(1850-2020)</>', 'panel_b_up': '<name: Arial, size: 11>(b) Change in global surface temperature (annual average) as </>' + '<name: Arial, size: 11, weight: bold>observed </>' + '<name: Arial, size: 11> and</>', 'panel_b_down': '<name: Arial, size: 11>simulated using </>' + '<name: Arial, size: 11, weight: bold, color: #82572C>human & natural </>' + '<name: Arial, size: 11> and </>' + '<name: Arial, size: 11, weight: bold, color: #4D948A>only natural </>' + '<name: Arial, size: 11>factors (both 1850-2020)</>', 'annotations_a': [{'gid': 'a.anno.warmest', 'xy': (-400, 1.1), 'text': 'Warmest\\nmulti-century\\nperiod'}, {'gid': 'a.anno.unprecedented', 'xy': (700, 1.6), 'text': 'Warming is unprecedented\\nin more than 2000 years'}, {'gid': 'a.anno.observed', 'xy': (1550, 0.8), 'text': 'observed'}, {'gid': 'a.anno.reconstructed', 'xy': (700, -0.4), 'text': 'reconstructed'}], 'labels_b': [{'gid': 'b.label.observed', 'xy': (2022, 1.25), 'text': 'observed'}, {'gid': 'b.label.human_natural', 'xy': (2022, 0.75), 'text': 'simulated\\nhuman &\\nnatural'}, {'gid': 'b.label.natural_only', 'xy': (2022, -0.2), 'text': 'simulated\\nnatural only\\n(solar &\\nvolcanic)'}]}",
+        "newValue": "{'title': 'Human influence has warmed the climate at a rate that is unprecedented\\nin at least the last 2000 years', 'subtitle': 'Changes in global surface temperature relative to 1850-1900', 'panel_a_up': '<name: Arial, size: 11>(a) Changes in global surface temperature (decadal average)</>', 'panel_a_down': '<name: Arial, size: 11>as </>' + '<name: Arial, size: 11, weight: bold, color: #647A88>reconstructed </>' + '<name: Arial, size: 11>(1-2000) and </>' + '<name: Arial, size: 11, weight: bold>observed </>' + '<name: Arial, size: 11>(1850-2020)</>', 'panel_b_up': '<name: Arial, size: 11>(b) Change in global surface temperature (annual average) as </>' + '<name: Arial, size: 11, weight: bold>observed </>' + '<name: Arial, size: 11> and</>', 'panel_b_down': '<name: Arial, size: 11>simulated using </>' + '<name: Arial, size: 11, weight: bold, color: #D17B25>human & natural </>' + '<name: Arial, size: 11> and </>' + '<name: Arial, size: 11, weight: bold, color: #4D948A>only natural </>' + '<name: Arial, size: 11>factors (both 1850-2020)</>', 'annotations_a': [{'gid': 'a.anno.warmest', 'xy': (-400, 1.1), 'text': 'Warmest\\nmulti-century\\nperiod'}, {'gid': 'a.anno.unprecedented', 'xy': (700, 1.6), 'text': 'Warming is unprecedented\\nin more than 2000 years'}, {'gid': 'a.anno.observed', 'xy': (1550, 0.8), 'text': 'observed'}, {'gid': 'a.anno.reconstructed', 'xy': (700, -0.4), 'text': 'reconstructed'}], 'labels_b': [{'gid': 'b.label.observed', 'xy': (2022, 1.25), 'text': 'observed'}, {'gid': 'b.label.human_natural', 'xy': (2022, 0.75), 'text': 'simulated\\nhuman &\\nnatural'}, {'gid': 'b.label.natural_only', 'xy': (2022, -0.2), 'text': 'simulated\\nnatural only\\n(solar &\\nvolcanic)'}]}",
+        "valueKind": "expr",
+        "newLines": [
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99
+        ],
+        "oldLines": [
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93,
+          94,
+          95,
+          96,
+          97,
+          98,
+          99
+        ]
+      },
+      {
+        "kind": "call-arg",
+        "func": "plot_right_line_plot",
+        "call": "tag",
+        "arg": "#0",
+        "oldValue": "ax.plot(years_short, gsta_black_obs, color=black_color, label='gsta_black_obs', linewidth=1)[0]",
+        "newValue": "ax.text(TEXTS['labels_b'][0]['xy'][0], TEXTS['labels_b'][0]['xy'][1], TEXTS['labels_b'][0]['text'], fontsize=FONTS['body'], color=black_color, fontweight='bold')",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          598
+        ],
+        "oldLines": [
+          539
+        ]
+      },
+      {
+        "kind": "call-arg",
+        "func": "plot_right_line_plot",
+        "call": "tag",
+        "arg": "#1",
+        "oldValue": "'b.obs-line'",
+        "newValue": "TEXTS['labels_b'][0]['gid']",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          598
+        ],
+        "oldLines": [
+          545
+        ]
+      },
+      {
+        "kind": "call-arg",
+        "func": "plot_right_line_plot",
+        "call": "tag",
+        "arg": "#0",
+        "oldValue": "ax.text(TEXTS['labels_b'][0]['xy'][0], TEXTS['labels_b'][0]['xy'][1], TEXTS['labels_b'][0]['text'], fontsize=FONTS['body'], color=black_color, fontweight='bold')",
+        "newValue": "ax.text(TEXTS['labels_b'][1]['xy'][0], TEXTS['labels_b'][1]['xy'][1], TEXTS['labels_b'][1]['text'], fontsize=FONTS['body'], color=brown_label_color, fontweight='bold')",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          599
+        ],
+        "oldLines": [
+          606
+        ]
+      },
+      {
+        "kind": "call-arg",
+        "func": "plot_right_line_plot",
+        "call": "tag",
+        "arg": "#1",
+        "oldValue": "TEXTS['labels_b'][0]['gid']",
+        "newValue": "TEXTS['labels_b'][1]['gid']",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          606
+        ],
+        "oldLines": [
+          606
+        ]
+      },
+      {
+        "kind": "call-arg",
+        "func": "plot_right_line_plot",
+        "call": "tag",
+        "arg": "#0",
+        "oldValue": "ax.text(TEXTS['labels_b'][1]['xy'][0], TEXTS['labels_b'][1]['xy'][1], TEXTS['labels_b'][1]['text'], fontsize=FONTS['body'], color=brown_label_color, fontweight='bold')",
+        "newValue": "ax.text(TEXTS['labels_b'][2]['xy'][0], TEXTS['labels_b'][2]['xy'][1], TEXTS['labels_b'][2]['text'], fontsize=FONTS['body'], color=green_label_color, fontweight='bold')",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          607
+        ],
+        "oldLines": [
+          607
+        ]
+      },
+      {
+        "kind": "call-arg",
+        "func": "plot_right_line_plot",
+        "call": "tag",
+        "arg": "#1",
+        "oldValue": "TEXTS['labels_b'][1]['gid']",
+        "newValue": "TEXTS['labels_b'][2]['gid']",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          614
+        ],
+        "oldLines": [
+          614
+        ]
+      },
+      {
+        "kind": "call-arg",
+        "func": "plot_right_line_plot",
+        "call": "tag",
+        "arg": "#0",
+        "oldValue": "ax.text(TEXTS['labels_b'][2]['xy'][0], TEXTS['labels_b'][2]['xy'][1], TEXTS['labels_b'][2]['text'], fontsize=FONTS['body'], color=green_label_color, fontweight='bold')",
+        "newValue": "ax.plot(years_short, gsta_black_obs, color=black_color, label='gsta_black_obs', linewidth=1)[0]",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          616
+        ],
+        "oldLines": [
+          615
+        ]
+      },
+      {
+        "kind": "call-arg",
+        "func": "plot_right_line_plot",
+        "call": "tag",
+        "arg": "#1",
+        "oldValue": "TEXTS['labels_b'][2]['gid']",
+        "newValue": "'b.obs-line'",
+        "valueKind": "expr",
+        "count": 1,
+        "newLines": [
+          622
+        ],
+        "oldLines": [
+          622
+        ]
+      },
+      {
+        "kind": "preserved",
+        "lines": 7,
+        "newLines": [
+          616,
+          617,
+          618,
+          619,
+          620,
+          621,
+          622
+        ],
+        "oldLines": [
+          539,
+          540,
+          541,
+          542,
+          543,
+          544,
+          545
+        ]
+      }
+    ]
+  },
+  "consistency": {
+    "overall": "unknown",
+    "png": "unknown",
+    "svg": "ok",
+    "code": "ok",
+    "message": "PNG diff and cross-layer consistency analysis pending."
+  }
+}

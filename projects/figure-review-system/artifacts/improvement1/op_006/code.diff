@@ -1,0 +1,55 @@
+diff --git a/figure1.py b/figure1.py
+index 046fb35..d7f5e95 100644
+--- a/figure1.py
++++ b/figure1.py
+@@ -324,6 +324,16 @@ def plot_left_bar_chart(ax):
+     ax.spines["right"].set_visible(False)
+     ax.spines["bottom"].set_visible(False)
+ 
++    ax.yaxis.grid(False)
++
++    # add horizontal grid lines for all y-ticks except y=0
++    for y in ax.yaxis.get_minorticklocs():
++        if y != 0:
++            ax.axhline(y=y, color='gray', linewidth=1, alpha=0.5, zorder=0)
++
++    # for y=0
++    ax.axhline(y=0, color='black', linewidth=1.5, linestyle='--', zorder=1)
++
+     # Add annotation with arrow
+     # bar.arrow removed
+     ax.text(
+@@ -427,7 +437,15 @@ def plot_left_line_plot(
+     ax.spines["right"].set_visible(False)
+ 
+     # add grid lines parallel to X axis
+-    ax.yaxis.grid(True, alpha=0.5)
++    ax.yaxis.grid(False)
++
++    # add horizontal grid lines for all y-ticks except y=0
++    for y in ax.get_yticks():
++        if y != 0:
++            ax.axhline(y=y, color='gray', linewidth=1, alpha=0.5, zorder=0)
++
++    # for y=0
++    ax.axhline(y=0, color='black', linewidth=1.5, linestyle='--', zorder=1)
+ 
+     # add lines to indicate 1850-2020 period
+     ax.hlines(
+@@ -593,7 +611,15 @@ def plot_right_line_plot(
+     ax.spines["right"].set_visible(False)
+ 
+     # add grid lines parallel to X axis
+-    ax.yaxis.grid(True, alpha=0.8)
++    ax.yaxis.grid(False)
++
++    # add horizontal grid lines for all y-ticks except y=0
++    for y in ax.get_yticks():
++        if y != 0:
++            ax.axhline(y=y, color='gray', linewidth=1, alpha=0.5, zorder=0)
++
++    # for y=0
++    ax.axhline(y=0, color='black', linewidth=1.5, linestyle='--', zorder=1)
+ 
+     tag(ax.text(TEXTS["labels_b"][0]["xy"][0], TEXTS["labels_b"][0]["xy"][1], TEXTS["labels_b"][0]["text"], fontsize=FONTS["body"], color=black_color, fontweight="bold"), TEXTS["labels_b"][0]["gid"])
+     tag(ax.text(

@@ -1,0 +1,23 @@
+diff --git a/figure1.py b/figure1.py
+index 2484850..da06ead 100644
+--- a/figure1.py
++++ b/figure1.py
+@@ -355,12 +355,13 @@ def plot_left_line_plot(
+     )
+ 
+     # add text annotations
+-    tag(ax.text(
++    # Warmest-period callout with the "100,000 years" reference emphasized.
++    tag(flexitext(
+         TEXTS["annotations_a"][0]["xy"][0],
+-        TEXTS["annotations_a"][0]["xy"][1],
+-        TEXTS["annotations_a"][0]["text"],
+-        fontsize=FONTS["body"],
+-        color=black_color,
++        1.48,  # top-anchored y (flexitext has no baseline va); matches the original callout position
++        "<size:12>Warmest multi-century\nperiod in more than\n</>"
++        "<size:12, weight:bold>100,000 years</>",
++        ax=ax, xycoords="data", va="top", ha="left",
+     ), TEXTS["annotations_a"][0]["gid"])
+     tag(ax.text(
+         TEXTS["annotations_a"][1]["xy"][0],
