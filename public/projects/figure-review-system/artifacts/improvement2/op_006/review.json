@@ -19,8 +19,8 @@
     {
       "selector": "<path>",
       "property": "count",
-      "oldValue": "139",
-      "newValue": "156",
+      "oldValue": "118",
+      "newValue": "135",
       "description": "17 path element(s) added"
     },
     {
@@ -45,10 +45,10 @@
       "kind": "added",
       "side": "after",
       "box": {
-        "x": 0.40776,
+        "x": 0.40912,
         "y": 0.97587,
-        "w": 0.08714,
-        "h": 0.01458
+        "w": 0.08448,
+        "h": 0.01258
       },
       "deltas": [
         "23 element(s) added"
@@ -61,12 +61,42 @@
       "side": "after",
       "box": {
         "x": 0.537,
-        "y": 0.32438,
-        "w": 0.09286,
-        "h": 0.01625
+        "y": 0.32575,
+        "w": 0.08964,
+        "h": 0.015
       },
       "deltas": [
         "31 element(s) added"
+      ]
+    },
+    {
+      "gid": "pixdiff_1",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.53476,
+        "y": 0.32042,
+        "w": 0.09405,
+        "h": 0.02125
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_2",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.40667,
+        "y": 0.97167,
+        "w": 0.08905,
+        "h": 0.02208
+      },
+      "deltas": [
+        "change not tied to a labeled element"
       ]
     }
   ],

@@ -139,6 +139,36 @@
       "deltas": [
         "2 element(s) removed"
       ]
+    },
+    {
+      "gid": "pixdiff_1",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.53524,
+        "y": 0.39917,
+        "w": 0.365,
+        "h": 0.45542
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_2",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.13881,
+        "y": 0.59792,
+        "w": 0.32452,
+        "h": 0.23708
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
     }
   ],
   "otherDeltas": [

@@ -31,7 +31,68 @@
       "description": "23 use element(s) added"
     }
   ],
-  "diffRegions": [],
+  "diffRegions": [
+    {
+      "gid": "pixdiff_1",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.01238,
+        "y": 0.94458,
+        "w": 0.06071,
+        "h": 0.05292
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_1",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.01238,
+        "y": 0.94458,
+        "w": 0.06071,
+        "h": 0.05292
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_2",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.08952,
+        "y": 0.95083,
+        "w": 0.02071,
+        "h": 0.02083
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_2",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.08952,
+        "y": 0.95083,
+        "w": 0.02071,
+        "h": 0.02083
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    }
+  ],
   "otherDeltas": [
     "12 path element(s) added",
     "23 use element(s) added"

@@ -36,6 +36,21 @@
       "gid": "b.human-natural-line",
       "label": "Human & natural line",
       "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.5375,
+        "y": 0.52717,
+        "w": 0.36036,
+        "h": 0.25642
+      },
+      "deltas": [
+        "stroke changed across 1 element(s)"
+      ]
+    },
+    {
+      "gid": "b.human-natural-line",
+      "label": "Human & natural line",
+      "kind": "modified",
       "side": "after",
       "box": {
         "x": 0.5375,
@@ -45,6 +60,66 @@
       },
       "deltas": [
         "stroke changed across 1 element(s)"
+      ]
+    },
+    {
+      "gid": "pixdiff_1",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.90214,
+        "y": 0.54375,
+        "w": 0.05929,
+        "h": 0.06833
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_1",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.90214,
+        "y": 0.54375,
+        "w": 0.05929,
+        "h": 0.06833
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_2",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.61405,
+        "y": 0.28792,
+        "w": 0.08952,
+        "h": 0.0225
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_2",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.61405,
+        "y": 0.28792,
+        "w": 0.08952,
+        "h": 0.0225
+      },
+      "deltas": [
+        "change not tied to a labeled element"
       ]
     }
   ],

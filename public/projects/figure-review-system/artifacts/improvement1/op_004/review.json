@@ -58,6 +58,22 @@
       "gid": "a.anno.warmest",
       "label": "Warmest-period annotation",
       "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.14067,
+        "y": 0.48479,
+        "w": 0.11893,
+        "h": 0.06246
+      },
+      "deltas": [
+        "moved Δ(-414,0)px",
+        "resized Δ(-212,0)px"
+      ]
+    },
+    {
+      "gid": "a.anno.warmest",
+      "label": "Warmest-period annotation",
+      "kind": "modified",
       "side": "after",
       "box": {
         "x": 0.04205,
@@ -68,6 +84,21 @@
       "deltas": [
         "moved Δ(-414,0)px",
         "resized Δ(-212,0)px"
+      ]
+    },
+    {
+      "gid": "pixdiff_1",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.13833,
+        "y": 0.48,
+        "w": 0.12333,
+        "h": 0.0725
+      },
+      "deltas": [
+        "change not tied to a labeled element"
       ]
     }
   ],

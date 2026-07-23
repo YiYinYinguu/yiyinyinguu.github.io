@@ -31,7 +31,38 @@
       "description": "stroke changed across 1 element(s)"
     }
   ],
-  "diffRegions": [],
+  "diffRegions": [
+    {
+      "gid": "bar.fill",
+      "label": "Left bar (warming range)",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.06721,
+        "y": 0.56167,
+        "w": 0.00955,
+        "h": 0.14533
+      },
+      "deltas": [
+        "hatch changed"
+      ]
+    },
+    {
+      "gid": "bar.fill",
+      "label": "Left bar (warming range)",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.06721,
+        "y": 0.56167,
+        "w": 0.00955,
+        "h": 0.14533
+      },
+      "deltas": [
+        "hatch changed"
+      ]
+    }
+  ],
   "otherDeltas": [
     "fill changed across 1 element(s)",
     "stroke changed across 1 element(s)"

@@ -17,11 +17,18 @@
   },
   "svgLayer": [
     {
-      "selector": "(fill)",
-      "property": "fill",
-      "oldValue": "#d4dadf",
-      "newValue": "—",
-      "description": "fill #d4dadf no longer used (1 element(s))"
+      "selector": "<path>",
+      "property": "count",
+      "oldValue": "117",
+      "newValue": "118",
+      "description": "1 path element(s) added"
+    },
+    {
+      "selector": "<rect>",
+      "property": "count",
+      "oldValue": "3",
+      "newValue": "4",
+      "description": "1 rect element(s) added"
     },
     {
       "selector": "(fill)",
@@ -31,11 +38,11 @@
       "description": "fill #647a88 usage count changed 2 → 3"
     },
     {
-      "selector": "(stroke)",
-      "property": "stroke",
-      "oldValue": "#d4dadf",
-      "newValue": "—",
-      "description": "stroke #d4dadf no longer used (1 element(s))"
+      "selector": "(fill)",
+      "property": "fill:#adbac1",
+      "oldValue": "1× used",
+      "newValue": "2× used",
+      "description": "fill #adbac1 usage count changed 1 → 2"
     },
     {
       "selector": "(stroke)",
@@ -50,9 +57,32 @@
       "oldValue": "—",
       "newValue": "1.4",
       "description": "new stroke-width 1.4 introduced (1 element(s))"
+    },
+    {
+      "selector": "(stroke-width)",
+      "property": "stroke-width:1.0",
+      "oldValue": "1× used",
+      "newValue": "2× used",
+      "description": "stroke-width 1.0 usage count changed 1 → 2"
     }
   ],
   "diffRegions": [
+    {
+      "gid": "bar.fill",
+      "label": "Left bar (warming range)",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.06721,
+        "y": 0.56167,
+        "w": 0.00955,
+        "h": 0.14533
+      },
+      "deltas": [
+        "new stroke #647a88 introduced (1 element(s))",
+        "new stroke-width 1.4 introduced (1 element(s))"
+      ]
+    },
     {
       "gid": "bar.fill",
       "label": "Left bar (warming range)",
@@ -71,8 +101,12 @@
     }
   ],
   "otherDeltas": [
-    "fill changed across 1 element(s)",
-    "stroke changed across 1 element(s)"
+    "1 path element(s) added",
+    "1 rect element(s) added",
+    "new fill #647a88 introduced (1 element(s))",
+    "fill #adbac1 usage count changed 1 → 2",
+    "new stroke #647a88 introduced (1 element(s))",
+    "stroke-width 1.0 usage count changed 1 → 2"
   ],
   "codeLayer": {
     "stats": {

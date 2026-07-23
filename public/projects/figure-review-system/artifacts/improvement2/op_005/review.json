@@ -29,12 +29,42 @@
       "gid": "b.human-natural-line",
       "label": "Human & natural line",
       "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.5375,
+        "y": 0.52717,
+        "w": 0.36036,
+        "h": 0.25642
+      },
+      "deltas": [
+        "new stroke-width 1.7 introduced (1 element(s))"
+      ]
+    },
+    {
+      "gid": "b.human-natural-line",
+      "label": "Human & natural line",
+      "kind": "modified",
       "side": "after",
       "box": {
         "x": 0.5375,
         "y": 0.52717,
         "w": 0.36036,
         "h": 0.25642
+      },
+      "deltas": [
+        "new stroke-width 1.7 introduced (1 element(s))"
+      ]
+    },
+    {
+      "gid": "b.natural-only-line",
+      "label": "Natural-only line",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.5375,
+        "y": 0.72,
+        "w": 0.36036,
+        "h": 0.06888
       },
       "deltas": [
         "new stroke-width 1.7 introduced (1 element(s))"

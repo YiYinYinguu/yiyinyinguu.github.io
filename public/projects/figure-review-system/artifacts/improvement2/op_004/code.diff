@@ -8,7 +8,7 @@ index da06ead..0d78045 100644
      )[0], "a.obs-line")
 +    # Lightly smooth the displayed uncertainty boundaries to take the year-to-year
 +    # jitter off the band for readability, while staying close to the original
-+    # shape. Operates on a copy of the band data only â€” the central reconstructed
++    # shape. Operates on a copy of the band data only — the central reconstructed
 +    # line and the source CSVs are left untouched.
 +    uncertainty_display = pd.DataFrame({"lower": lower_bound, "upper": upper_bound})
 +    uncertainty_display["upper"] = uncertainty_display["upper"].rolling(

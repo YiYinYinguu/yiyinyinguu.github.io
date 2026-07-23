@@ -21,16 +21,32 @@
       "gid": "a.anno.warmest",
       "label": "Warmest-period annotation",
       "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.14067,
+        "y": 0.48479,
+        "w": 0.11893,
+        "h": 0.06246
+      },
+      "deltas": [
+        "moved Δ(0,-25)px",
+        "resized Δ(0,-14)px"
+      ]
+    },
+    {
+      "gid": "a.anno.warmest",
+      "label": "Warmest-period annotation",
+      "kind": "modified",
       "side": "after",
       "box": {
         "x": 0.14067,
         "y": 0.47446,
-        "w": 0.12169,
-        "h": 0.05867
+        "w": 0.11893,
+        "h": 0.05646
       },
       "deltas": [
-        "moved Δ(0,-17)px",
-        "resized Δ(0,-22)px"
+        "moved Δ(0,-25)px",
+        "resized Δ(0,-14)px"
       ]
     }
   ],

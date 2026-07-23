@@ -19,9 +19,9 @@
     {
       "selector": "<path>",
       "property": "count",
-      "oldValue": "135",
-      "newValue": "139",
-      "description": "4 path element(s) added"
+      "oldValue": "115",
+      "newValue": "117",
+      "description": "2 path element(s) added"
     },
     {
       "selector": "<use>",
@@ -36,16 +36,48 @@
       "gid": "b.label.observed",
       "label": "‘observed’ label (panel b)",
       "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.90426,
+        "y": 0.50125,
+        "w": 0.05295,
+        "h": 0.01875
+      },
+      "deltas": [
+        "moved Δ(0,-53)px",
+        "resized Δ(67,53)px"
+      ]
+    },
+    {
+      "gid": "b.label.observed",
+      "label": "‘observed’ label (panel b)",
+      "kind": "modified",
       "side": "after",
       "box": {
         "x": 0.90426,
-        "y": 0.47683,
-        "w": 0.06929,
-        "h": 0.04533
+        "y": 0.47933,
+        "w": 0.06902,
+        "h": 0.04067
       },
       "deltas": [
-        "moved Δ(0,-58)px",
-        "resized Δ(72,62)px"
+        "moved Δ(0,-53)px",
+        "resized Δ(67,53)px"
+      ]
+    },
+    {
+      "gid": "b.label.human_natural",
+      "label": "‘human & natural’ label",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.90426,
+        "y": 0.54858,
+        "w": 0.05571,
+        "h": 0.06225
+      },
+      "deltas": [
+        "moved Δ(0,52)px",
+        "resized Δ(102,-52)px"
       ]
     },
     {
@@ -55,13 +87,29 @@
       "side": "after",
       "box": {
         "x": 0.90426,
-        "y": 0.56767,
-        "w": 0.08,
-        "h": 0.04533
+        "y": 0.57033,
+        "w": 0.0801,
+        "h": 0.0405
       },
       "deltas": [
-        "moved Δ(0,54)px",
-        "resized Δ(102,-55)px"
+        "moved Δ(0,52)px",
+        "resized Δ(102,-52)px"
+      ]
+    },
+    {
+      "gid": "b.label.natural_only",
+      "label": "‘natural only’ label",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.90426,
+        "y": 0.69925,
+        "w": 0.06767,
+        "h": 0.08417
+      },
+      "deltas": [
+        "moved Δ(0,53)px",
+        "resized Δ(71,-53)px"
       ]
     },
     {
@@ -71,18 +119,33 @@
       "side": "after",
       "box": {
         "x": 0.90426,
-        "y": 0.71758,
-        "w": 0.085,
-        "h": 0.06804
+        "y": 0.72117,
+        "w": 0.08455,
+        "h": 0.06225
       },
       "deltas": [
-        "moved Δ(0,54)px",
-        "resized Δ(72,-54)px"
+        "moved Δ(0,53)px",
+        "resized Δ(71,-53)px"
+      ]
+    },
+    {
+      "gid": "pixdiff_1",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.90214,
+        "y": 0.47417,
+        "w": 0.07286,
+        "h": 0.05042
+      },
+      "deltas": [
+        "change not tied to a labeled element"
       ]
     }
   ],
   "otherDeltas": [
-    "3 path element(s) removed"
+    "5 path element(s) removed"
   ],
   "codeLayer": {
     "stats": {

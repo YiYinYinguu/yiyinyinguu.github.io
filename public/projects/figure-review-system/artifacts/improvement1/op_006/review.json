@@ -87,7 +87,98 @@
       "description": "stroke-opacity 0.5 usage count changed 7 → 19"
     }
   ],
-  "diffRegions": [],
+  "diffRegions": [
+    {
+      "gid": "pixdiff_1",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.53524,
+        "y": 0.7375,
+        "w": 0.36714,
+        "h": 0.01167
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_1",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.53524,
+        "y": 0.7375,
+        "w": 0.36714,
+        "h": 0.01167
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_2",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.13833,
+        "y": 0.7375,
+        "w": 0.32905,
+        "h": 0.01167
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_2",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.13833,
+        "y": 0.7375,
+        "w": 0.32905,
+        "h": 0.01167
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_3",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.0281,
+        "y": 0.7375,
+        "w": 0.04143,
+        "h": 0.01167
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_3",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.0281,
+        "y": 0.7375,
+        "w": 0.04143,
+        "h": 0.01167
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    }
+  ],
   "otherDeltas": [
     "22 path element(s) added",
     "1 rect element(s) added",

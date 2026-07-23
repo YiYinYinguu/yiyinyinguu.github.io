@@ -52,7 +52,38 @@
       "description": "stroke-opacity 0.5 usage count changed 19 → 25"
     }
   ],
-  "diffRegions": [],
+  "diffRegions": [
+    {
+      "gid": "pixdiff_1",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "before",
+      "box": {
+        "x": 0.06905,
+        "y": 0.73833,
+        "w": 0.0369,
+        "h": 0.01
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    },
+    {
+      "gid": "pixdiff_1",
+      "label": "changed area",
+      "kind": "modified",
+      "side": "after",
+      "box": {
+        "x": 0.06905,
+        "y": 0.73833,
+        "w": 0.0369,
+        "h": 0.01
+      },
+      "deltas": [
+        "change not tied to a labeled element"
+      ]
+    }
+  ],
   "otherDeltas": [
     "7 path element(s) added",
     "stroke #000000 usage count changed 7 → 8",
