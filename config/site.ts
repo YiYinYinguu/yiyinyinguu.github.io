@@ -119,17 +119,18 @@ export const siteConfig: SiteConfig = {
   site: {
     name: "Lu Ying",
     title: "Hi! I am Lu Ying",
-    description: "Personal academic homepage",
+    description:
+      "Lu Ying (应璐) — Postdoctoral Fellow at the National University of Singapore. Research on data visualization, human-computer interaction, and data-driven storytelling.",
     logo: "/logo.png",
   },
 
   // 个人信息
   profile: {
     name: "Lu Ying",
-    title: "Ph.D.",
+    title: "Postdoctoral Fellow",
     email: "yiyinyingl@outlook.com",
-    department: "Computer Science",
-    university: "Zhejiang University",
+    department: "Department of Geography",
+    university: "National University of Singapore",
     profileImage: "/profile.jpg",
     bannerImage: "/banner.png",
     researchInterests: [
@@ -142,9 +143,8 @@ export const siteConfig: SiteConfig = {
   // 社交链接
   social: {
     googleScholar: "https://scholar.google.ca/citations?user=QJRqoNEAAAAJ&hl=en",
-    twitter: "https://twitter.com",
-    // twitter: "https://twitter.com/yiyinyingl",
-    linkedin: "www.linkedin.com/in/lu-ying-7198a01b8",
+    twitter: "https://twitter.com/yiyinyingl",
+    linkedin: "https://www.linkedin.com/in/lu-ying-7198a01b8",
   },
 
   // 导航菜单
@@ -160,7 +160,9 @@ export const siteConfig: SiteConfig = {
   // About Me 内容
   // ============================================================
   aboutDescription: `
-  I received my Ph.D. in Computer Science from the [State Key Lab of CAD&CG, Zhejiang University](http://www.cad.zju.edu.cn), where I was advised by [Prof. Yingcai Wu](http://ycwu.org) and was a member of [ZJUIDG](http://zjuidg.org). And I was a visiting student at [Université Paris-Saclay](https://www.universite-paris-saclay.fr/en) and a member of the [AVIZ team](https://www.aviz.fr/) at [Inria](https://www.inria.fr/en), supervised by [Jean-Daniel Fekete](http://www.aviz.fr/~fekete/).
+  I am a Postdoctoral Fellow at the [Department of Geography](https://fass.nus.edu.sg/geog/), Faculty of Arts and Social Sciences, National University of Singapore, working with [Prof. Wei Luo](https://fass.nus.edu.sg/geog/people/luo-wei/). In September 2026, I will join the University of Vienna as a postdoctoral researcher, working with [Prof. Torsten Möller](https://www.cs.univie.ac.at/torsten.moeller/).
+
+I received my Ph.D. in Computer Science from the [State Key Lab of CAD&CG, Zhejiang University](http://www.cad.zju.edu.cn), where I was advised by [Prof. Yingcai Wu](http://ycwu.org) and was a member of [ZJUIDG](http://zjuidg.org). And I was a visiting student at [Université Paris-Saclay](https://www.universite-paris-saclay.fr/en) and a member of the [AVIZ team](https://www.aviz.fr/) at [Inria](https://www.inria.fr/en), supervised by [Jean-Daniel Fekete](http://www.aviz.fr/~fekete/).
 
 My research lies at the intersection of human–AI interaction, visualization, and machine learning, where I design human-centered AI systems that empower people in sensemaking and decision-making. Collaborating with experts in areas like climate change and social media, I pursue interdisciplinary solutions that respond to complex and impactful real-world challenges.
   `,
@@ -170,12 +172,22 @@ My research lies at the intersection of human–AI interaction, visualization, a
   // ============================================================
   news: [
     {
+      id: "news-2026-08",
+      date: "08/2026",
+      content: "🇦🇹 In September, I will join the University of Vienna as a postdoctoral researcher, working with [Prof. Torsten Möller](https://www.cs.univie.ac.at/torsten.moeller/). See you in Vienna!",
+    },
+    {
+      id: "news-2026-01",
+      date: "01/2026",
+      content: "🇸🇬 I started my postdoc journey at the [Department of Geography](https://fass.nus.edu.sg/geog/), National University of Singapore, working with [Prof. Wei Luo](https://fass.nus.edu.sg/geog/people/luo-wei/)!",
+    },
+    {
       id: "news-2025-12",
       date: "12/2025",
       content: "🎓 I successfully defended my PhD on [AI-Driven Generation of Infographics]() !",
     },
     {
-      id: "news-2025-11",
+      id: "news-2025-12-arxiv",
       date: "12/2025",
       content: "Our paper on [Constructive Scientific Methodology to Improve Climate Figures from IPCC](https://arxiv.org/abs/2512.15514) is available on arXiv!",
       link: "https://arxiv.org/abs/2512.15514",
@@ -383,6 +395,24 @@ My research lies at the intersection of human–AI interaction, visualization, a
   // 工作经历 - 在这里添加你的工作经历
   // ============================================================
   experience: [
+    {
+      id: "exp-univie",
+      period: "09/2026 -",
+      location: "Vienna, Austria",
+      position: "Postdoctoral Researcher (Incoming)",
+      institution: "University of Vienna",
+      supervisor: "Working with Prof. Torsten Möller",
+      logo: "/univie.png",
+    },
+    {
+      id: "exp-nus",
+      period: "01/2026 - 09/2026",
+      location: "Singapore",
+      position: "Postdoctoral Fellow",
+      institution: "Department of Geography, Faculty of Arts and Social Sciences, National University of Singapore",
+      supervisor: "Supervised by Prof. Wei Luo",
+      logo: "/nus.png",
+    },
     {
       id: "exp-inria",
       period: "01/2024 - 09/2024",
