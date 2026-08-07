@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { siteConfig } from "@/config/site";
 
 export default function Header() {
@@ -74,14 +75,15 @@ export default function Header() {
         />
       </div>
 
-      <div className="flex items-center justify-between h-16 px-80">
+      <div className="flex items-center justify-between h-16 px-6 md:px-20 xl:px-80">
         {/* Site Title */}
         <div className="flex-shrink-0">
           <button
             onClick={(e) => handleClick(e, "#about")}
-            className="text-2xl font-extrabold text-gray-900 hover:text-primary transition-colors"
+            className="flex items-center gap-2 text-2xl font-extrabold text-gray-900 hover:text-primary transition-colors"
             style={{ cursor: 'pointer' }}
           >
+            <Image src={site.logo} alt="" width={34} height={34} />
             {site.name}
           </button>
         </div>
