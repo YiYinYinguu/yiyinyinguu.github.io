@@ -10,8 +10,12 @@ function parseMarkdownBold(text: string): string {
   return text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
 }
 
-export default function PublicationList() {
-  const { publications } = siteConfig;
+export default function PublicationList({
+  publications: pubsProp,
+}: {
+  publications?: typeof siteConfig.publications;
+} = {}) {
+  const publications = pubsProp ?? siteConfig.publications;
 
   // State to track which years are expanded (all expanded by default)
   const [expandedYears, setExpandedYears] = useState<Set<number>>(

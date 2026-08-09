@@ -1,4 +1,6 @@
+import Link from "next/link";
 import Header from "@/components/layout/Header";
+import { siteConfig } from "@/config/site";
 import Sidebar from "@/components/layout/Sidebar";
 import AboutSection from "@/components/sections/AboutSection";
 import PublicationList from "@/components/sections/PublicationList";
@@ -28,13 +30,23 @@ export default function Home() {
               <AboutSection />
             </section>
 
-            {/* Publications Section */}
+            {/* Publications Section (selected only) */}
             <section id="publications" className="scroll-mt-20">
               <h1 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-2">
                 <span>📑</span>
-                <span>Publications</span>
+                <span>Selected Publications</span>
               </h1>
-              <PublicationList />
+              <PublicationList
+                publications={siteConfig.publications.filter((p) => p.selected)}
+              />
+              <div className="mt-6 text-right">
+                <Link
+                  href="/publications"
+                  className="text-primary font-medium hover:underline"
+                >
+                  View all publications →
+                </Link>
+              </div>
             </section>
 
             {/* CV Section */}

@@ -56,6 +56,7 @@ export interface SiteConfig {
     title: string;
     authors: string;
     venue: string;
+    selected?: boolean;  // 主页代表作标记
     image?: string;  // 论文图片（缩略图或可视化图）
     links?: {
       pdf?: string;
@@ -94,6 +95,15 @@ export interface SiteConfig {
     year: string;
     title: string;
     description?: string;
+  }>;
+
+  // 生活板块（/life 下的子板块，每个板块一个内容目录）
+  lifeCategories: Array<{
+    id: string;  // 目录名 & URL 段，如 "baking"
+    name: string;  // 显示名，如 "Baking 烘焙"
+    emoji: string;
+    description: string;  // 一句话简介
+    cover: string;  // hub 卡片封面图
   }>;
 
   // 服务经历
@@ -150,10 +160,11 @@ export const siteConfig: SiteConfig = {
   // 导航菜单
   navigation: [
     { name: "About", href: "#about" },
-    { name: "Publications", href: "#publications" },
+    { name: "Publications", href: "/publications" },
     { name: "CV", href: "#cv" },
     { name: "Awards", href: "#awards" },
     { name: "Service", href: "#service" },
+    { name: "Life", href: "/life" },
   ],
 
   // ============================================================
@@ -217,6 +228,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
     {
       id: "pub-2024-vaid",
       year: 2024,
+      selected: true,
       title: "VAID: Indexing View Designs in Visual Analytics System",
       authors: "**Lu Ying**, Aoyu Wu, Haotian Li, Zikun Deng, Ji Lan, Jiang Wu, Yong Wang, Huamin Qu, Dazhen Deng, Yingcai Wu",
       venue: "Proceedings of the Conference on Human Factors in Computing Systems (CHI 2024)",
@@ -274,6 +286,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
     {
       id: "pub-2025-constructive",
       year: 2025,
+      selected: true,
       title: "A Constructive Scientific Methodology to Improve Climate Figures from IPCC",
       authors: "**Lu Ying**, Junxiu Tang, Tingying He, Jean-Daniel Fekete",
       venue: "arXiv preprint arXiv:2512.15514",
@@ -286,6 +299,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
     {
       id: "pub-2023-notable",
       year: 2023,
+      selected: true,
       title: "Notable: On-the-fly Assistant for Data Storytelling in Computational Notebooks",
       authors: "Haotian Li, **Lu Ying**, Haidong Zhang, Yingcai Wu, Huamin Qu, Yun Wang",
       venue: "Proceedings of the Conference on Human Factors in Computing Systems (CHI 2023)",
@@ -321,6 +335,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
     {
       id: "pub-2024-live",
       year: 2024,
+      selected: true,
       title: "Reviving Static Charts into Live Charts",
       authors: "**Lu Ying**, Yun Wang, Haotian Li, Shuguang Dou, Haidong Zhang, Xinyang Jiang, Huamin Qu, Yingcai Wu",
       venue: "IEEE Transactions on Visualization and Computer Graphics",
@@ -333,6 +348,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
     {
       id: "pub-2023-metaglyph",
       year: 2023,
+      selected: true,
       title: "MetaGlyph: Automatic Generation of Metaphoric Glyph-based Visualization",
       authors: "**Lu Ying**, Xinhuan Shu, Dazhen Deng, Yuchen Yang, Tan Tang, Lingyun Yu, Yingcai Wu",
       venue: "IEEE Transactions on Visualization and Computer Graphics",
@@ -345,6 +361,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
     {
       id: "pub-2022-glyphcreator",
       year: 2022,
+      selected: true,
       title: "GlyphCreator: Towards Example-based Automatic Generation of Circular Glyphs",
       authors: "**Lu Ying**, Tan Tang, Yuzhe Luo, Lvkeshen Shen, Xiao Xie, Lingyun Yu, Yingcai Wu",
       venue: "IEEE Transactions on Visualization and Computer Graphics",
@@ -511,6 +528,26 @@ My research lies at the intersection of human–AI interaction, visualization, a
       year: "2018",
       title: "National Scholarship",
       description: "Ministry of Education China",
+    },
+  ],
+
+  // ============================================================
+  // 生活板块 - 新增板块 = 这里加一行 + content/life/<id>/ 建目录
+  // ============================================================
+  lifeCategories: [
+    {
+      id: "baking",
+      name: "Baking",
+      emoji: "🧁",
+      description: "Cakes, breads, and sweet experiments from my kitchen.",
+      cover: "/life/baking/cover.jpg",
+    },
+    {
+      id: "knitting",
+      name: "Knitting 编织",
+      emoji: "🧶",
+      description: "Handmade sweaters, scarves, and yarn projects.",
+      cover: "/life/knitting/cover.svg",
     },
   ],
 

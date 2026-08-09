@@ -20,6 +20,49 @@ body {
   }
 }
 
+/* ============================================================
+   手账样式（Life 板块的作品列表）
+   字体是马善政毛笔楷书的子集，只含内容里实际用到的字。
+   加了新字要重跑：python3 scripts/build-journal-font.py
+   ============================================================ */
+@font-face {
+  font-family: 'JournalHand';
+  src: url('/fonts/journal.woff2') format('woff2');
+  font-display: swap;
+}
+
+/* Alegreya 排在前面只为接管英文和数字——它没有汉字，中文自然落到手写体上。
+   马善政的拉丁字母是刷体，跟正文混在一起太吵。 */
+.journal-hand {
+  font-family: 'Alegreya', 'JournalHand', 'PingFang SC', serif;
+}
+
+/* 一叠拍立得摊开时，照片一张张落下来 */
+@keyframes journal-fan-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.92);
+  }
+}
+
+.journal-fan-in {
+  animation: journal-fan-in 0.4s cubic-bezier(0.2, 0.8, 0.3, 1) backwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journal-fan-in {
+    animation: none;
+  }
+}
+
+/* 米黄纸 + 淡点阵格 */
+.journal-paper {
+  background-color: #fdf5da;
+  background-image: radial-gradient(rgba(140, 120, 80, 0.3) 1px, transparent 1px);
+  background-size: 17px 17px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
 /* 中英文混合文本样式 - 英文 Alegreya，中文 PingFang SC */
 .bilingual-text {
   font-family: 'Alegreya', 'PingFang SC', serif;
