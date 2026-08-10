@@ -1,9 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LifePost, Recipe } from "@/lib/life";
 import JournalStack from "./JournalStack";
+import MonthGrid from "./MonthGrid";
+import CalendarView from "./CalendarView";
+import TimelineView from "./TimelineView";
 
 // 手账每格轮换的颜色：标题底色是它加 40% 透明，正文是它的实色
 const INK = ["#7a5fa0", "#9a6b3f", "#5f8055", "#a85a70", "#4f7a99", "#b5793a"];
@@ -21,6 +24,8 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
   const [kind, setKind] = useState<string>("");
   const [dir, setDir] = useState<Dir>("new");
   const [often, setOften] = useState(false);
+  const [month, setMonth] = useState("");
+  const [view, setView] = useState<"list" | "calendar" | "timeline">("list");
   const [open, setOpen] = useState<number | null>(null);
 
   const decorated = useMemo(() => decorate(posts), [posts]);
@@ -38,10 +43,11 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
   }, [posts]);
 
   const shown = useMemo(() => {
-    const filtered = kind ? decorated.filter((d) => d.post.kind === kind) : decorated;
+    let filtered = kind ? decorated.filter((d) => d.post.kind === kind) : decorated;
+    if (month) filtered = filtered.filter((d) => d.post.date.startsWith(month));
     // posts 传进来已经是最新在前，要最早在前反过来就行
     return dir === "new" ? filtered : [...filtered].reverse();
-  }, [decorated, kind, dir]);
+  }, [decorated, kind, month, dir]);
 
   // 按次数看时一道菜只占一格，做得最多的排前面；组内沿用上面的日期方向
   const groups = useMemo(() => {
@@ -60,7 +66,33 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
 
   return (
     <>
-      <div className="flex flex-wrap items-center justify-end gap-2 mb-3">
+      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4 mb-3">
+        {view === "list" ? (
+          <MonthGrid
+            posts={posts}
+            selected={month}
+            onSelect={(m) => {
+              setMonth(m);
+              setOpen(null);
+            }}
+          />
+        ) : (
+          <span />
+        )}
+        <div className="flex flex-wrap items-center gap-2">
+        {(["list", "calendar", "timeline"] as const).map((v) => (
+          <Pill
+            key={v}
+            active={view === v}
+            onClick={() => {
+              setView(v);
+              setOpen(null);
+            }}
+          >
+            {{ list: "列表", calendar: "日历", timeline: "时间轴" }[v]}
+          </Pill>
+        ))}
+        <span className="w-px h-5 bg-[#ded3b6] mx-1" />
         <Pill active={!kind} onClick={() => pick("")}>
           全部
         </Pill>
@@ -91,8 +123,22 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
         >
           最多次做
         </Pill>
+        </div>
       </div>
 
+      {view === "calendar" && (
+        <CalendarView posts={shown.map((d) => d.post)} onOpen={(p) => setOpen(posts.indexOf(p))} />
+      )}
+
+      {view === "timeline" && (
+        <TimelineView
+          posts={shown.map((d) => d.post)}
+          newestFirst={dir === "new"}
+          onOpen={(p) => setOpen(posts.indexOf(p))}
+        />
+      )}
+
+      {view === "list" && (
       <div className="journal-paper rounded-lg p-5 sm:p-7">
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
           {often &&
@@ -176,6 +222,7 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
           <p className="journal-hand text-center text-xl py-16 text-[#9a6b3f]">这里还没有呢</p>
         )}
       </div>
+      )}
 
       {open !== null && (
         <PostDialog
@@ -216,6 +263,27 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
   const [i, setI] = useState(0);
   const count = post.photos.length;
   const step = useCallback((d: number) => setI((n) => (n + d + count) % count), [count]);
+  const shell = useRef<HTMLDivElement>(null);
+
+  // 弹窗盖住整屏，从日历捏进来之后再捏就落在这上面。不拦的话浏览器会把整页
+  // 放大——那不是这里想要的缩放。往外捏就当作退回上一层。
+  useEffect(() => {
+    const el = shell.current;
+    if (!el) return;
+    let acc = 0;
+    const onWheel = (e: WheelEvent) => {
+      if (!e.ctrlKey) return;
+      e.preventDefault();
+      if (acc * e.deltaY < 0) acc = 0;
+      acc += e.deltaY;
+      if (acc > 36) {
+        acc = 0;
+        onClose();
+      }
+    };
+    el.addEventListener("wheel", onWheel, { passive: false });
+    return () => el.removeEventListener("wheel", onWheel);
+  }, [onClose]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -235,6 +303,7 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
 
   return (
     <div
+      ref={shell}
       role="dialog"
       aria-modal="true"
       aria-label={post.title}
@@ -344,7 +413,7 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
 
 /** 弹窗里的一条食谱：名字点出去看做法，用料收在下面按需展开。 */
 function RecipeLine({ recipe, ink }: { recipe: Recipe; ink: string }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   return (
     <li>
       {/* 菜谱名是别人的标题，混着英文、假名、颜文字，毛笔体里好些字根本没有，

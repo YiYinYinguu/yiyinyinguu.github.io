@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""扫描 Life 内容里实际用到的字，生成手账字体子集。
+"""生成手账字体子集：常用汉字 + 内容里实际出现的字。
 
-手账样式用「马善政毛笔楷书」。完整字库 5.6MB，但网页只需要真正出现过的
-那几百个字，子集化后通常不到 100KB。
+手账样式用「马善政毛笔楷书」。完整字库压成 woff2 有 3.1MB，其中一大半是
+生僻字和异体字。这里只取 GB2312 一级字库那 3755 个常用字（1.6MB），日常
+能写的字都在里面，再并上 content 里实际用到的，写了生僻字也不会漏。
 
-什么时候要重跑：写了新标题、新心得，出现了以前没用过的字。忘了跑的话，
-新字会掉回系统默认字体（不会消失，只是不像手写）。
+好处是平时不用管它：加菜名、写心得都不会掉字。只有换了字体源文件、或者
+想调整覆盖范围时才需要重跑。
 
     python3 scripts/build-journal-font.py
 
@@ -23,14 +24,30 @@ OUT = os.path.join(ROOT, "public", "fonts", "journal.woff2")
 CONTENT = os.path.join(ROOT, "content", "life")
 
 # 界面上写死的文字（不在 markdown 里，但也要用手账字体渲染）
-UI_TEXT = "烘焙编织生活手账年月日第次记录全部中式西最新早在前这里还没有呢张关闭下一食谱厨房做过多"
+UI_TEXT = (
+    "烘焙编织生活手账年月日第次记录全部中式西最新早在前"
+    "这里还没有呢张关闭下一食谱厨房做过多列表历用料项收起"
+    "二三四五六"  # 日历的星期栏
+)
 # 拉丁字母和数字交给 Alegreya 渲染（见 globals.css 的 .journal-hand），
 # 这个字体只负责中文，所以不必把英文塞进子集
 PUNCT = "#·，。！？、；：（）“”‘’—…《》：/-. "
 
 
+def common_chars() -> set:
+    """GB2312 一级字库，按拼音排的 3755 个常用字。"""
+    out = set()
+    for lead in range(0xB0, 0xD8):
+        for tail in range(0xA1, 0xFF):
+            try:
+                out.add(bytes([lead, tail]).decode("gb2312"))
+            except UnicodeDecodeError:
+                pass
+    return out
+
+
 def collect_chars() -> str:
-    chars = set(UI_TEXT + PUNCT)
+    chars = set(UI_TEXT + PUNCT) | common_chars()
     for dirpath, _, files in os.walk(CONTENT):
         for f in files:
             if not f.endswith(".md"):

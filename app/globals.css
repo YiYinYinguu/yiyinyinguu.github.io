@@ -55,6 +55,24 @@ body {
   }
 }
 
+/* 日历在两层之间切换时，从略小处放大上来，才有「放大」的感觉 */
+@keyframes journal-zoom {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+}
+
+.journal-zoom {
+  animation: journal-zoom 0.28s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .journal-zoom {
+    animation: none;
+  }
+}
+
 /* 米黄纸 + 淡点阵格 */
 .journal-paper {
   background-color: #fdf5da;
