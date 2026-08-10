@@ -493,7 +493,13 @@ function PostDialog({
 /** 弹窗里的一条食谱：名字点出去看做法，用料收在下面按需展开。 */
 function RecipeLine({ recipe, ink }: { recipe: Recipe; ink: string }) {
   const t = useT();
+  const lang = useLang();
   const [open, setOpen] = useState(true);
+  // 英文模式下用译好的那份；没译到就退回中文，总比空着强
+  const lines =
+    lang === "en" && recipe.ingredientsEn.length
+      ? recipe.ingredientsEn
+      : recipe.ingredients;
   return (
     <li>
       {/* 菜谱名是别人的标题，混着英文、假名、颜文字，毛笔体里好些字根本没有，
@@ -508,7 +514,7 @@ function RecipeLine({ recipe, ink }: { recipe: Recipe; ink: string }) {
       >
         ✎ {recipe.name}
       </a>
-      {recipe.ingredients.length > 0 && (
+      {lines.length > 0 && (
         <>
           <button
             type="button"
@@ -516,11 +522,11 @@ function RecipeLine({ recipe, ink }: { recipe: Recipe; ink: string }) {
             className="block text-sm mt-3 opacity-70 hover:opacity-100"
             style={{ color: ink }}
           >
-            {t("ingredients")} {recipe.ingredients.length} {open ? "▴" : "▾"}
+            {t("ingredients")} {lines.length} {open ? "▴" : "▾"}
           </button>
           {open && (
             <ul className="text-[13px] leading-[1.8] text-gray-500 mt-1.5 ml-5 columns-2 gap-4">
-              {recipe.ingredients.map((line) => (
+              {lines.map((line) => (
                 <li key={line}>{line}</li>
               ))}
             </ul>

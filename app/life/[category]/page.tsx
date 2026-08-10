@@ -52,9 +52,11 @@ export default async function LifeCategoryPage({
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="max-w-7xl mx-auto px-6 py-10">
-        {/* 语言、筛选、弹窗都要交互，整块交给客户端；内容还是构建时读好的 */}
-        <LifeSection category={cat} posts={posts} stats={summarize(posts)} />
+      <main className="px-4 py-10">
+        <div className="max-w-6xl mx-auto">
+          {/* 语言、筛选、弹窗都要交互，整块交给客户端；内容还是构建时读好的 */}
+          <LifeSection category={cat} posts={posts} stats={summarize(posts)} />
+        </div>
       </main>
     </div>
   );

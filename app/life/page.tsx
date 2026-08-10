@@ -17,7 +17,8 @@ export default function LifePage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="max-w-5xl mx-auto px-6 py-10">
+      <main className="px-4 py-10">
+        <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
           <span>🌿</span>
           <span>Life</span>
@@ -59,6 +60,7 @@ export default function LifePage() {
                 );
               })}
           </div>
+        </div>
         </div>
       </main>
     </div>
