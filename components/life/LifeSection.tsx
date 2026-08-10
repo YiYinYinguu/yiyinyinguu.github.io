@@ -45,7 +45,7 @@ export default function LifeSection({
               <div>
                 {/* 标题本身就是面包屑：Life 点回总览，后半截是当前这页 */}
                 <h1 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
-                  <Link href="/life" className="text-gray-400 hover:text-primary transition-colors">
+                  <Link href="/life/" className="text-gray-400 hover:text-primary transition-colors">
                     Life
                   </Link>
                   <span className="text-gray-300 font-normal">/</span>
@@ -60,21 +60,24 @@ export default function LifeSection({
                 )}
               </div>
 
-              <div className="flex-shrink-0 flex text-sm border border-gray-300 rounded-full overflow-hidden">
-                {(["en", "zh"] as Lang[]).map((l) => (
-                  <button
-                    key={l}
-                    type="button"
-                    onClick={() => setLang(l)}
-                    aria-pressed={lang === l}
-                    className={`px-3 py-1 transition-colors ${
-                      lang === l
-                        ? "bg-primary text-white"
-                        : "text-gray-500 hover:text-gray-900"
-                    }`}
-                  >
-                    {l === "en" ? "EN" : "中"}
-                  </button>
+              {/* 跟标题里的 Life / Baking 同一种写法：当前的深色，另一个是链接 */}
+              <div className="flex-shrink-0 text-sm pt-1">
+                {(["en", "zh"] as Lang[]).map((l, i) => (
+                  <span key={l}>
+                    {i > 0 && <span className="mx-2 text-gray-300">/</span>}
+                    <button
+                      type="button"
+                      onClick={() => setLang(l)}
+                      aria-pressed={lang === l}
+                      className={
+                        lang === l
+                          ? "text-gray-900"
+                          : "text-gray-400 hover:text-primary transition-colors"
+                      }
+                    >
+                      {l === "en" ? "EN" : "中文"}
+                    </button>
+                  </span>
                 ))}
               </div>
             </div>

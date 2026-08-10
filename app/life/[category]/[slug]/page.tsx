@@ -107,7 +107,7 @@ export default async function LifePostPage({
     <div className="min-h-screen bg-white">
       <Header />
       <main className="max-w-3xl mx-auto px-6 py-10">
-        <Link href={`/life/${category}`} className="text-sm text-gray-500 hover:text-primary">
+        <Link href={`/life/${category}/`} className="text-sm text-gray-500 hover:text-primary">
           ← {cat.name}
         </Link>
         <h1 className="text-2xl font-bold text-gray-900 mt-2 mb-1">{post.title}</h1>

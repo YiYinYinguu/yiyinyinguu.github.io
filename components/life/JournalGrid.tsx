@@ -3,9 +3,8 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LifePost, Recipe } from "@/lib/life";
-import { useCount, useT, useTitle } from "@/lib/life-i18n";
+import { useCount, useLang, useT, useTitle } from "@/lib/life-i18n";
 import JournalStack from "./JournalStack";
-import MonthGrid from "./MonthGrid";
 import CalendarView from "./CalendarView";
 import TimelineView from "./TimelineView";
 
@@ -21,21 +20,30 @@ function decorate(posts: LifePost[]) {
   return posts.map((post, i) => ({ post, tilt: TILT[i % TILT.length] }));
 }
 
-export default function JournalGrid({ posts, category }: { posts: LifePost[]; category: string }) {
+export default function JournalGrid({
+  posts,
+  category,
+}: {
+  posts: LifePost[];
+  category: string;
+}) {
   const t = useT();
+  const lang = useLang();
   const title = useTitle();
   const [kind, setKind] = useState<string>("");
   const [dir, setDir] = useState<Dir>("new");
   const [often, setOften] = useState(false);
-  const [month, setMonth] = useState("");
   const [view, setView] = useState<"list" | "calendar" | "timeline">("list");
   const [open, setOpen] = useState<number | null>(null);
 
   const decorated = useMemo(() => decorate(posts), [posts]);
   // 排一下序，免得筛选按钮的先后跟着「哪篇最新」变来变去
   const kinds = useMemo(
-    () => [...new Set(posts.map((p) => p.kind).filter((k): k is string => !!k))].sort(),
-    [posts]
+    () =>
+      [
+        ...new Set(posts.map((p) => p.kind).filter((k): k is string => !!k)),
+      ].sort(),
+    [posts],
   );
 
   // 每道菜的颜色按它头一次出现的位置定，筛选、排序都不会让它变色
@@ -46,19 +54,29 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
   }, [posts]);
 
   const shown = useMemo(() => {
-    let filtered = kind ? decorated.filter((d) => d.post.kind === kind) : decorated;
-    if (month) filtered = filtered.filter((d) => d.post.date.startsWith(month));
+    const filtered = kind
+      ? decorated.filter((d) => d.post.kind === kind)
+      : decorated;
     // posts 传进来已经是最新在前，要最早在前反过来就行
     return dir === "new" ? filtered : [...filtered].reverse();
-  }, [decorated, kind, month, dir]);
+  }, [decorated, kind, dir]);
 
   // 按次数看时一道菜只占一格，做得最多的排前面；组内沿用上面的日期方向
   const groups = useMemo(() => {
     const by = new Map<string, LifePost[]>();
-    shown.forEach(({ post }) => by.set(post.title, [...(by.get(post.title) ?? []), post]));
+    shown.forEach(({ post }) =>
+      by.set(post.title, [...(by.get(post.title) ?? []), post]),
+    );
     return [...by.entries()]
-      .map(([title, list]) => ({ title, posts: list, ink: inkOf.get(title) ?? INK[0] }))
-      .sort((a, b) => b.posts.length - a.posts.length || (a.title < b.title ? -1 : 1));
+      .map(([title, list]) => ({
+        title,
+        posts: list,
+        ink: inkOf.get(title) ?? INK[0],
+      }))
+      .sort(
+        (a, b) =>
+          b.posts.length - a.posts.length || (a.title < b.title ? -1 : 1),
+      );
   }, [shown, inkOf]);
 
   // 换筛选、换排序时顺手关掉弹窗——那篇可能已经不在列表里了
@@ -69,26 +87,15 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
 
   return (
     <>
-      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4 mb-3">
-        {view === "list" ? (
-          <MonthGrid
-            posts={posts}
-            selected={month}
-            onSelect={(m) => {
-              setMonth(m);
-              setOpen(null);
-            }}
-          />
-        ) : (
-          <span />
-        )}
-        <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2 mb-3">
+        {/* 视图和筛选靠左钉住；排序推到右边，这样它出现或消失都不会挤动左边 */}
         {(["list", "calendar", "timeline"] as const).map((v) => (
           <Pill
             key={v}
             active={view === v}
             onClick={() => {
               setView(v);
+              if (v !== "list") setOften(false);
               setOpen(null);
             }}
           >
@@ -104,33 +111,40 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
             {k === "中式" ? t("chinese") : k === "西式" ? t("western") : k}
           </Pill>
         ))}
-        <span className="w-px h-5 bg-[#ded3b6] mx-1" />
-        {/* 两种排法二选一：亮着的那个才是当前用的 */}
-        <Pill
-          active={!often}
-          onClick={() => {
-            // 正在按次数排时先切回日期，方向不动；已经按日期排了才翻方向
-            if (often) setOften(false);
-            else setDir(dir === "new" ? "old" : "new");
-            setOpen(null);
-          }}
-        >
-          {dir === "new" ? t("newestFirst") : t("oldestFirst")}
-        </Pill>
-        <Pill
-          active={often}
-          onClick={() => {
-            setOften(true);
-            setOpen(null);
-          }}
-        >
-          {t("mostMade")}
-        </Pill>
-        </div>
+        {/* 排序只有列表和时间轴用得上：日历本身就是按时间铺的，
+            「最多次做」更是只有列表在按菜名分组时才有意义 */}
+        {view !== "calendar" && (
+          <div className="flex flex-wrap items-center gap-2 ml-auto">
+            <Pill
+              active={!often || view !== "list"}
+              onClick={() => {
+                if (often) setOften(false);
+                else setDir(dir === "new" ? "old" : "new");
+                setOpen(null);
+              }}
+            >
+              {dir === "new" ? t("newestFirst") : t("oldestFirst")}
+            </Pill>
+            {view === "list" && (
+              <Pill
+                active={often}
+                onClick={() => {
+                  setOften(true);
+                  setOpen(null);
+                }}
+              >
+                {t("mostMade")}
+              </Pill>
+            )}
+          </div>
+        )}
       </div>
 
       {view === "calendar" && (
-        <CalendarView posts={shown.map((d) => d.post)} onOpen={(p) => setOpen(posts.indexOf(p))} />
+        <CalendarView
+          posts={shown.map((d) => d.post)}
+          onOpen={(p) => setOpen(posts.indexOf(p))}
+        />
       )}
 
       {view === "timeline" && (
@@ -142,89 +156,97 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
       )}
 
       {view === "list" && (
-      <div className="journal-paper rounded-lg p-5 sm:p-7">
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
-          {often &&
-            groups.map((g) => (
-              <JournalStack
-                key={g.title}
-                title={g.title}
-                posts={g.posts}
-                ink={g.ink}
-                onOpen={(post) => setOpen(posts.indexOf(post))}
-              />
-            ))}
-          {!often &&
-            shown.map(({ post, tilt }) => {
-              const ink = inkOf.get(post.title) ?? INK[0];
-            const img = post.square ?? post.cover;
-            return (
-              <a
-                key={post.slug}
-                href={`/life/${category}/${post.slug}`}
-                onClick={(e) => {
-                  // 保留真链接，中键和右键另存为照常，左键才拦下来开弹窗
-                  if (e.metaKey || e.ctrlKey || e.shiftKey) return;
-                  e.preventDefault();
-                  setOpen(posts.indexOf(post));
-                }}
-                className="group flex gap-4 items-start"
-              >
-                {img && (
-                  <div
-                    className="flex-shrink-0 w-[150px] sm:w-[178px] bg-white rounded-[2px] p-[10px] pb-8 shadow-[0_3px_10px_rgba(90,70,40,0.22)] transition-transform duration-300 group-hover:scale-[1.03] group-hover:rotate-0"
-                    style={{ transform: `rotate(${tilt}deg)` }}
+        <div className="journal-paper rounded-lg p-5 sm:p-7">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
+            {often &&
+              groups.map((g) => (
+                <JournalStack
+                  key={g.title}
+                  title={g.title}
+                  posts={g.posts}
+                  ink={g.ink}
+                  onOpen={(post) => setOpen(posts.indexOf(post))}
+                />
+              ))}
+            {!often &&
+              shown.map(({ post, tilt }) => {
+                const ink = inkOf.get(post.title) ?? INK[0];
+                const img = post.square ?? post.cover;
+                return (
+                  <a
+                    key={post.slug}
+                    href={`/life/${category}/${post.slug}/`}
+                    onClick={(e) => {
+                      // 保留真链接，中键和右键另存为照常，左键才拦下来开弹窗
+                      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+                      e.preventDefault();
+                      setOpen(posts.indexOf(post));
+                    }}
+                    className="group flex gap-4 items-start"
                   >
-                    <Image
-                      src={img}
-                      alt={post.title}
-                      width={700}
-                      height={700}
-                      sizes="(max-width: 640px) 45vw, 178px"
-                      className="block w-full aspect-square object-cover bg-gray-100"
-                    />
-                  </div>
-                )}
-                {/* 高度对齐拍立得外框：图是正方形，加上 10px 内边距和 32px 下沿 */}
-                <div className="flex-1 min-w-0 border border-[#e0d3a8] rounded-[3px] px-3.5 py-3.5 min-h-[172px] sm:min-h-[200px] flex flex-col">
-                  <div>
-                    <span
-                      className="journal-hand inline text-white text-xl sm:text-[23px] leading-[1.55] px-2.5 py-[2px] rounded-[3px] box-decoration-clone"
-                      style={{ background: `color-mix(in srgb, ${ink} 40%, transparent)` }}
-                    >
-                      #{title(post)}
-                    </span>
-                  </div>
-                  {post.note && (
-                    <p
-                      className="journal-hand text-[15px] sm:text-lg leading-[1.95] mt-2.5"
-                      style={{ color: ink }}
-                    >
-                      {post.note.split("|").map((line, k) => (
-                        <span key={k} className="block">
-                          {line.trim()}
+                    {img && (
+                      <div
+                        className="flex-shrink-0 w-[150px] sm:w-[178px] bg-white rounded-[2px] p-[10px] pb-8 shadow-[0_3px_10px_rgba(90,70,40,0.22)] transition-transform duration-300 group-hover:scale-[1.03] group-hover:rotate-0"
+                        style={{ transform: `rotate(${tilt}deg)` }}
+                      >
+                        <Image
+                          src={img}
+                          alt={post.title}
+                          width={700}
+                          height={700}
+                          sizes="(max-width: 640px) 45vw, 178px"
+                          className="block w-full aspect-square object-cover bg-gray-100"
+                        />
+                      </div>
+                    )}
+                    {/* 高度对齐拍立得外框：图是正方形，加上 10px 内边距和 32px 下沿 */}
+                    <div className="flex-1 min-w-0 border border-[#e0d3a8] rounded-[3px] px-3.5 py-3.5 min-h-[172px] sm:min-h-[200px] flex flex-col">
+                      <div>
+                        <span
+                          className={`journal-hand inline text-white leading-[1.75] px-2.5 py-[2px] rounded-[3px] box-decoration-clone ${
+                        lang === "zh" ? "text-xl sm:text-[23px]" : "text-lg sm:text-[19px]"
+                      }`}
+                          style={{
+                            background: `color-mix(in srgb, ${ink} 40%, transparent)`,
+                          }}
+                        >
+                          #{title(post)}
                         </span>
-                      ))}
-                    </p>
-                  )}
-                  <span
-                    className="journal-hand text-sm sm:text-base mt-auto pt-3 self-end opacity-70"
-                    style={{ color: ink }}
-                  >
-                    {/* 有食谱的标一下，不然得一篇篇点开才知道 */}
-                    {post.recipes.length > 0 && <span className="mr-1.5">✎</span>}
-                    {post.date.replace(/-/g, ".")}
-                  </span>
-                </div>
-                </a>
-              );
-            })}
-        </div>
+                      </div>
+                      {post.note && (
+                        <p
+                          className="journal-hand text-[15px] sm:text-lg leading-[1.95] mt-2.5"
+                          style={{ color: ink }}
+                        >
+                          {post.note.split("|").map((line, k) => (
+                            <span key={k} className="block">
+                              {line.trim()}
+                            </span>
+                          ))}
+                        </p>
+                      )}
+                      <span
+                        className="journal-hand text-sm sm:text-base mt-auto pt-3 self-end opacity-70"
+                        style={{ color: ink }}
+                      >
+                        {/* 有食谱的标一下，不然得一篇篇点开才知道 */}
+                        {post.recipes.length > 0 && (
+                          <span className="mr-1.5">✎</span>
+                        )}
+                        {post.date.replace(/-/g, ".")}
+                      </span>
+                    </div>
+                  </a>
+                );
+              })}
+          </div>
 
-        {shown.length === 0 && (
-          <p className="journal-hand text-center text-xl py-16 text-[#9a6b3f]">{t("empty")}</p>
-        )}
-      </div>
+          {shown.length === 0 && (
+            <p className="journal-hand text-center text-xl py-16 text-[#9a6b3f]">
+              {t("empty")}
+            </p>
+          )}
+        </div>
       )}
 
       {open !== null && (
@@ -262,12 +284,24 @@ function Pill({
   );
 }
 
-function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClose: () => void }) {
+function PostDialog({
+  post,
+  ink,
+  onClose,
+}: {
+  post: LifePost;
+  ink: string;
+  onClose: () => void;
+}) {
   const t = useT();
+  const lang = useLang();
   const title = useTitle();
   const [i, setI] = useState(0);
   const count = post.photos.length;
-  const step = useCallback((d: number) => setI((n) => (n + d + count) % count), [count]);
+  const step = useCallback(
+    (d: number) => setI((n) => (n + d + count) % count),
+    [count],
+  );
   const shell = useRef<HTMLDivElement>(null);
 
   // 弹窗盖住整屏，从日历捏进来之后再捏就落在这上面。不拦的话浏览器会把整页
@@ -355,7 +389,9 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
                     aria-label={`第 ${k + 1} 张`}
                     aria-current={k === i}
                     className={`w-12 h-12 rounded-[2px] overflow-hidden border-2 ${
-                      k === i ? "border-[#9a6b3f]" : "border-transparent opacity-60 hover:opacity-100"
+                      k === i
+                        ? "border-[#9a6b3f]"
+                        : "border-transparent opacity-60 hover:opacity-100"
                     }`}
                   >
                     <Image
@@ -375,14 +411,21 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
           <div className="flex-1 min-w-0 flex flex-col">
             <div>
               <span
-                className="journal-hand inline text-white text-2xl sm:text-3xl leading-[1.55] px-3 py-[2px] rounded-[3px] box-decoration-clone"
-                style={{ background: `color-mix(in srgb, ${ink} 40%, transparent)` }}
+                className={`journal-hand inline text-white leading-[1.8] px-3 py-[2px] rounded-[3px] box-decoration-clone ${
+                  lang === "zh" ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"
+                }`}
+                style={{
+                  background: `color-mix(in srgb, ${ink} 40%, transparent)`,
+                }}
               >
                 #{title(post)}
               </span>
             </div>
             {post.note && (
-              <p className="journal-hand text-lg leading-[1.95] mt-4" style={{ color: ink }}>
+              <p
+                className="journal-hand text-lg leading-[1.95] mt-4"
+                style={{ color: ink }}
+              >
                 {post.note.split("|").map((line, k) => (
                   <span key={k} className="block">
                     {line.trim()}
@@ -402,7 +445,11 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
               style={{ color: ink }}
             >
               <span>{post.date.replace(/-/g, ".")}</span>
-              {post.kind && <span>· {post.kind === "中式" ? t("chinese") : t("western")}</span>}
+              {post.kind && (
+                <span>
+                  · {post.kind === "中式" ? t("chinese") : t("western")}
+                </span>
+              )}
               {count > 1 && (
                 <span className="ml-auto">
                   {i + 1} / {count}

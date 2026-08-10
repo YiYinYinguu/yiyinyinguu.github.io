@@ -29,7 +29,7 @@ export default function LifePage() {
               {lifeCategories.map((cat, i) => {
                 const count = getPostsByCategory(cat.id).length;
                 return (
-                  <Link key={cat.id} href={`/life/${cat.id}`} className="group block">
+                  <Link key={cat.id} href={`/life/${cat.id}/`} className="group block">
                     <div
                       className="bg-white rounded-[2px] p-[10px] pb-3 shadow-[0_3px_10px_rgba(90,70,40,0.22)] transition-transform duration-300 group-hover:scale-[1.02] group-hover:rotate-0"
                       style={{ transform: `rotate(${TILT[i % TILT.length]}deg)` }}

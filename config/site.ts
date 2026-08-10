@@ -162,11 +162,11 @@ export const siteConfig: SiteConfig = {
   // 导航菜单
   navigation: [
     { name: "About", href: "#about" },
-    { name: "Publications", href: "/publications" },
+    { name: "Publications", href: "/publications/" },
     { name: "CV", href: "#cv" },
     { name: "Awards", href: "#awards" },
     { name: "Service", href: "#service" },
-    { name: "Life", href: "/life" },
+    { name: "Life", href: "/life/" },
   ],
 
   // ============================================================

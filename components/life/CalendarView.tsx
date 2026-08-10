@@ -208,21 +208,21 @@ export default function CalendarView({
   return (
     <div ref={box} className="journal-paper rounded-lg p-5 sm:p-7">
       <div className="flex items-center gap-3 mb-4 flex-wrap">
-        <nav className="text-sm text-gray-500">
+        <nav className="text-sm font-medium">
           <button
             type="button"
             onClick={() => setLevel(0)}
-            className={level ? "hover:text-primary" : "text-gray-400"}
+            className={level ? "text-[#a2916f] hover:text-[#7a5f3a] transition-colors" : "text-[#7a5f3a]"}
           >
             {t("allYears")}
           </button>
           {level > 0 && (
             <>
-              <span className="mx-1.5 text-gray-300">/</span>
+              <span className="mx-1.5 text-[#d0bd8e]">/</span>
               <button
                 type="button"
                 onClick={() => setLevel(1)}
-                className={level > 1 ? "hover:text-primary" : "text-gray-400"}
+                className={level > 1 ? "text-[#a2916f] hover:text-[#7a5f3a] transition-colors" : "text-[#7a5f3a]"}
               >
                 {year}
               </button>
@@ -230,13 +230,13 @@ export default function CalendarView({
           )}
           {level > 1 && (
             <>
-              <span className="mx-1.5 text-gray-300">/</span>
-              <span className="text-gray-400">{monthLabel(year, at.month).replace(String(year), "").trim()}</span>
+              <span className="mx-1.5 text-[#d0bd8e]">/</span>
+              <span className="text-[#7a5f3a]">{monthLabel(year, at.month).replace(String(year), "").trim()}</span>
             </>
           )}
         </nav>
 
-        <span className="text-xs text-gray-400 ml-auto">
+        <span className="text-xs font-medium text-[#a2916f] ml-auto">
           {level < 2 ? t("zoomHint") : t("zoomHintDeep")}
         </span>
         <span className="flex gap-1">
