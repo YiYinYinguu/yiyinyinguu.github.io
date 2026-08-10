@@ -317,7 +317,7 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
               </p>
             )}
             {post.recipes.length > 0 && (
-              <ul className="mt-4 space-y-2.5">
+              <ul className="mt-4 space-y-1.5">
                 {post.recipes.map((r) => (
                   <RecipeLine key={r.name} recipe={r} ink={ink} />
                 ))}
@@ -349,7 +349,7 @@ function RecipeLine({ recipe, ink }: { recipe: Recipe; ink: string }) {
     <li>
       {/* 菜谱名是别人的标题，混着英文、假名、颜文字，毛笔体里好些字根本没有，
           一行拼出三种字体。用正文字体反而干净，也跟自己写的话分得开。 */}
-      <div className="text-[15px] flex flex-wrap items-baseline gap-x-3" style={{ color: ink }}>
+      <div className="text-[15px] flex flex-wrap items-baseline gap-x-3 gap-y-2" style={{ color: ink }}>
         <a
           href={recipe.url}
           target="_blank"
