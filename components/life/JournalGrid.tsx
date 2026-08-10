@@ -317,7 +317,7 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
               </p>
             )}
             {post.recipes.length > 0 && (
-              <ul className="mt-4 space-y-1.5">
+              <ul className="mt-4 space-y-3">
                 {post.recipes.map((r) => (
                   <RecipeLine key={r.name} recipe={r} ink={ink} />
                 ))}
@@ -342,36 +342,24 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
   );
 }
 
-/** 弹窗里的一条食谱：名字点出去看做法，用料收在下面按需展开。 */
+/** 弹窗里的一条食谱：名字点出去看做法，用料直接列在下面。 */
 function RecipeLine({ recipe, ink }: { recipe: Recipe; ink: string }) {
-  const [open, setOpen] = useState(false);
   return (
     <li>
       {/* 菜谱名是别人的标题，混着英文、假名、颜文字，毛笔体里好些字根本没有，
           一行拼出三种字体。用正文字体反而干净，也跟自己写的话分得开。 */}
-      <div className="text-[15px] flex flex-wrap items-baseline gap-x-3 gap-y-2" style={{ color: ink }}>
-        <a
-          href={recipe.url}
-          target="_blank"
-          rel="noreferrer"
-          onClick={(e) => e.stopPropagation()}
-          className="underline decoration-dotted underline-offset-4 hover:opacity-65"
-        >
-          ✎ {recipe.name}
-        </a>
-        {recipe.ingredients.length > 0 && (
-          <button
-            type="button"
-            onClick={() => setOpen(!open)}
-            className="text-sm opacity-70 hover:opacity-100 whitespace-nowrap"
-          >
-            用料 {recipe.ingredients.length} 项 {open ? "▴" : "▾"}
-          </button>
-        )}
-      </div>
-      {open && (
-        // 用料是清单，用正文字体读起来比手写体清楚
-        <ul className="text-[13px] leading-[1.85] text-gray-600 mt-1.5 ml-5 columns-2 gap-4">
+      <a
+        href={recipe.url}
+        target="_blank"
+        rel="noreferrer"
+        onClick={(e) => e.stopPropagation()}
+        className="text-[15px] underline decoration-dotted underline-offset-4 hover:opacity-65"
+        style={{ color: ink }}
+      >
+        ✎ {recipe.name}
+      </a>
+      {recipe.ingredients.length > 0 && (
+        <ul className="text-[13px] leading-[1.8] text-gray-500 mt-1 ml-5 columns-2 gap-4">
           {recipe.ingredients.map((line) => (
             <li key={line}>{line}</li>
           ))}
