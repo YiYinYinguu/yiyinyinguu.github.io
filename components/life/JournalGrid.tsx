@@ -317,7 +317,7 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
               </p>
             )}
             {post.recipes.length > 0 && (
-              <ul className="mt-4 space-y-3">
+              <ul className="mt-4 space-y-3.5">
                 {post.recipes.map((r) => (
                   <RecipeLine key={r.name} recipe={r} ink={ink} />
                 ))}
@@ -342,8 +342,9 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
   );
 }
 
-/** 弹窗里的一条食谱：名字点出去看做法，用料直接列在下面。 */
+/** 弹窗里的一条食谱：名字点出去看做法，用料收在下面按需展开。 */
 function RecipeLine({ recipe, ink }: { recipe: Recipe; ink: string }) {
+  const [open, setOpen] = useState(false);
   return (
     <li>
       {/* 菜谱名是别人的标题，混着英文、假名、颜文字，毛笔体里好些字根本没有，
@@ -359,11 +360,23 @@ function RecipeLine({ recipe, ink }: { recipe: Recipe; ink: string }) {
         ✎ {recipe.name}
       </a>
       {recipe.ingredients.length > 0 && (
-        <ul className="text-[13px] leading-[1.8] text-gray-500 mt-1 ml-5 columns-2 gap-4">
-          {recipe.ingredients.map((line) => (
-            <li key={line}>{line}</li>
-          ))}
-        </ul>
+        <>
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="block text-sm mt-3 opacity-70 hover:opacity-100"
+            style={{ color: ink }}
+          >
+            用料 {recipe.ingredients.length} 项 {open ? "▴" : "▾"}
+          </button>
+          {open && (
+            <ul className="text-[13px] leading-[1.8] text-gray-500 mt-1.5 ml-5 columns-2 gap-4">
+              {recipe.ingredients.map((line) => (
+                <li key={line}>{line}</li>
+              ))}
+            </ul>
+          )}
+        </>
       )}
     </li>
   );
