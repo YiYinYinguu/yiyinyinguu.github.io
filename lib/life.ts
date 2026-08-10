@@ -8,6 +8,7 @@ export interface LifePost {
   slug: string;
   category: string;
   title: string;
+  titleEn?: string; // 英文模式下显示的菜名
   date: string; // YYYY-MM-DD
   kind?: string; // 中式 / 西式，用来筛选
   cover?: string;
@@ -80,6 +81,7 @@ function readPost(category: string, slug: string): LifePost {
       slug,
       category,
       title: data.title ?? slug,
+      titleEn: data.title_en,
       date: normalizeDate(data.date),
       kind: data.kind,
       cover: data.cover,

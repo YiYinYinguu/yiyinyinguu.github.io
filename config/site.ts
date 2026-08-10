@@ -100,9 +100,11 @@ export interface SiteConfig {
   // 生活板块（/life 下的子板块，每个板块一个内容目录）
   lifeCategories: Array<{
     id: string;  // 目录名 & URL 段，如 "baking"
-    name: string;  // 显示名，如 "Baking 烘焙"
+    name: string;  // 显示名，如 "Baking"
+    nameZh: string;  // 中文模式下的名字
     emoji: string;
     description: string;  // 一句话简介
+    descriptionZh: string;
     cover: string;  // hub 卡片封面图
   }>;
 
@@ -538,15 +540,19 @@ My research lies at the intersection of human–AI interaction, visualization, a
     {
       id: "baking",
       name: "Baking",
+      nameZh: "烘焙",
       emoji: "🧁",
       description: "Cakes, breads, and sweet experiments from my kitchen.",
+      descriptionZh: "厨房里的蛋糕、面包，和各种试验。",
       cover: "/life/baking/cover.jpg",
     },
     {
       id: "knitting",
-      name: "Knitting 编织",
+      name: "Knitting",
+      nameZh: "编织",
       emoji: "🧶",
       description: "Handmade sweaters, scarves, and yarn projects.",
+      descriptionZh: "手织的毛衣、围巾，和线团。",
       cover: "/life/knitting/cover.svg",
     },
   ],

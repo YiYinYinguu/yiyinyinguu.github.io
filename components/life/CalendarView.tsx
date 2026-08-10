@@ -3,8 +3,10 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LifePost } from "@/lib/life";
+import { useCount, useLang, useMonthLabel, useT, useTitle } from "@/lib/life-i18n";
 
-const WEEK = ["一", "二", "三", "四", "五", "六", "日"];
+const WEEK_ZH = ["一", "二", "三", "四", "五", "六", "日"];
+const WEEK_EN = ["M", "T", "W", "T", "F", "S", "S"];
 const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 // 捏合累积到这个量才跳一级。macOS 每个捏合事件的 deltaY 只有个位数，
 // 门槛设高了要捏很久才动一下。
@@ -38,6 +40,11 @@ export default function CalendarView({
   posts: LifePost[];
   onOpen: (post: LifePost) => void;
 }) {
+  const t = useT();
+  const lang = useLang();
+  const dishName = useTitle();
+  const monthLabel = useMonthLabel();
+  const times = useCount();
   const [level, setLevel] = useState(0);
   const [at, setAt] = useState({ year: 0, month: 1 });
   // 鼠标底下是哪一格，捏合放大时以它为落点
@@ -133,8 +140,8 @@ export default function CalendarView({
   const Days = ({ y, m, big }: { y: number; m: number; big: boolean }) => (
     <div className={`grid grid-cols-7 ${big ? "gap-1.5 sm:gap-2" : "gap-[2px]"}`}>
       {big &&
-        WEEK.map((w) => (
-          <div key={w} className="journal-hand text-sm text-[#a2916f] text-center pb-1">
+        (lang === "zh" ? WEEK_ZH : WEEK_EN).map((w, k) => (
+          <div key={k} className="journal-hand text-sm text-[#a2916f] text-center pb-1">
             {w}
           </div>
         ))}
@@ -170,12 +177,12 @@ export default function CalendarView({
                   e.stopPropagation();
                   onOpen(made[0]);
                 }}
-                title={`${date} ${made.map((p) => p.title).join("、")}`}
+                title={`${date} ${made.map(dishName).join(lang === "zh" ? "、" : ", ")}`}
                 className={`absolute cursor-pointer group ${big ? "inset-[3px]" : "inset-0"}`}
               >
                 <Image
                   src={made[0].square ?? made[0].cover ?? ""}
-                  alt={made[0].title}
+                  alt={dishName(made[0])}
                   width={700}
                   height={700}
                   sizes={big ? "120px" : "24px"}
@@ -207,7 +214,7 @@ export default function CalendarView({
             onClick={() => setLevel(0)}
             className={level ? "hover:text-primary" : "text-gray-400"}
           >
-            全部年份
+            {t("allYears")}
           </button>
           {level > 0 && (
             <>
@@ -224,20 +231,20 @@ export default function CalendarView({
           {level > 1 && (
             <>
               <span className="mx-1.5 text-gray-300">/</span>
-              <span className="text-gray-400">{at.month} 月</span>
+              <span className="text-gray-400">{monthLabel(year, at.month).replace(String(year), "").trim()}</span>
             </>
           )}
         </nav>
 
         <span className="text-xs text-gray-400 ml-auto">
-          {level < 2 ? "双指捏合缩放，或点格子" : "捏合停在某天可以直接打开那篇"}
+          {level < 2 ? t("zoomHint") : t("zoomHintDeep")}
         </span>
         <span className="flex gap-1">
           <button
             type="button"
             onClick={() => zoom(-1)}
             disabled={level === 0}
-            aria-label="缩小"
+            aria-label={t("zoomOut")}
             className="w-6 h-6 rounded border border-[#ded3b6] text-[#7d6a4a] disabled:opacity-35 hover:bg-white"
           >
             −
@@ -245,7 +252,7 @@ export default function CalendarView({
           <button
             type="button"
             onClick={() => zoom(1)}
-            aria-label="放大"
+            aria-label={t("zoomIn")}
             className="w-6 h-6 rounded border border-[#ded3b6] text-[#7d6a4a] disabled:opacity-35 hover:bg-white"
           >
             ＋
@@ -278,8 +285,8 @@ export default function CalendarView({
                       setAt({ year: y, month: m });
                       setLevel(1);
                     }}
-                    title={list.length ? `${y} 年 ${m} 月 · ${list.length} 次` : undefined}
-                    aria-label={`${y} 年 ${m} 月，${list.length} 次`}
+                    title={list.length ? `${monthLabel(y, m)} · ${times(list.length)}` : undefined}
+                    aria-label={`${monthLabel(y, m)} ${times(list.length)}`}
                     ref={(el) => {
                       if (y === at.year && m === at.month) focused.current = el;
                     }}
@@ -337,7 +344,8 @@ export default function CalendarView({
                 } ${m === at.month ? "bg-white/60 ring-1 ring-[#d9c79a]" : ""}`}
               >
                 <div className="journal-hand text-base text-[#7a5f3a] mb-1">
-                  {m} 月{n > 0 && <span className="text-[#a2916f] text-sm ml-1.5">{n} 次</span>}
+                  {monthLabel(year, m).replace(String(year), "").trim()}
+                  {n > 0 && <span className="text-[#a2916f] text-sm ml-1.5">{times(n)}</span>}
                 </div>
                 <Days y={year} m={m} big={false} />
               </div>
@@ -384,8 +392,8 @@ function Step({
       type="button"
       disabled={!next}
       onClick={() => next && setAt({ year: Number(next.slice(0, 4)), month: Number(next.slice(5)) })}
-      aria-label={dir < 0 ? "上一个月" : "下一个月"}
-      title={next ? next.replace("-", " 年 ") + " 月" : undefined}
+      aria-label={dir < 0 ? "Previous month" : "Next month"}
+      title={next}
       className="text-lg text-[#a2916f] hover:text-[#7a5f3a] disabled:opacity-30"
     >
       {dir < 0 ? "‹" : "›"}

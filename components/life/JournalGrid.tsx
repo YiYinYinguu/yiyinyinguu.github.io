@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LifePost, Recipe } from "@/lib/life";
+import { useCount, useT, useTitle } from "@/lib/life-i18n";
 import JournalStack from "./JournalStack";
 import MonthGrid from "./MonthGrid";
 import CalendarView from "./CalendarView";
@@ -21,6 +22,8 @@ function decorate(posts: LifePost[]) {
 }
 
 export default function JournalGrid({ posts, category }: { posts: LifePost[]; category: string }) {
+  const t = useT();
+  const title = useTitle();
   const [kind, setKind] = useState<string>("");
   const [dir, setDir] = useState<Dir>("new");
   const [often, setOften] = useState(false);
@@ -89,16 +92,16 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
               setOpen(null);
             }}
           >
-            {{ list: "列表", calendar: "日历", timeline: "时间轴" }[v]}
+            {t(v)}
           </Pill>
         ))}
         <span className="w-px h-5 bg-[#ded3b6] mx-1" />
         <Pill active={!kind} onClick={() => pick("")}>
-          全部
+          {t("all")}
         </Pill>
         {kinds.map((k) => (
           <Pill key={k} active={kind === k} onClick={() => pick(k)}>
-            {k}
+            {k === "中式" ? t("chinese") : k === "西式" ? t("western") : k}
           </Pill>
         ))}
         <span className="w-px h-5 bg-[#ded3b6] mx-1" />
@@ -112,7 +115,7 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
             setOpen(null);
           }}
         >
-          {dir === "new" ? "最新在前 ↓" : "最早在前 ↑"}
+          {dir === "new" ? t("newestFirst") : t("oldestFirst")}
         </Pill>
         <Pill
           active={often}
@@ -121,7 +124,7 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
             setOpen(null);
           }}
         >
-          最多次做
+          {t("mostMade")}
         </Pill>
         </div>
       </div>
@@ -189,7 +192,7 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
                       className="journal-hand inline text-white text-xl sm:text-[23px] leading-[1.55] px-2.5 py-[2px] rounded-[3px] box-decoration-clone"
                       style={{ background: `color-mix(in srgb, ${ink} 40%, transparent)` }}
                     >
-                      #{post.title}
+                      #{title(post)}
                     </span>
                   </div>
                   {post.note && (
@@ -219,7 +222,7 @@ export default function JournalGrid({ posts, category }: { posts: LifePost[]; ca
         </div>
 
         {shown.length === 0 && (
-          <p className="journal-hand text-center text-xl py-16 text-[#9a6b3f]">这里还没有呢</p>
+          <p className="journal-hand text-center text-xl py-16 text-[#9a6b3f]">{t("empty")}</p>
         )}
       </div>
       )}
@@ -260,6 +263,8 @@ function Pill({
 }
 
 function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClose: () => void }) {
+  const t = useT();
+  const title = useTitle();
   const [i, setI] = useState(0);
   const count = post.photos.length;
   const step = useCallback((d: number) => setI((n) => (n + d + count) % count), [count]);
@@ -317,7 +322,7 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
         <button
           type="button"
           onClick={onClose}
-          aria-label="关闭"
+          aria-label={t("close")}
           className="absolute right-3 top-2 text-2xl leading-none text-[#8a7a5c] hover:text-[#5a4a2c]"
         >
           ×
@@ -328,7 +333,7 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
             <button
               type="button"
               onClick={() => step(1)}
-              aria-label="下一张"
+              aria-label={t("nextPhoto")}
               className="block bg-white rounded-[2px] p-3 pb-10 shadow-[0_4px_14px_rgba(90,70,40,0.28)] cursor-pointer"
             >
               {/* 列表里的方图是裁过的，点开要看完整构图，所以按原比例显示。
@@ -336,7 +341,7 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={post.photos[i]}
-                alt={`${post.title} ${i + 1}/${count}`}
+                alt={`${title(post)} ${i + 1}/${count}`}
                 className="block max-h-[58vh] w-auto max-w-[260px] sm:max-w-[300px] bg-gray-100"
               />
             </button>
@@ -373,7 +378,7 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
                 className="journal-hand inline text-white text-2xl sm:text-3xl leading-[1.55] px-3 py-[2px] rounded-[3px] box-decoration-clone"
                 style={{ background: `color-mix(in srgb, ${ink} 40%, transparent)` }}
               >
-                #{post.title}
+                #{title(post)}
               </span>
             </div>
             {post.note && (
@@ -397,7 +402,7 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
               style={{ color: ink }}
             >
               <span>{post.date.replace(/-/g, ".")}</span>
-              {post.kind && <span>· {post.kind}</span>}
+              {post.kind && <span>· {post.kind === "中式" ? t("chinese") : t("western")}</span>}
               {count > 1 && (
                 <span className="ml-auto">
                   {i + 1} / {count}
@@ -413,6 +418,7 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
 
 /** 弹窗里的一条食谱：名字点出去看做法，用料收在下面按需展开。 */
 function RecipeLine({ recipe, ink }: { recipe: Recipe; ink: string }) {
+  const t = useT();
   const [open, setOpen] = useState(true);
   return (
     <li>
@@ -436,7 +442,7 @@ function RecipeLine({ recipe, ink }: { recipe: Recipe; ink: string }) {
             className="block text-sm mt-3 opacity-70 hover:opacity-100"
             style={{ color: ink }}
           >
-            用料 {recipe.ingredients.length} 项 {open ? "▴" : "▾"}
+            {t("ingredients")} {recipe.ingredients.length} {open ? "▴" : "▾"}
           </button>
           {open && (
             <ul className="text-[13px] leading-[1.8] text-gray-500 mt-1.5 ml-5 columns-2 gap-4">

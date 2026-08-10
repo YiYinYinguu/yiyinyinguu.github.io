@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useMemo } from "react";
 import type { LifePost } from "@/lib/life";
+import { useCount, useGapLabel, useLang, useMonthLabel, useTitle } from "@/lib/life-i18n";
 
 // 每张照片歪一点，循环使用，避免一排全是端端正正的
 const TILT = [-2.2, 1.8, -1.2, 2.4, -1.6, 1.3];
@@ -26,6 +27,11 @@ export default function TimelineView({
   newestFirst: boolean;
   onOpen: (post: LifePost) => void;
 }) {
+  const lang = useLang();
+  const dishName = useTitle();
+  const monthLabel = useMonthLabel();
+  const times = useCount();
+  const gapLabel = useGapLabel();
   const months = useMemo(() => {
     const by = new Map<string, LifePost[]>();
     // 组内始终从早到晚，一个月里的顺序跟着做的先后走
@@ -57,7 +63,7 @@ export default function TimelineView({
                 <div className="w-[86px] flex-shrink-0" />
                 <div className="w-px border-l border-dashed border-[#d8c48f] min-h-[34px]" />
                 <span className="journal-hand text-sm text-[#b0a077] self-center">
-                  歇了 {gap} 个月
+                  {gapLabel(gap)}
                 </span>
               </div>
             )}
@@ -65,10 +71,14 @@ export default function TimelineView({
             <div className="flex gap-4 items-start py-2.5">
               <div className="w-[86px] flex-shrink-0 text-right pt-1.5">
                 <b className="journal-hand block text-lg font-normal text-[#7a5f3a]">
-                  {Number(month.slice(5))} 月
+                  {monthLabel(Number(month.slice(0, 4)), Number(month.slice(5)))
+                    .replace(month.slice(0, 4), "")
+                    .trim()}
                 </b>
                 <span className="journal-hand text-sm text-[#a2916f]">
-                  {month.slice(0, 4)}　{list.length} 次
+                  {month.slice(0, 4)}
+                  {lang === "zh" ? "　" : " · "}
+                  {times(list.length)}
                 </span>
               </div>
 
@@ -83,20 +93,20 @@ export default function TimelineView({
                     key={post.slug}
                     type="button"
                     onClick={() => onOpen(post)}
-                    title={`${post.date}　${post.title}`}
+                    title={`${post.date}　${dishName(post)}`}
                     className="bg-white rounded-[2px] p-1.5 pb-5 shadow-[0_3px_10px_rgba(90,70,40,0.24)] transition-transform duration-200 hover:scale-[1.12] hover:rotate-0 hover:z-10 relative"
                     style={{ transform: `rotate(${TILT[k % TILT.length]}deg)` }}
                   >
                     <Image
                       src={post.square ?? post.cover ?? ""}
-                      alt={post.title}
+                      alt={dishName(post)}
                       width={700}
                       height={700}
                       sizes="84px"
                       className="block w-[76px] h-[76px] sm:w-[84px] sm:h-[84px] object-cover bg-gray-100"
                     />
                     <span className="journal-hand absolute inset-x-0 bottom-0.5 text-xs text-[#8a7355] truncate px-1">
-                      {post.title}
+                      {dishName(post)}
                     </span>
                   </button>
                 ))}

@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { LifePost } from "@/lib/life";
+import { useCount, useT, useTitle } from "@/lib/life-i18n";
 
 // 照片一律和单张卡片同宽，所以错开主要靠往下压，横向只挪一点点——
 // 挪多了整叠会伸到右边文字块上去，中间只有 16px 的空当。
@@ -30,6 +31,9 @@ export default function JournalStack({
   ink: string;
   onOpen: (post: LifePost) => void;
 }) {
+  const t = useT();
+  const dishName = useTitle();
+  const count = useCount();
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(false);
   // 只做过一次的没什么可展开的，点了直接进弹窗
@@ -40,7 +44,7 @@ export default function JournalStack({
       className="journal-hand inline text-white text-xl sm:text-[23px] leading-[1.55] px-2.5 py-[2px] rounded-[3px] box-decoration-clone"
       style={{ background: `color-mix(in srgb, ${ink} 40%, transparent)` }}
     >
-      #{title}
+      #{dishName(posts[0])}
     </span>
   );
   // 传进来已按当前排序排好，两头就是这道菜的起止
@@ -54,7 +58,7 @@ export default function JournalStack({
         <div className="flex items-center gap-3 flex-wrap">
           {label}
           <span className="journal-hand text-base opacity-70" style={{ color: ink }}>
-            做过 {posts.length} 次
+            {count(posts.length)}
           </span>
           <button
             type="button"
@@ -62,7 +66,7 @@ export default function JournalStack({
             className="journal-hand text-base ml-auto opacity-70 hover:opacity-100"
             style={{ color: ink }}
           >
-            收起 ▴
+            {t("collapse")}
           </button>
         </div>
 
@@ -81,7 +85,7 @@ export default function JournalStack({
               >
                 <Image
                   src={post.square ?? post.cover ?? ""}
-                  alt={`${title} ${dot(post.date)}`}
+                  alt={`${dishName(post)} ${dot(post.date)}`}
                   width={700}
                   height={700}
                   sizes="142px"
@@ -130,7 +134,7 @@ export default function JournalStack({
           >
             <Image
               src={post.square ?? post.cover ?? ""}
-              alt={i === 0 ? title : ""}
+              alt={i === 0 ? dishName(post) : ""}
               width={700}
               height={700}
               sizes="178px"
@@ -144,7 +148,7 @@ export default function JournalStack({
         <div>{label}</div>
         {!single && (
           <p className="journal-hand text-lg mt-3" style={{ color: ink }}>
-            做过 {posts.length} 次
+            {count(posts.length)}
           </p>
         )}
         <span

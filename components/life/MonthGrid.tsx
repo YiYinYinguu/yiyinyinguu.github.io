@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import type { LifePost } from "@/lib/life";
+import { useCount, useLang, useMonthLabel, useT } from "@/lib/life-i18n";
 
 const MONTHS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const INK = "#9a6b3f";
@@ -20,6 +21,10 @@ export default function MonthGrid({
   selected: string;
   onSelect: (month: string) => void;
 }) {
+  const t = useT();
+  const lang = useLang();
+  const monthLabel = useMonthLabel();
+  const times = useCount();
   const { years, count, most } = useMemo(() => {
     const count = new Map<string, number>();
     posts.forEach((p) => count.set(p.date.slice(0, 7), (count.get(p.date.slice(0, 7)) ?? 0) + 1));
@@ -53,8 +58,8 @@ export default function MonthGrid({
                 type="button"
                 disabled={!n}
                 onClick={() => onSelect(on ? "" : key)}
-                title={n ? `${year} 年 ${m} 月 · ${n} 次` : undefined}
-                aria-label={`${year} 年 ${m} 月，${n} 次`}
+                title={n ? `${monthLabel(year, m)} · ${times(n)}` : undefined}
+                aria-label={`${monthLabel(year, m)} ${times(n)}`}
                 aria-pressed={on}
                 className={`w-5 h-5 rounded-[3px] transition-all ${
                   n ? "cursor-pointer hover:ring-2 hover:ring-[#c9b68a]" : "cursor-default"
@@ -77,10 +82,13 @@ export default function MonthGrid({
             onClick={() => onSelect("")}
             className="text-[#9a6b3f] hover:underline"
           >
-            只看 {selected.slice(0, 4)} 年 {Number(selected.slice(5))} 月 · {count.get(selected)} 次，点这里看全部
+            {monthLabel(Number(selected.slice(0, 4)), Number(selected.slice(5)))} ·{" "}
+            {times(count.get(selected) ?? 0)}
+            {lang === "zh" ? "，" : " — "}
+            {t("showAll")}
           </button>
         ) : (
-          "深浅 = 当月做了几次，点格子只看那个月"
+          t("heatHint")
         )}
       </p>
     </div>
