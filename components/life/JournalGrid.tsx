@@ -347,7 +347,9 @@ function RecipeLine({ recipe, ink }: { recipe: Recipe; ink: string }) {
   const [open, setOpen] = useState(false);
   return (
     <li>
-      <div className="journal-hand text-lg flex flex-wrap items-baseline gap-x-3" style={{ color: ink }}>
+      {/* 菜谱名是别人的标题，混着英文、假名、颜文字，毛笔体里好些字根本没有，
+          一行拼出三种字体。用正文字体反而干净，也跟自己写的话分得开。 */}
+      <div className="text-[15px] flex flex-wrap items-baseline gap-x-3" style={{ color: ink }}>
         <a
           href={recipe.url}
           target="_blank"
