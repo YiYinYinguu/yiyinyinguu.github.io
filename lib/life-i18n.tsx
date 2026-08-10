@@ -1,6 +1,7 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
+import { readParams, writeParam } from "./url-state";
 
 export type Lang = "zh" | "en";
 
@@ -68,6 +69,13 @@ export function useMonthLabel() {
     lang === "zh" ? `${year} 年 ${month} 月` : `${NAMES[month - 1]} ${year}`;
 }
 
+/** 只要月份：「2 月」/ "Feb"。不能靠从完整标签里删年份，中文会剩下「年 2 月」。 */
+export function useMonthOnly() {
+  const lang = useLang();
+  const NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  return (month: number) => (lang === "zh" ? `${month} 月` : NAMES[month - 1]);
+}
+
 /** 「歇了 3 个月」/ "3 months off" */
 export function useGapLabel() {
   const lang = useLang();
@@ -89,14 +97,20 @@ export function LangProvider({
   // 静态导出的 HTML 是英文的，所以先渲染英文再按偏好切换，避免水合不一致
   const [lang, setLang] = useState<Lang>("en");
 
+  // 地址栏里写死的优先——那是别人发过来的链接，应该按发的人看到的样子打开
+  const ready = useRef(false);
   useEffect(() => {
+    const fromUrl = readParams().get("lang");
     const saved = localStorage.getItem("life-lang");
-    if (saved === "zh" || saved === "en") {
-      setLang(saved);
-    } else if (navigator.language.toLowerCase().startsWith("zh")) {
-      setLang("zh");
-    }
+    if (fromUrl === "zh" || fromUrl === "en") setLang(fromUrl);
+    else if (saved === "zh" || saved === "en") setLang(saved);
+    else if (navigator.language.toLowerCase().startsWith("zh")) setLang("zh");
+    ready.current = true;
   }, []);
+
+  useEffect(() => {
+    if (ready.current) writeParam("lang", lang === "en" ? null : lang);
+  }, [lang]);
 
   const choose = (l: Lang) => {
     setLang(l);

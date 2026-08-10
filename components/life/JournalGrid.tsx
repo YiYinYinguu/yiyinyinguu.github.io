@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LifePost, Recipe } from "@/lib/life";
 import { useCount, useLang, useT, useTitle } from "@/lib/life-i18n";
+import { readParams, writeParam } from "@/lib/url-state";
 import JournalStack from "./JournalStack";
 import CalendarView from "./CalendarView";
 import TimelineView from "./TimelineView";
@@ -14,6 +15,11 @@ const INK = ["#7a5fa0", "#9a6b3f", "#5f8055", "#a85a70", "#4f7a99", "#b5793a"];
 const TILT = [-1.1, 1.2, -0.7, 1, -1.4, 0.8];
 
 type Dir = "new" | "old";
+type View = "list" | "calendar" | "timeline";
+
+// 地址栏里用 ASCII，中文参数会被编码成一长串 %E4%B8%AD
+const KIND: Record<string, string> = { chinese: "中式", western: "西式" };
+const SLUG: Record<string, string> = { 中式: "chinese", 西式: "western" };
 
 /** 倾斜角按原始顺序定死，筛选、排序之后每篇的角度都不变。 */
 function decorate(posts: LifePost[]) {
@@ -33,8 +39,29 @@ export default function JournalGrid({
   const [kind, setKind] = useState<string>("");
   const [dir, setDir] = useState<Dir>("new");
   const [often, setOften] = useState(false);
-  const [view, setView] = useState<"list" | "calendar" | "timeline">("list");
+  const [view, setView] = useState<View>("list");
   const [open, setOpen] = useState<number | null>(null);
+  // 先从地址栏读，读完才开始往回写，免得挂载时把别人的参数冲掉
+  const ready = useRef(false);
+
+  useEffect(() => {
+    const q = readParams();
+    const v = q.get("view");
+    if (v === "calendar" || v === "timeline") setView(v);
+    const k = q.get("kind");
+    if (k && KIND[k]) setKind(KIND[k]);
+    const sort = q.get("sort");
+    if (sort === "old") setDir("old");
+    if (sort === "often") setOften(true);
+    ready.current = true;
+  }, []);
+
+  useEffect(() => {
+    if (!ready.current) return;
+    writeParam("view", view === "list" ? null : view);
+    writeParam("kind", SLUG[kind] ?? null);
+    writeParam("sort", often ? "often" : dir === "old" ? "old" : null);
+  }, [view, kind, dir, often]);
 
   const decorated = useMemo(() => decorate(posts), [posts]);
   // 排一下序，免得筛选按钮的先后跟着「哪篇最新」变来变去

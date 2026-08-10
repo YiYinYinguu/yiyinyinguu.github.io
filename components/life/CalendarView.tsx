@@ -3,7 +3,8 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LifePost } from "@/lib/life";
-import { useCount, useLang, useMonthLabel, useT, useTitle } from "@/lib/life-i18n";
+import { readParams, writeParam } from "@/lib/url-state";
+import { useCount, useLang, useMonthLabel, useMonthOnly, useT, useTitle } from "@/lib/life-i18n";
 
 const WEEK_ZH = ["一", "二", "三", "四", "五", "六", "日"];
 const WEEK_EN = ["M", "T", "W", "T", "F", "S", "S"];
@@ -44,6 +45,7 @@ export default function CalendarView({
   const lang = useLang();
   const dishName = useTitle();
   const monthLabel = useMonthLabel();
+  const monthOnly = useMonthOnly();
   const times = useCount();
   const [level, setLevel] = useState(0);
   const [at, setAt] = useState({ year: 0, month: 1 });
@@ -90,24 +92,24 @@ export default function CalendarView({
     [onOpen]
   );
 
-  // 位置记在地址栏里：#cal / #cal=2021 / #cal=2021-02。
   // 缩到某个月之后点开一篇、回退、刷新，回来还在那个月，不用重新找。
+  // cal=2021 是年视图，cal=2021-02 是单月，没有这个参数就是最外层。
+  const ready = useRef(false);
   useEffect(() => {
-    const m = /^#cal(?:=(\d{4})(?:-(\d{2}))?)?$/.exec(location.hash);
-    if (!m) return;
-    if (m[2]) {
-      setAt({ year: Number(m[1]), month: Number(m[2]) });
-      setLevel(2);
-    } else if (m[1]) {
-      setAt({ year: Number(m[1]), month: 1 });
-      setLevel(1);
+    const m = /^(\d{4})(?:-(\d{2}))?$/.exec(readParams().get("cal") ?? "");
+    if (m) {
+      setAt({ year: Number(m[1]), month: m[2] ? Number(m[2]) : 1 });
+      setLevel(m[2] ? 2 : 1);
     }
+    ready.current = true;
   }, []);
 
   useEffect(() => {
-    const tail =
-      level === 2 ? `=${key(at.year, at.month)}` : level === 1 ? `=${at.year}` : "";
-    history.replaceState(null, "", `${location.pathname}#cal${tail}`);
+    if (!ready.current) return;
+    writeParam(
+      "cal",
+      level === 2 ? key(at.year, at.month) : level === 1 ? String(at.year) : null
+    );
   }, [level, at]);
 
   useEffect(() => {
@@ -231,7 +233,7 @@ export default function CalendarView({
           {level > 1 && (
             <>
               <span className="mx-1.5 text-[#d0bd8e]">/</span>
-              <span className="text-[#7a5f3a]">{monthLabel(year, at.month).replace(String(year), "").trim()}</span>
+              <span className="text-[#7a5f3a]">{monthOnly(at.month)}</span>
             </>
           )}
         </nav>
@@ -344,7 +346,7 @@ export default function CalendarView({
                 } ${m === at.month ? "bg-white/60 ring-1 ring-[#d9c79a]" : ""}`}
               >
                 <div className="journal-hand text-base text-[#7a5f3a] mb-1">
-                  {monthLabel(year, m).replace(String(year), "").trim()}
+                  {monthOnly(m)}
                   {n > 0 && <span className="text-[#a2916f] text-sm ml-1.5">{times(n)}</span>}
                 </div>
                 <Days y={year} m={m} big={false} />
