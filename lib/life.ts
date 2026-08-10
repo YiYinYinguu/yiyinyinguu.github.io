@@ -21,6 +21,8 @@ export interface LifePost {
 export interface Recipe {
   name: string;
   url: string;
+  /** 「低粉 50g」这样一条条的用料。做法不收——那是作者写的正文，看原方子去。 */
+  ingredients: string[];
 }
 
 // 没记链接的方子退回下厨房搜索，搜菜谱全名基本第一条就是它
@@ -34,12 +36,21 @@ function toRecipes(value: unknown): Recipe[] {
   const items = Array.isArray(value) ? value : value ? [value] : [];
   return items.map((item) => {
     if (item && typeof item === "object") {
-      const { name, url } = item as { name?: string; url?: string };
-      return { name: String(name ?? ""), url: url || SEARCH + encodeURIComponent(String(name ?? "")) };
+      const { name, url, ingredients } = item as {
+        name?: string;
+        url?: string;
+        ingredients?: unknown;
+      };
+      const title = String(name ?? "");
+      return {
+        name: title,
+        url: url || SEARCH + encodeURIComponent(title),
+        ingredients: Array.isArray(ingredients) ? ingredients.map(String) : [],
+      };
     }
     const name = String(item);
     // 搜索时把作者去掉，「菜谱名 · 作者」整串搜不到
-    return { name, url: SEARCH + encodeURIComponent(name.split(" · ")[0]) };
+    return { name, url: SEARCH + encodeURIComponent(name.split(" · ")[0]), ingredients: [] };
   });
 }
 

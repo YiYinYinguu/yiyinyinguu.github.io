@@ -36,6 +36,9 @@ def collect_chars() -> str:
             if not f.endswith(".md"):
                 continue
             text = open(os.path.join(dirpath, f), encoding="utf-8").read()
+            # 用料清单是用正文字体渲染的（见 JournalGrid 的 RecipeLine），
+            # 放进来会凭空多出几百个字
+            text = re.sub(r"^    ingredients:\n(?:      - .*\n)+", " ", text, flags=re.M)
             # 图片语法和 frontmatter 的键名不需要进字体
             text = re.sub(r"!\[[^\]]*\]\([^)]*\)", " ", text)
             text = re.sub(r"^(cover|thumb|square|date|title|note):", " ", text, flags=re.M)

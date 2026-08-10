@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import type { LifePost } from "@/lib/life";
+import type { LifePost, Recipe } from "@/lib/life";
 import JournalStack from "./JournalStack";
 
 // 手账每格轮换的颜色：标题底色是它加 40% 透明，正文是它的实色
@@ -317,19 +317,9 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
               </p>
             )}
             {post.recipes.length > 0 && (
-              <ul className="journal-hand text-lg mt-4 space-y-1.5" style={{ color: ink }}>
+              <ul className="mt-4 space-y-2.5">
                 {post.recipes.map((r) => (
-                  <li key={r.name}>
-                    <a
-                      href={r.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      onClick={(e) => e.stopPropagation()}
-                      className="underline decoration-dotted underline-offset-4 hover:opacity-65"
-                    >
-                      ✎ {r.name}
-                    </a>
-                  </li>
+                  <RecipeLine key={r.name} recipe={r} ink={ink} />
                 ))}
               </ul>
             )}
@@ -349,5 +339,42 @@ function PostDialog({ post, ink, onClose }: { post: LifePost; ink: string; onClo
         </div>
       </div>
     </div>
+  );
+}
+
+/** 弹窗里的一条食谱：名字点出去看做法，用料收在下面按需展开。 */
+function RecipeLine({ recipe, ink }: { recipe: Recipe; ink: string }) {
+  const [open, setOpen] = useState(false);
+  return (
+    <li>
+      <div className="journal-hand text-lg flex flex-wrap items-baseline gap-x-3" style={{ color: ink }}>
+        <a
+          href={recipe.url}
+          target="_blank"
+          rel="noreferrer"
+          onClick={(e) => e.stopPropagation()}
+          className="underline decoration-dotted underline-offset-4 hover:opacity-65"
+        >
+          ✎ {recipe.name}
+        </a>
+        {recipe.ingredients.length > 0 && (
+          <button
+            type="button"
+            onClick={() => setOpen(!open)}
+            className="text-sm opacity-70 hover:opacity-100 whitespace-nowrap"
+          >
+            用料 {recipe.ingredients.length} 项 {open ? "▴" : "▾"}
+          </button>
+        )}
+      </div>
+      {open && (
+        // 用料是清单，用正文字体读起来比手写体清楚
+        <ul className="text-[13px] leading-[1.85] text-gray-600 mt-1.5 ml-5 columns-2 gap-4">
+          {recipe.ingredients.map((line) => (
+            <li key={line}>{line}</li>
+          ))}
+        </ul>
+      )}
+    </li>
   );
 }
