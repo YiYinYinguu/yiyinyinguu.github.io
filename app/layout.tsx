@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     url: "https://yiyinyinguu.github.io",
     siteName: "Lu Ying",
     type: "profile",
-    images: ["/profile.jpg"],
+    images: ["/images/profile.jpg"],
   },
 };
 

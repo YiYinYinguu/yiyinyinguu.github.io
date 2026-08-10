@@ -143,8 +143,8 @@ export const siteConfig: SiteConfig = {
     email: "yiyinyingl@outlook.com",
     department: "Department of Geography",
     university: "National University of Singapore",
-    profileImage: "/profile.jpg",
-    bannerImage: "/banner.png",
+    profileImage: "/images/profile.jpg",
+    bannerImage: "/images/banner.png",
     researchInterests: [
       "Data Visualization 📊",
       "Human-Computer Interaction 🖥",
@@ -234,7 +234,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       title: "VAID: Indexing View Designs in Visual Analytics System",
       authors: "**Lu Ying**, Aoyu Wu, Haotian Li, Zikun Deng, Ji Lan, Jiang Wu, Yong Wang, Huamin Qu, Dazhen Deng, Yingcai Wu",
       venue: "Proceedings of the Conference on Human Factors in Computing Systems (CHI 2024)",
-      image: "/pub-2024-vaid.png",
+      image: "/publications/2024-vaid.png",
       links: {
         pdf: "https://doi.org/10.1145/3613904.3642237",
         project: "https://vis-vaid.github.io",
@@ -246,7 +246,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       title: "Blowing Seeds across Gardens: Visualizing Implicit Propagation of Cross-Platform Social Media Posts",
       authors: "Jianing Yin, Hanze Jia, Buwei Zhou, Tan Tang, **Lu Ying**, Shuainan Ye, Tai-Quan Peng, Yingcai Wu",
       venue: "IEEE Transactions on Visualization and Computer Graphics (Proceedings of IEEE VIS 2024)",
-      image: "/pub-2024-blowing.png",
+      image: "/publications/2024-blowing.png",
       links: {
         pdf: "https://ieeexplore.ieee.org/document/10670503",
       },
@@ -257,7 +257,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       title: "Exploring the Reproducibility for Visualization Figures in Climate Change Report",
       authors: "**Lu Ying**, Yingcai Wu, Jean-Daniel Fekete",
       venue: "IEEE VIS Workshop on Visualization for Climate Action and Sustainability",
-      image: "/pub-2025-repro.png",
+      image: "/publications/2025-repro.png",
       links: {
         pdf: "https://inria.hal.science/hal-04744236",
         code: "https://github.com/repro-ipcc",
@@ -269,7 +269,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       title: "Composing Data Stories with Meta Relations",
       authors: "Haotian Li, **Lu Ying**, Leixian Shen, Yun Wang, Yingcai Wu, Huamin Qu",
       venue: "arXiv preprint arXiv:2501.03603",
-      image: "/pub-2025-composing.png",
+      image: "/publications/2025-composing.png",
       links: {
         pdf: "https://arxiv.org/abs/2501.03603",
       },
@@ -283,7 +283,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       links: {
         pdf: "https://www.sciencedirect.com/science/article/pii/S0893608025012274",
       },
-      image: "/pub-2025-enhancing.png",
+      image: "/publications/2025-enhancing.png",
     },
     {
       id: "pub-2025-constructive",
@@ -292,7 +292,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       title: "A Constructive Scientific Methodology to Improve Climate Figures from IPCC",
       authors: "**Lu Ying**, Junxiu Tang, Tingying He, Jean-Daniel Fekete",
       venue: "arXiv preprint arXiv:2512.15514",
-      image: "/pub-2025-ipcc.png",
+      image: "/publications/2025-ipcc.png",
       links: {
         pdf: "https://arxiv.org/abs/2512.15514",
       },
@@ -305,7 +305,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       title: "Notable: On-the-fly Assistant for Data Storytelling in Computational Notebooks",
       authors: "Haotian Li, **Lu Ying**, Haidong Zhang, Yingcai Wu, Huamin Qu, Yun Wang",
       venue: "Proceedings of the Conference on Human Factors in Computing Systems (CHI 2023)",
-      image: "/pub-2023-notable.png",
+      image: "/publications/2023-notable.png",
       links: {
         pdf: "https://haotian-li.com/paper/notable.pdf",
       },
@@ -317,7 +317,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       title: "SmartShots: An Optimization Approach for Generating Videos with Data Visualizations Embedded",
       authors: "Tan Tang, Junxiu Tang, Jiewen Lai, **Lu Ying**, Peiran Ren, Lingyun Yu, Yingcai Wu",
       venue: "ACM Transactions on Intelligent Systems and Technology (TiiS)",
-      image: "/pub-2022-smartshots.png",
+      image: "/publications/2022-smartshots.png",
       links: {},
     },
     // 2020
@@ -331,7 +331,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
         pdf: "https://arxiv.org/abs/2009.05233",
         project: "https://www.youtube.com/watch?v=RNFCuR9DgMg",
       },
-      image: "/pub-2020-transitions.png",
+      image: "/publications/2020-transitions.png",
     },
     // Journal Publications (Year varies)
     {
@@ -341,7 +341,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       title: "Reviving Static Charts into Live Charts",
       authors: "**Lu Ying**, Yun Wang, Haotian Li, Shuguang Dou, Haidong Zhang, Xinyang Jiang, Huamin Qu, Yingcai Wu",
       venue: "IEEE Transactions on Visualization and Computer Graphics",
-      image: "/pub-2024-live.png",
+      image: "/publications/2024-live.png",
       links: {
         pdf: "https://ieeexplore.ieee.org/abstract/document/10530507/",
         project: "https://www.notion.so/Reviving-Static-Charts-into-Live-Chart-c7a7de117a484c67a81067af7cae910a",
@@ -354,7 +354,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       title: "MetaGlyph: Automatic Generation of Metaphoric Glyph-based Visualization",
       authors: "**Lu Ying**, Xinhuan Shu, Dazhen Deng, Yuchen Yang, Tan Tang, Lingyun Yu, Yingcai Wu",
       venue: "IEEE Transactions on Visualization and Computer Graphics",
-      image: "/pub-2023-metaglyph.png",
+      image: "/publications/2023-metaglyph.png",
       links: {
         pdf: "https://ieeexplore.ieee.org/document/9906974",
         project: "https://www.youtube.com/watch?v=E_68JwZmlcY",
@@ -367,7 +367,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       title: "GlyphCreator: Towards Example-based Automatic Generation of Circular Glyphs",
       authors: "**Lu Ying**, Tan Tang, Yuzhe Luo, Lvkeshen Shen, Xiao Xie, Lingyun Yu, Yingcai Wu",
       venue: "IEEE Transactions on Visualization and Computer Graphics",
-      image: "/pub-2022-glyphcreator.png",
+      image: "/publications/2022-glyphcreator.png",
       links: {
         pdf: "https://zjuidg.org/source/projects/glyphcreator/GlyphCreator.pdf",
         project: "https://youtu.be/uNGJtuyniyM",
@@ -379,7 +379,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       title: "Hierarchical Recognizing Vector Graphics and A New Chart-based Vector Graphics Dataset",
       authors: "Shuguang Dou, Xinyang Jiang, Lu Liu, **Lu Ying**, Caihua Shan, Yifei Shen, Xuanyi Dong, Yun Wang, Dongsheng Li, Cairong Zhao",
       venue: "IEEE Transactions on Pattern Analysis and Machine Intelligence",
-      image: "/pub-2024-hierarchy.png",
+      image: "/publications/2024-hierarchy.png",
       links: {
         pdf: "https://arxiv.org/pdf/2309.02967.pdf",
       },
@@ -397,7 +397,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       degree: "Ph. D.",
       institution: "State Key Lab of CAD&CG, Zhejiang University",
       supervisor: "Supervised by Prof. Yingcai Wu",
-      logo: "/zju.png",
+      logo: "/logos/zju.png",
     },
     {
       id: "edu-undergrad",
@@ -406,7 +406,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       degree: "Undergraduate",
       institution: "College of Computer Science, Zhejiang University",
       supervisor: "Bachelor in Digital Media Technology",
-      logo: "/zju.png",
+      logo: "/logos/zju.png",
     },
   ],
 
@@ -421,7 +421,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       position: "Postdoctoral Researcher (Incoming)",
       institution: "University of Vienna",
       supervisor: "Working with Prof. Torsten Möller",
-      logo: "/univie.png",
+      logo: "/logos/univie.png",
     },
     {
       id: "exp-nus",
@@ -430,7 +430,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       position: "Postdoctoral Fellow",
       institution: "Department of Geography, Faculty of Arts and Social Sciences, National University of Singapore",
       supervisor: "Supervised by Prof. Wei Luo",
-      logo: "/nus.png",
+      logo: "/logos/nus.png",
     },
     {
       id: "exp-inria",
@@ -439,7 +439,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       position: "Visiting Student",
       institution: "Inria, Université Paris-Saclay",
       supervisor: "Supervised by Jean-Daniel Fekete",
-      logo: "/inria.png",
+      logo: "/logos/inria.png",
     },
     {
       id: "exp-msra",
@@ -447,7 +447,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       location: "Beijing, China",
       position: "Research Intern",
       institution: "Microsoft Research Asia",
-      logo: "/msra.png",
+      logo: "/logos/msra.png",
     },
     {
       id: "exp-zhejiang-lab",
@@ -455,7 +455,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       location: "Hangzhou, China",
       position: "Research Intern",
       institution: "Zhejiang Lab",
-      logo: "/zhejiang-lab.png",
+      logo: "/logos/zhejiang-lab.png",
     },
     {
       id: "exp-alibaba",
@@ -463,7 +463,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       location: "Hangzhou, China",
       position: "Research Intern",
       institution: "Alibaba Company",
-      logo: "/alibaba.png",
+      logo: "/logos/alibaba.png",
     },
   ],
 
