@@ -35,3 +35,7 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 .superpowers/
+
+# 构建时 .next/ 被占用（多半 dev server 开着），Next 会把旧的改名成
+# .next.stale-<时间戳> 扔在一边。是垃圾，别再进版本控制。
+/.next.stale-*/
