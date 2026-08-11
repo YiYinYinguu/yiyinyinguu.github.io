@@ -112,6 +112,7 @@ export interface SiteConfig {
     cover: string;  // hub 卡片封面图
   }>;
 
+
   // 服务经历
   service: {
     conferenceReviewing: Array<{ name: string; years: string }>;
@@ -568,9 +569,10 @@ My research lies at the intersection of human–AI interaction, visualization, a
       emoji: "🧶",
       description: "Rattan, crochet, felt, wood — things made by hand.",
       descriptionZh: "藤编、钩针、羊毛毡、木工，一切用手做出来的东西。",
-      cover: "/life/craft/2025-07-13-sq.jpg",
+      cover: "/life/craft/2022-11-05-sq.jpg",
     },
   ],
+
 
   // ============================================================
   // 服务经历 - 在这里添加你的学术服务经历
