@@ -47,6 +47,34 @@ export function getCityTracks(id: string): Track[] {
   return JSON.parse(fs.readFileSync(file, "utf-8")).tracks;
 }
 
+/**
+ * 一级页标题行要的数字。骑行轨迹只是这一页的一部分——去过的地方、
+ * 飞过的航班都在球上，统计行不能只报轨迹那点数据。
+ */
+export function getPlacesSummary() {
+  const read = (name: string) => {
+    const file = path.join(DATA_DIR, name);
+    return fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, "utf-8")) : null;
+  };
+  const visited = read("visited.json");
+  const flights = read("flights.json");
+  const cities = getRouteCities();
+
+  const days = [
+    ...(flights?.cities ?? []).flatMap((c: { from: string; to: string }) => [c.from, c.to]),
+    ...cities.flatMap((c) => [c.from, c.to]),
+  ].sort();
+
+  return {
+    regions: visited?.coarse?.features?.length ?? 0,
+    places: visited?.fine?.features?.length ?? 0,
+    tracks: cities.reduce((sum, c) => sum + c.n, 0),
+    km: Math.round(cities.reduce((sum, c) => sum + c.km, 0)),
+    from: days[0]?.slice(0, 4) ?? "",
+    to: days[days.length - 1]?.slice(0, 4) ?? "",
+  };
+}
+
 /** 全部城市的合计，给一级页的标题行。 */
 export function summarize(cities: RouteCity[]) {
   return {

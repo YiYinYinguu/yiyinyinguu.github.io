@@ -1,6 +1,6 @@
 import Header from "@/components/layout/Header";
 import RoutesExplorer from "@/components/routes/RoutesExplorer";
-import { getRouteCities } from "@/lib/routes";
+import { getPlacesSummary, getRouteCities } from "@/lib/routes";
 
 export const metadata = {
   title: "Routes - Lu Ying",
@@ -15,6 +15,7 @@ export const metadata = {
  */
 export default function RoutesPage() {
   const cities = getRouteCities();
+  const summary = getPlacesSummary();
 
   return (
     <div className="min-h-screen bg-white">
@@ -27,7 +28,7 @@ export default function RoutesPage() {
               还没有轨迹数据。跑一次 <code>python3 scripts/build-routes.py &lt;导出的 html&gt;</code>。
             </p>
           ) : (
-            <RoutesExplorer cities={cities} />
+            <RoutesExplorer cities={cities} summary={summary} />
           )}
         </div>
       </main>

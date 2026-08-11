@@ -1,7 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
-import { geoDistance, geoGraticule10, geoOrthographic, geoPath } from "d3-geo";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { geoCentroid, geoDistance, geoGraticule10, geoOrthographic, geoPath } from "d3-geo";
 import type { RouteCity } from "@/lib/routes";
 import { useLang, useT } from "@/lib/life-i18n";
 import { PINCH_PER_PX } from "./shared";
@@ -13,6 +13,19 @@ const MIN_SCALE = 0.85;
 const MAX_SCALE = 8;
 
 type Collection = { type: "FeatureCollection"; features: unknown[] };
+/** 飞过的城市和航线，来自航旅纵横的历史行程 */
+/** 去过的地方：国内到省，国外到国 */
+type Region = {
+  type: "Feature";
+  properties: { name: string; zh: string; en: string };
+  geometry: unknown;
+};
+/** 两种粒度：coarse 是中国的省 + 国外的国家，fine 是中国的市县 + 国外的一级行政区 */
+type Visited = { coarse: { features: Region[] }; fine: { features: Region[] } };
+type Flights = {
+  cities: { id: string; zh: string; en: string; lat: number; lon: number; n: number }[];
+  routes: { a: string; b: string; n: number; from: [number, number]; to: [number, number] }[];
+};
 /** land 是陆地多边形，lines 是九段线这类只画线不填充的要素 */
 type World = { land: Collection; lines: Collection };
 
@@ -46,9 +59,20 @@ export default function Globe({
   const gridRef = useRef<SVGPathElement>(null);
   const landRef = useRef<SVGPathElement>(null);
   const linesRef = useRef<SVGPathElement>(null);
+  const arcsRef = useRef<SVGPathElement>(null);
+  const regionRefs = useRef(new Map<string, SVGPathElement>());
+  const dotRefs = useRef(new Map<string, SVGGElement>());
   const pins = useRef(new Map<string, SVGGElement>());
 
   const [world, setWorld] = useState<World | null>(null);
+  const [flights, setFlights] = useState<Flights | null>(null);
+  const [visited, setVisited] = useState<Visited | null>(null);
+  // 航线默认关着：一进来先看清去过哪儿，想看怎么飞的再打开
+  const [showArcs, setShowArcs] = useState(false);
+  /** 去过的地方看到哪一级：整个国家一块色，还是拆到城市 */
+  const [grain, setGrain] = useState<"region" | "city">("region");
+  /** 鼠标停在哪个省/国/城市上，显示名字用 */
+  const [over, setOver] = useState<{ label: string; x: number; y: number } | null>(null);
   const [spinning, setSpinning] = useState(true);
 
   const rotate = useRef<[number, number]>([...HOME]);
@@ -70,10 +94,29 @@ export default function Globe({
     fetch("/routes/land.json")
       .then((r) => r.json())
       .then((data) => alive && setWorld(data));
+    fetch("/routes/flights.json")
+      .then((r) => r.json())
+      .then((data) => alive && setFlights(data));
+    fetch("/routes/visited.json")
+      .then((r) => r.json())
+      .then((data) => alive && setVisited(data));
     return () => {
       alive = false;
     };
   }, []);
+
+  // 国家模式下也要看得见去过哪些城市，所以在整片底色上再点一层空心圈。
+  // 位置直接取城市轮廓的球面重心——坐标是现成的，不用另配一份城市经纬度表。
+  // 有轨迹的那几座已经有实心点了，这里跳过，免得一个位置两个圈。
+  const withTracks = new Set(["杭州", "北京", "新加坡"]);
+  const dots = useMemo(
+    () =>
+      (visited?.fine.features ?? [])
+        .filter((f) => !withTracks.has(f.properties.zh))
+        .map((f) => ({ ...f.properties, at: geoCentroid(f as never) })),
+    [visited]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  );
 
   /** 每帧重画。只改属性，不动节点。 */
   const draw = useCallback(() => {
@@ -99,6 +142,55 @@ export default function Globe({
     linesRef.current?.setAttribute("d", path(world.lines as never) ?? "");
 
     const center: [number, number] = [-rotate.current[0], -rotate.current[1]];
+
+    // 航线：交给 d3 画成 LineString，它会自己按大圆弧重采样，
+    // 转到背面的部分也自动裁掉——这正是不该自己算投影的地方。
+    if (arcsRef.current) {
+      arcsRef.current.setAttribute(
+        "d",
+        showArcs && flights
+          ? path({
+              type: "FeatureCollection",
+              features: flights.routes.map((r) => ({
+                type: "Feature",
+                properties: {},
+                geometry: { type: "LineString", coordinates: [r.from, r.to] },
+              })),
+            } as never) ?? ""
+          : ""
+      );
+    }
+
+    // 去过的地方。两种粒度：整片的省和国，或者一个个城市的小圈。
+    // 新加坡不在整片那一层——110m 的国界数据略掉了太小的国家，它本来就有实心点。
+    // 当前粒度下该显示的要素。不该显示的清空 d，节点留着不动——
+    // 省得 React 反复建删，高亮状态也不会跟着丢。
+    const shown = visited ? (grain === "region" ? visited.coarse : visited.fine).features : [];
+    const live = new Set(shown.map((f) => f.properties.name));
+    regionRefs.current.forEach((el, name) => {
+      if (!live.has(name)) el.setAttribute("d", "");
+    });
+    shown.forEach((f) => {
+      const el = regionRefs.current.get(f.properties.name);
+      if (el) el.setAttribute("d", path(f as never) ?? "");
+    });
+
+    // 城市的空心圈：只在国家模式下画，城市模式下已经是整片轮廓了
+    dots.forEach((d) => {
+      const el = dotRefs.current.get(d.name);
+      if (!el) return;
+      const away = geoDistance(d.at, center);
+      const p = projection(d.at);
+      if (grain !== "region" || away > Math.PI / 2 || !p) {
+        el.setAttribute("display", "none");
+        return;
+      }
+      el.removeAttribute("display");
+      el.setAttribute("transform", `translate(${p[0].toFixed(1)} ${p[1].toFixed(1)})`);
+      el.setAttribute("opacity", Math.min(1, (Math.PI / 2 - away) / 0.25).toFixed(2));
+    });
+
+    // 有轨迹的那几座城市：实心点 + 常驻标签，可以点进去
     cities.forEach((city) => {
       const g = pins.current.get(city.id);
       if (!g) return;
@@ -114,7 +206,8 @@ export default function Globe({
       const on = activeRef.current === city.id;
       // 快转到边缘时淡出，绕到背面的过程才不生硬
       g.setAttribute("opacity", Math.min(1, (Math.PI / 2 - away) / 0.25).toFixed(2));
-      const dot = g.firstElementChild as SVGCircleElement;
+      const dot = g.querySelector(".dot") as SVGCircleElement;
+      const hit = g.querySelector(".hit") as SVGCircleElement;
       const label = g.lastElementChild as SVGTextElement;
       // 选中不换颜色，只是长大一点、白圈粗一点——两种红摆在一起反而分不清
       const baseR = 2.6 + Math.sqrt(city.n) * 0.5;
@@ -124,11 +217,14 @@ export default function Globe({
       const side = label.getAttribute("text-anchor") === "end" ? -1 : 1;
       dot.setAttribute("cx", x.toFixed(1));
       dot.setAttribute("cy", y.toFixed(1));
+      hit.setAttribute("cx", x.toFixed(1));
+      hit.setAttribute("cy", y.toFixed(1));
+      hit.setAttribute("r", Math.max(dotR + 4, 8).toFixed(1));
       label.setAttribute("x", (x + side * (dotR + 5)).toFixed(1));
       label.setAttribute("y", (y + 4).toFixed(1));
       label.setAttribute("class", on ? "globe-label on" : "globe-label");
     });
-  }, [cities, world]);
+  }, [cities, world, flights, visited, showArcs, grain, dots]);
 
   // 尺寸变了要重画；容器是先 0 再长起来的，所以得盯着
   useEffect(() => {
@@ -214,10 +310,36 @@ export default function Globe({
     [cities, draw]
   );
 
-  // 杭州和安吉在球面上也就差两三个像素，标签都朝右会叠在一起。
-  // 轨迹多的留在右边，挨着它的甩到左边。
+  // 两种粒度的要素都建好节点，切换时只是清空或写回 d。
+  // 同一个地方两层可能都有（只知道去过南非的话，细粒度下也只能画整个国家），
+  // 按名字去重，否则 React 会抱怨 key 重复。
+  const regions = visited
+    ? [
+        ...new Map(
+          [...visited.coarse.features, ...visited.fine.features].map((f) => [
+            f.properties.name,
+            f,
+          ])
+        ).values(),
+      ]
+    : [];
+
+  // 杭州和安吉在球面上也就差两三个像素。两件事要处理：
+  //   标签——都朝右会叠在一起，所以轨迹多的留在右边，挨着它的甩到左边；
+  //   叠放——大的画在上面。反过来的话，你看到的是杭州那个大红点，
+  //         点下去却进了盖在它中心上的安吉。安吉放大之后就分开了，
+  //         右边的卡片也能直接进。
   const placed: RouteCity[] = [];
-  const ordered = [...cities].sort((a, b) => b.n - a.n);
+  const bySize = [...cities].sort((a, b) => b.n - a.n);
+  const labelSide = new Map<string, "start" | "end">();
+  bySize.forEach((city) => {
+    const crowded = placed.some(
+      (o) => Math.abs(o.lat - city.lat) < 3 && Math.abs(o.lon - city.lon) < 3
+    );
+    placed.push(city);
+    labelSide.set(city.id, crowded ? "end" : "start");
+  });
+  const ordered = [...bySize].reverse();
 
   return (
     <div className="relative flex-1 min-h-0">
@@ -272,7 +394,13 @@ export default function Globe({
           <circle
             ref={seaRef}
             fill="url(#globe-ocean)"
-            style={{ filter: "drop-shadow(0 8px 22px rgba(60,80,95,0.14))" }}
+            // 两层投影：一层大而散托住整个球，一层紧贴球缘给它厚度。
+            // 只用一层的话，要么太淡没存在感，要么糊成一片灰
+            style={{
+              filter:
+                "drop-shadow(0 16px 40px rgba(45,70,92,0.20)) " +
+                "drop-shadow(0 3px 10px rgba(45,70,92,0.10))",
+            }}
           />
           {/* 经纬网画在陆地下面，只在海上看得见，画面才不吵 */}
           <path ref={gridRef} fill="none" stroke="#dfe5e9" strokeWidth={0.4} opacity={0.9} />
@@ -281,15 +409,74 @@ export default function Globe({
           <path ref={landRef} fill="#fffdfd" stroke="#e5c2c4" strokeWidth={0.5} />
           {/* 九段线：只描线不填充，压在陆地之上 */}
           <path ref={linesRef} fill="none" stroke="#d09a9e" strokeWidth={0.9} strokeLinecap="round" />
+          {/* 去过的省和国家：淡淡一层主色，压在陆地之上、航线和城市点之下。
+              一个要素一个 path，才能各自响应悬停 */}
+          <g>
+            {regions.map((f) => {
+              const label = lang === "zh" ? f.properties.zh : f.properties.en;
+              const on = over?.label === label;
+              return (
+                <path
+                  key={f.properties.name}
+                  ref={(el) => {
+                    if (el) regionRefs.current.set(f.properties.name, el);
+                    else regionRefs.current.delete(f.properties.name);
+                  }}
+                  fill="#b12b32"
+                  fillOpacity={on ? 0.3 : 0.13}
+                  stroke={on ? "#b12b32" : "#cf9a9e"}
+                  strokeWidth={on ? 0.7 : 0.35}
+                  fillRule="evenodd"
+                  className="cursor-default transition-[fill-opacity]"
+                  onMouseMove={(e) => {
+                    const box = e.currentTarget.ownerSVGElement?.getBoundingClientRect();
+                    if (box) setOver({ label, x: e.clientX - box.left, y: e.clientY - box.top });
+                  }}
+                  onMouseLeave={() => setOver(null)}
+                />
+              );
+            })}
+          </g>
+
+          {/* 国家模式下的城市：空心圈，鼠标移上去显示名字 */}
+          <g>
+            {dots.map((d) => {
+              const label = lang === "zh" ? d.zh : d.en;
+              const on = over?.label === label;
+              return (
+                <g
+                  key={d.name}
+                  ref={(el) => {
+                    if (el) dotRefs.current.set(d.name, el);
+                    else dotRefs.current.delete(d.name);
+                  }}
+                  display="none"
+                  className="cursor-default"
+                  onMouseMove={(e) => {
+                    const box = e.currentTarget.ownerSVGElement?.getBoundingClientRect();
+                    if (box) setOver({ label, x: e.clientX - box.left, y: e.clientY - box.top });
+                  }}
+                  onMouseLeave={() => setOver(null)}
+                >
+                  <circle r={8} fill="transparent" />
+                  {/* 小实心点，比有轨迹的那几座浅一档：同一种语言的两个层级。
+                      空心圈在这个尺寸下只有两三个像素，读起来像噪点 */}
+                  <circle
+                    r={on ? 3.4 : 2}
+                    fill={on ? "#b12b32" : "#c8797e"}
+                    stroke="#fff"
+                    strokeWidth={on ? 1.2 : 0.6}
+                  />
+                </g>
+              );
+            })}
+          </g>
+
+          <path ref={arcsRef} fill="none" stroke="#b12b32" strokeWidth={0.7} opacity={0.3} />
           <circle ref={shadeRef} fill="url(#globe-shade)" className="pointer-events-none" />
           <circle ref={rimRef} fill="none" stroke="#cfc5c6" strokeWidth={0.8} opacity={0.8} />
 
-          {ordered.map((city) => {
-            const crowded = placed.some(
-              (o) => Math.abs(o.lat - city.lat) < 3 && Math.abs(o.lon - city.lon) < 3
-            );
-            placed.push(city);
-            return (
+          {ordered.map((city) => (
               <g
                 key={city.id}
                 ref={(el) => {
@@ -311,18 +498,32 @@ export default function Globe({
                   flyTo(city.id);
                 }}
               >
+                {/* 看不见的命中区。可见的点只有几个像素，光靠它太难点中；
+                    大点的城市命中区也大，所以杭州能盖住挨着它的安吉那一圈之外的地方 */}
+                <circle className="hit" fill="transparent" />
                 <circle
+                  className="dot"
                   r={2.6 + Math.sqrt(city.n) * 0.5}
                   stroke="#fff"
                   strokeWidth={1.2}
                   fill="#b12b32"
                 />
-                <text className="globe-label" textAnchor={crowded ? "end" : "start"}>
+                <text className="globe-label" textAnchor={labelSide.get(city.id)}>
                   {lang === "zh" ? city.zh : city.en}
                 </text>
               </g>
-            );
-          })}
+          ))}
+          {/* 悬停时的名字。画在最后，压在所有东西之上 */}
+          {over && (
+            <text
+              className="globe-label pointer-events-none"
+              x={over.x + 10}
+              y={over.y - 6}
+              style={{ fontWeight: 600 }}
+            >
+              {over.label}
+            </text>
+          )}
         </svg>
       </div>
 
@@ -355,6 +556,38 @@ export default function Globe({
       </div>
 
       <div className="absolute right-3 top-3 z-10 flex gap-2">
+        {/* 去过的地方看到哪一级 */}
+        <div className="flex overflow-hidden rounded-full border border-gray-200 bg-white shadow-sm">
+          {([
+            { id: "region" as const, label: t("byRegion") },
+            { id: "city" as const, label: t("byCity") },
+          ]).map((o, i) => (
+            <button
+              key={o.id}
+              type="button"
+              onClick={() => setGrain(o.id)}
+              aria-pressed={grain === o.id}
+              className={`px-3 py-1 text-[12.5px] transition-colors ${i > 0 ? "border-l border-gray-200" : ""} ${
+                grain === o.id ? "bg-primary text-white" : "text-gray-500 hover:text-primary"
+              }`}
+            >
+              {o.label}
+            </button>
+          ))}
+        </div>
+
+        <button
+          type="button"
+          onClick={() => setShowArcs((on) => !on)}
+          aria-pressed={showArcs}
+          className={`rounded-full border px-3 py-1 text-[12.5px] shadow-sm transition-colors ${
+            showArcs
+              ? "border-primary bg-primary text-white"
+              : "border-gray-200 bg-white text-gray-500 hover:border-primary hover:text-primary"
+          }`}
+        >
+          {t("flightPaths")}
+        </button>
         <button
           type="button"
           onClick={() => setSpinning((on) => !on)}

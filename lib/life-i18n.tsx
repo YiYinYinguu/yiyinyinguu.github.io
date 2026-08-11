@@ -46,7 +46,10 @@ const DICT = {
   routes: { zh: "路线", en: "Routes" },
 
   // Routes 板块
-  routesLede: { zh: "骑车和走路去过的地方。", en: "Places I've cycled and walked." },
+  routesLede: {
+    zh: "去过的地方，和骑车走路走过的路线。",
+    en: "Everywhere I've been, and the routes I've cycled and walked.",
+  },
   cityCount: { zh: "座城市", en: "cities" },
   mainRoutes: { zh: "主要路线", en: "Main routes" },
   otherRoutes: { zh: "其余路线", en: "Other routes" },
@@ -59,6 +62,12 @@ const DICT = {
   backTo: { zh: "回到", en: "Back to " },
   fitAll: { zh: "全览", en: "Fit all" },
   spin: { zh: "自转", en: "Spin" },
+  flightPaths: { zh: "航线", en: "Flights" },
+  byRegion: { zh: "国家", en: "Countries" },
+  byCity: { zh: "城市", en: "Cities" },
+  legendTracks: { zh: "骑过、走过", en: "Cycled & walked" },
+  legendVisited: { zh: "去过", en: "Been there" },
+  legendArea: { zh: "到过的国家和城市", en: "Countries & cities" },
   start: { zh: "起点", en: "Start" },
   finish: { zh: "终点", en: "Finish" },
   points: { zh: "轨迹点", en: "Track points" },

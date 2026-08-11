@@ -29,20 +29,39 @@ const Globe = dynamic(() => import("./Globe"), { ssr: false, loading: placeholde
 
 const UNIT = { zh: "条", one: "route", many: "routes" };
 
-export default function RoutesExplorer({ cities }: { cities: RouteCity[] }) {
+export type Summary = {
+  regions: number;
+  places: number;
+  tracks: number;
+  km: number;
+  from: string;
+  to: string;
+};
+
+export default function RoutesExplorer({
+  cities,
+  summary,
+}: {
+  cities: RouteCity[];
+  summary: Summary;
+}) {
   return (
     <LangProvider unit={UNIT}>
-      {(lang, setLang) => <Explorer cities={cities} lang={lang} setLang={setLang} />}
+      {(lang, setLang) => (
+        <Explorer cities={cities} summary={summary} lang={lang} setLang={setLang} />
+      )}
     </LangProvider>
   );
 }
 
 function Explorer({
   cities,
+  summary,
   lang,
   setLang,
 }: {
   cities: RouteCity[];
+  summary: Summary;
   lang: Lang;
   setLang: (l: Lang) => void;
 }) {
@@ -148,13 +167,16 @@ function Explorer({
   }, []);
   const toRoute = useCallback((tr: Track) => setRouteId(tr.id), []);
 
+  // 一级页报的是整页的内容：去过多少国家和城市、骑走了多少；
+  // 进了城市就只报那座城市自己的数
   const stat = city
     ? `${count(city.n)} · ${city.km} km · ${fmtMonth(city.from)} — ${fmtMonth(city.to)}`
-    : `${count(cities.reduce((s, c) => s + c.n, 0))} · ` +
-      `${cities.reduce((s, c) => s + c.km, 0).toFixed(1)} km · ` +
-      `${cityCount(cities.length)} · ` +
-      `${fmtMonth(cities.map((c) => c.from).sort()[0] ?? "")} — ` +
-      `${fmtMonth(cities.map((c) => c.to).sort().slice(-1)[0] ?? "")}`;
+    : lang === "zh"
+      ? `${summary.regions} 个国家 · ${summary.places} 座城市 · ` +
+        `骑行步行 ${summary.tracks} 条 ${summary.km} km · 截至 ${summary.to}`
+      : `${summary.regions} countries · ${summary.places} places · ` +
+        `${summary.tracks} routes on foot and by bike, ${summary.km} km · ` +
+        `through ${summary.to}`;
 
   const cityName = city ? (lang === "zh" ? city.zh : city.en) : "";
 
@@ -311,7 +333,32 @@ function Explorer({
         </div>
       </div>
 
-      {!city && <p className="mt-5 text-sm text-gray-400">{t("cityHint")}</p>}
+      {!city && (
+        <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm text-gray-400">
+          {/* 图例：球上三种记号各代表什么。不用图片，直接把记号本身画出来 */}
+          <span className="flex items-center gap-1.5">
+            <svg width="14" height="14" aria-hidden>
+              <circle cx="7" cy="7" r="4.5" fill="#b12b32" stroke="#fff" strokeWidth="1.2" />
+            </svg>
+            {t("legendTracks")}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <svg width="14" height="14" aria-hidden>
+              <circle cx="7" cy="7" r="2.4" fill="#c8797e" stroke="#fff" strokeWidth="0.6" />
+            </svg>
+            {t("legendVisited")}
+          </span>
+          <span className="flex items-center gap-1.5">
+            <svg width="14" height="14" aria-hidden>
+              <rect x="1" y="3" width="12" height="8" rx="1.5"
+                    fill="#b12b32" fillOpacity="0.13" stroke="#cf9a9e" strokeWidth="0.8" />
+            </svg>
+            {t("legendArea")}
+          </span>
+          <span className="text-gray-300">·</span>
+          <span>{t("cityHint")}</span>
+        </div>
+      )}
     </>
   );
 }
