@@ -5,6 +5,7 @@ import { siteConfig } from "@/config/site";
 import fs from "fs";
 import path from "path";
 import { getPostsByCategory } from "@/lib/life";
+import { getRouteCities } from "@/lib/routes";
 
 export const metadata = {
   title: "Life - Lu Ying",
@@ -16,10 +17,14 @@ export const metadata = {
 const TILT = [-1.2, 1.1, -0.5];
 
 export default function LifePage() {
-  const { lifeCategories } = siteConfig;
+  const { lifeCategories, lifeLinks } = siteConfig;
+  const routeCities = getRouteCities();
+  const routesMeta = `${routeCities.reduce((sum, c) => sum + c.n, 0)} routes · ${routeCities.length} cities`;
 
-  // 卡片在这里就拼好，模板下面不再分叉
-  const cards = lifeCategories.map((cat) => {
+  // markdown 板块和 Routes 这类构建时生成的板块，在这一层是一样的卡片，
+  // 差别只在「几篇」怎么数——所以在这里就统一成 meta 一行字，下面不再分叉。
+  const cards = [
+    ...lifeCategories.map((cat) => {
       const count = getPostsByCategory(cat.id).length;
       // scripts/build-life-mosaics.py 拼的 3×3 九宫格。一张封面只代表一件作品，
       // 拼图能一眼看出这个板块攒了些什么。没跑过脚本就退回配置里的单张封面。
@@ -33,7 +38,18 @@ export default function LifePage() {
         cover: hasMosaic ? mosaic : cat.cover,
         meta: `${count} ${count === 1 ? "post" : "posts"}`,
       };
-  });
+    }),
+    ...lifeLinks.map((link) => ({
+      href: link.href,
+      name: link.name,
+      emoji: link.emoji,
+      description: link.description,
+      cover: link.cover,
+      // 目前只有 Routes 一项，它数的是路线不是文章。再加别的板块时，
+      // 与其在这里堆 if，不如给 lifeLinks 加一个自己算 meta 的字段。
+      meta: link.href === "/life/routes/" ? routesMeta : "",
+    })),
+  ];
 
   return (
     <div className="min-h-screen bg-white">
@@ -57,13 +73,21 @@ export default function LifePage() {
                       style={{ transform: `rotate(${TILT[i % TILT.length]}deg)` }}
                     >
                       <div className="relative aspect-square">
-                        <Image
-                          src={card.cover}
-                          alt={card.name}
-                          fill
-                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                          className="object-cover bg-gray-100"
-                        />
+                        {card.cover ? (
+                          <Image
+                            src={card.cover}
+                            alt={card.name}
+                            fill
+                            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                            className="object-cover bg-gray-100"
+                          />
+                        ) : (
+                          // 还没配封面图的板块，先用相纸的底色占着位置，
+                          // 至少版面是齐的，不会因为缺一张图塌一块
+                          <div className="absolute inset-0 flex items-center justify-center bg-[#f7f5f2] text-5xl opacity-40">
+                            {card.emoji}
+                          </div>
+                        )}
                       </div>
                       <div className="flex flex-1 flex-col pt-3 px-1">
                         <h2 className="text-lg font-semibold text-gray-900">

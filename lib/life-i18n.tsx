@@ -40,6 +40,38 @@ const DICT = {
   },
   showAll: { zh: "点这里看全部", en: "show all" },
   weekdays: { zh: "一二三四五六日", en: "MTWTFSS" },
+
+  // 面包屑。板块名走各自配置里的 nameZh，只有这两个是写死在标题里的
+  life: { zh: "生活", en: "Life" },
+  routes: { zh: "路线", en: "Routes" },
+
+  // Routes 板块
+  routesLede: { zh: "骑车和走路去过的地方。", en: "Places I've cycled and walked." },
+  cityCount: { zh: "座城市", en: "cities" },
+  mainRoutes: { zh: "主要路线", en: "Main routes" },
+  otherRoutes: { zh: "其余路线", en: "Other routes" },
+  type: { zh: "类型", en: "Type" },
+  year: { zh: "年份", en: "Year" },
+  distance: { zh: "距离", en: "Distance" },
+  byDate: { zh: "时间", en: "Date" },
+  byDistance: { zh: "距离", en: "Distance" },
+  backToWorld: { zh: "回到世界", en: "Back to world" },
+  backTo: { zh: "回到", en: "Back to " },
+  fitAll: { zh: "全览", en: "Fit all" },
+  start: { zh: "起点", en: "Start" },
+  finish: { zh: "终点", en: "Finish" },
+  points: { zh: "轨迹点", en: "Track points" },
+  asTheCrow: { zh: "起终点直线距离", en: "Start to finish" },
+  isLoop: { zh: "是否折返", en: "Shape" },
+  loopYes: { zh: "回到原点", en: "Loop" },
+  loopNo: { zh: "单程", en: "One way" },
+  prevRoute: { zh: "上一条", en: "Previous" },
+  nextRoute: { zh: "下一条", en: "Next" },
+  noRoutes: { zh: "这个条件下没有路线", en: "No routes match" },
+  cityHint: {
+    zh: "点城市看具体路线",
+    en: "Pick a city to see its routes",
+  },
 } as const;
 
 type Key = keyof typeof DICT;
@@ -71,6 +103,9 @@ const KIND_EN: Record<string, string> = {
   刺绣: "Embroidery",
   手绘: "Drawing",
   三维: "3D",
+  骑行: "Cycling",
+  步行: "Walking",
+  徒步: "Hiking",
 };
 
 export function useKind() {
@@ -98,6 +133,22 @@ export function useMonthOnly() {
   const lang = useLang();
   const NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   return (month: number) => (lang === "zh" ? `${month} 月` : NAMES[month - 1]);
+}
+
+/** 「73 条 3.0km 以下的路线，在地图上用浅色绘制」 */
+export function useShortNote() {
+  const lang = useLang();
+  return (n: number, km: number) =>
+    lang === "zh"
+      ? `${n} 条 ${km.toFixed(1)}km 以下的路线，在地图上用浅色绘制`
+      : `${n} route${n === 1 ? "" : "s"} under ${km.toFixed(1)} km, drawn faint on the map`;
+}
+
+/** 「4 座城市」/ "4 cities"。英文里一座城市要用单数。 */
+export function useCityCount() {
+  const lang = useLang();
+  return (n: number) =>
+    lang === "zh" ? `${n} 座城市` : `${n} ${n === 1 ? "city" : "cities"}`;
 }
 
 /** 「歇了 3 个月」/ "3 months off" */

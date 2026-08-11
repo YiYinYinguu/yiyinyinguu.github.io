@@ -112,6 +112,18 @@ export interface SiteConfig {
     cover: string;  // hub 卡片封面图
   }>;
 
+  // Life 总览上那些不走 content/life/<id>/*.md 的板块。
+  // Routes 的内容是构建时生成的 JSON，没有正文也没有照片，
+  // 硬塞进 lifeCategories 会让那个类型到处要判断，所以单开一项。
+  lifeLinks: Array<{
+    href: string;
+    name: string;
+    nameZh: string;
+    emoji: string;
+    description: string;
+    descriptionZh: string;
+    cover: string;  // 留空就显示占位底色
+  }>;
 
   // 服务经历
   service: {
@@ -573,6 +585,17 @@ My research lies at the intersection of human–AI interaction, visualization, a
     },
   ],
 
+  lifeLinks: [
+    {
+      href: "/life/routes/",
+      name: "Routes",
+      nameZh: "路线",
+      emoji: "🚲",
+      description: "Cycling, walking, and hiking tracks, city by city.",
+      descriptionZh: "骑车和走路去过的地方，一座城市一张图。",
+      cover: "",  // TODO: 换成封面图
+    },
+  ],
 
   // ============================================================
   // 服务经历 - 在这里添加你的学术服务经历

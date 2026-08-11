@@ -64,7 +64,7 @@ export default function LifeSection({
                 {/* 标题本身就是面包屑：Life 点回总览，后半截是当前这页 */}
                 <h1 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
                   <Link href="/life/" className="text-gray-400 hover:text-primary transition-colors">
-                    Life
+                    {zh ? "生活" : "Life"}
                   </Link>
                   <span className="text-gray-300 font-normal">/</span>
                   <span>{category.emoji}</span>
