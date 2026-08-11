@@ -1,32 +1,81 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { siteConfig } from "@/config/site";
-import ExperienceMap, { cityOf } from "./ExperienceMap";
+import ExperienceGlobe, { cityOf } from "./ExperienceGlobe";
 
 export default function EducationExperience() {
   const { education, experience } = siteConfig;
-  // 地图垫在条目底下，悬停时两边一起亮，再从那一行拉一条虚线连到点上
-  const [city, setCity] = useState<string | null>(null);
+  // 地球垫在条目底下，悬停时两边一起亮，再从那一行拉一条虚线连到点上
+  const [hover, setHover] = useState<string | null>(null);
+  // 滚到哪一条，球就转到那座城
+  const [inView, setInView] = useState<string | null>(null);
   const [lead, setLead] = useState("");
   const wrap = useRef<HTMLDivElement>(null);
+  const rows = useRef(new Map<string, HTMLDivElement>());
+  const hovered = useRef<HTMLElement | null>(null);
 
-  /** 从行的右侧（logo 左边）拉一条曲线到地图上那个点。 */
+  // 悬停优先于滚动：手放上去了就是在问这一条，不管页面滚到哪儿
+  const city = hover ?? inView;
+
+  // 哪一条经历正处在视窗中间那条带子里，就算是「在读」的那条。
+  // 用 IntersectionObserver 而不是监听 scroll：滚动回调每帧都要自己算位置，
+  // 而这里只在越过那条线时响一下。
+  useEffect(() => {
+    const seen = new Map<string, boolean>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => seen.set((e.target as HTMLElement).dataset.row!, e.isIntersecting));
+        // 带子里可能同时有两条（行比带子矮），取列表里靠前的那条，
+        // 否则往回滚的时候会在两座城之间反复横跳
+        const first = experience.find((exp) => seen.get(exp.id));
+        if (first) setInView(cityOf(first.location));
+      },
+      // 上下各切掉 45%，只剩视窗正中一条带子
+      { rootMargin: "-45% 0px -45% 0px", threshold: 0 }
+    );
+    rows.current.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [experience]);
+
+  /** 从行的右侧（logo 左边）拉一条曲线到底图上那个点。 */
   function connect(target: HTMLElement | null, name: string | null) {
-    setCity(name);
-    const pin = name && wrap.current?.querySelector(`[data-pin="${name}"]`);
-    if (!target || !pin) return setLead("");
-    const box = wrap.current!.getBoundingClientRect();
-    const row = target.getBoundingClientRect();
-    const dot = pin.getBoundingClientRect();
-    const x1 = row.right - box.left - 70;
-    const y1 = row.top + row.height / 2 - box.top;
-    const x2 = dot.left + dot.width / 2 - box.left;
-    const y2 = dot.top + dot.height / 2 - box.top;
-    const mid = (x1 + x2) / 2;
-    setLead(`M${x1},${y1} C${mid},${y1} ${mid},${y2} ${x2},${y2}`);
+    hovered.current = name ? target : null;
+    setHover(name);
+    if (!target || !name) setLead("");
   }
+
+  // 球是转着的，点每帧都在挪，所以连线也得每帧重算。
+  // 悬停时才跑这个循环——没人悬停的时候没有线要画。
+  useEffect(() => {
+    if (!hover) return;
+    let raf = 0;
+    const tick = () => {
+      const target = hovered.current;
+      const pin = wrap.current?.querySelector(`[data-pin="${hover}"]`);
+      const dot = pin?.getBoundingClientRect();
+      // 转到背面的点是 display:none，量出来是个零尺寸的框，连过去会指到左上角
+      if (!target || !dot || !dot.width) {
+        setLead("");
+      } else {
+        const box = wrap.current!.getBoundingClientRect();
+        const row = target.getBoundingClientRect();
+        // 从 logo 左边起笔，不是从行的右端：logo 宽 100，加上行的 px-3，
+        // 退到 120 就贴着标志的左边缘，既不压上去也不空出一截
+        const x1 = row.right - box.left - 120;
+        const y1 = row.top + row.height / 2 - box.top;
+        // 停在红点的右边缘外一点，不拉到点心：线压过去的话点就不是一个完整的圆了
+        const x2 = dot.right + 3 - box.left;
+        const y2 = dot.top + dot.height / 2 - box.top;
+        const mid = (x1 + x2) / 2;
+        setLead(`M${x1},${y1} C${mid},${y1} ${mid},${y2} ${x2},${y2}`);
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [hover]);
 
   return (
     <div className="space-y-12">
@@ -91,7 +140,7 @@ export default function EducationExperience() {
         </h2>
 
         <div ref={wrap} className="relative" onMouseLeave={() => connect(null, null)}>
-          <ExperienceMap items={experience} active={city} />
+          <ExperienceGlobe items={experience} active={city} />
 
           {/* 引导线画在条目上面，但不接收鼠标，否则会打断悬停 */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none z-20">
@@ -111,6 +160,11 @@ export default function EducationExperience() {
             return (
             <div
               key={exp.id}
+              data-row={exp.id}
+              ref={(el) => {
+                if (el) rows.current.set(exp.id, el);
+                else rows.current.delete(exp.id);
+              }}
               onMouseEnter={(e) => connect(e.currentTarget, here)}
               className={`pb-6 border-b border-gray-200 -mx-3 px-3 rounded-md transition-colors ${
                 on ? "bg-[rgba(250,247,244,0.2)]" : ""
