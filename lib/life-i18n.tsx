@@ -58,6 +58,7 @@ const DICT = {
   backToWorld: { zh: "回到世界", en: "Back to world" },
   backTo: { zh: "回到", en: "Back to " },
   fitAll: { zh: "全览", en: "Fit all" },
+  spin: { zh: "自转", en: "Spin" },
   start: { zh: "起点", en: "Start" },
   finish: { zh: "终点", en: "Finish" },
   points: { zh: "轨迹点", en: "Track points" },

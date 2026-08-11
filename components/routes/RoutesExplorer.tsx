@@ -19,14 +19,13 @@ import CityPanel from "./CityPanel";
 import RouteDetail from "./RouteDetail";
 import { DEFAULT_MIN_KM, fmtMonth, sortTracks, type Sort } from "./shared";
 
-// Leaflet 一加载就摸 window，静态导出时必须挡在服务端之外。
-// 两层地图都要这么引——世界层以前是张 svg 所以直接 import 也没事，
-// 换成 Leaflet 之后同样会在预渲染时炸。
+// 两层都得挡在服务端之外：Leaflet 一加载就摸 window，
+// 地球仪要量容器尺寸、还要 fetch 陆地数据。
 const placeholder = () => (
   <div className="flex-1 rounded-md border border-gray-200 bg-gray-50" />
 );
 const CityMap = dynamic(() => import("./CityMap"), { ssr: false, loading: placeholder });
-const WorldMap = dynamic(() => import("./WorldMap"), { ssr: false, loading: placeholder });
+const Globe = dynamic(() => import("./Globe"), { ssr: false, loading: placeholder });
 
 const UNIT = { zh: "条", one: "route", many: "routes" };
 
@@ -277,21 +276,7 @@ function Explorer({
 
             </CityMap>
           ) : (
-            <WorldMap
-              cities={cities}
-              active={hover}
-              onHover={setHover}
-              onPick={toCity}
-              fitToken={fitToken}
-            >
-              <button
-                type="button"
-                onClick={() => setFitToken((n) => n + 1)}
-                className="absolute right-3 top-3 z-[900] rounded-full border border-gray-200 bg-white px-3 py-1 text-[12.5px] text-gray-500 shadow-sm transition-colors hover:border-primary hover:text-primary"
-              >
-                {t("fitAll")}
-              </button>
-            </WorldMap>
+            <Globe cities={cities} active={hover} onHover={setHover} onPick={toCity} />
           )}
         </div>
 
