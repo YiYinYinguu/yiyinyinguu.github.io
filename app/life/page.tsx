@@ -5,7 +5,7 @@ import { siteConfig } from "@/config/site";
 import fs from "fs";
 import path from "path";
 import { getPostsByCategory } from "@/lib/life";
-import { getRouteCities } from "@/lib/routes";
+import { getPlacesSummary } from "@/lib/routes";
 
 export const metadata = {
   title: "Life - Lu Ying",
@@ -18,8 +18,9 @@ const TILT = [-1.2, 1.1, -0.5];
 
 export default function LifePage() {
   const { lifeCategories, lifeLinks } = siteConfig;
-  const routeCities = getRouteCities();
-  const routesMeta = `${routeCities.reduce((sum, c) => sum + c.n, 0)} routes · ${routeCities.length} cities`;
+  // 跟 Routes 页里的统计口径一致：那一页早就不只是骑行轨迹了
+  const routes = getPlacesSummary();
+  const routesMeta = `${routes.regions} countries · ${routes.places} places`;
 
   // markdown 板块和 Routes 这类构建时生成的板块，在这一层是一样的卡片，
   // 差别只在「几篇」怎么数——所以在这里就统一成 meta 一行字，下面不再分叉。

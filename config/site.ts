@@ -593,7 +593,10 @@ My research lies at the intersection of human–AI interaction, visualization, a
       emoji: "🚲",
       description: "Cycling, walking, and hiking tracks, city by city.",
       descriptionZh: "骑车和走路去过的地方，一座城市一张图。",
-      cover: "",  // TODO: 换成封面图
+      // 地球仪本身的截图。生成方式：本地跑 npm run build，起个静态服务器，
+      // 把 /life/routes 那一页的控件用 .z-10{display:none} 藏掉，
+      // 截图后按球心裁成方图。板块内容变了想更新封面就重来一遍。
+      cover: "/life/routes-cover.jpg",
     },
   ],
 
