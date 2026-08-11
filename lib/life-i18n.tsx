@@ -44,7 +44,10 @@ const DICT = {
 
 type Key = keyof typeof DICT;
 
+export type Unit = { zh: string; one: string; many: string };
+
 const LangContext = createContext<Lang>("en");
+const UnitContext = createContext<Unit>({ zh: "次", one: "bake", many: "bakes" });
 
 export function useLang() {
   return useContext(LangContext);
@@ -56,10 +59,30 @@ export function useT() {
   return (key: Key) => DICT[key][lang];
 }
 
-/** 一次 N 的说法差别不小：中文是「7 次」，英文得分单复数。 */
+// 板块的分类标签：烘焙分中西，手作分手艺。英文模式下要有对应的说法，
+// 没登记的标签原样显示，加新手艺时忘了登记也只是显示中文，不会出错。
+const KIND_EN: Record<string, string> = {
+  中式: "Chinese",
+  西式: "Western",
+  藤编: "Rattan",
+  钩针: "Crochet",
+  羊毛毡: "Needle felting",
+  木工: "Woodwork",
+  刺绣: "Embroidery",
+  手绘: "Drawing",
+};
+
+export function useKind() {
+  const lang = useLang();
+  return (kind: string) => (lang === "en" ? KIND_EN[kind] ?? kind : kind);
+}
+
+/** 「7 次」/「7 件」/ "7 bakes"：单位跟着板块走，英文还得分单复数。 */
 export function useCount() {
   const lang = useLang();
-  return (n: number) => (lang === "zh" ? `${n} 次` : `${n} ${n === 1 ? "bake" : "bakes"}`);
+  const unit = useContext(UnitContext);
+  return (n: number) =>
+    lang === "zh" ? `${n} ${unit.zh}` : `${n} ${n === 1 ? unit.one : unit.many}`;
 }
 
 export function useMonthLabel() {
@@ -90,8 +113,10 @@ export function useTitle() {
 }
 
 export function LangProvider({
+  unit,
   children,
 }: {
+  unit: Unit;
   children: (lang: Lang, setLang: (l: Lang) => void) => React.ReactNode;
 }) {
   // 静态导出的 HTML 是英文的，所以先渲染英文再按偏好切换，避免水合不一致
@@ -117,5 +142,9 @@ export function LangProvider({
     localStorage.setItem("life-lang", l);
   };
 
-  return <LangContext.Provider value={lang}>{children(lang, choose)}</LangContext.Provider>;
+  return (
+    <LangContext.Provider value={lang}>
+      <UnitContext.Provider value={unit}>{children(lang, choose)}</UnitContext.Provider>
+    </LangContext.Provider>
+  );
 }

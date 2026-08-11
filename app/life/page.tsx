@@ -6,7 +6,7 @@ import { getPostsByCategory } from "@/lib/life";
 
 export const metadata = {
   title: "Life - Lu Ying",
-  description: "Baking, knitting, and other things I make outside research.",
+  description: "Baking, handicraft, and other things I make outside research.",
 };
 
 // 每张封面斜一点，跟板块页里的拍立得一个脾气

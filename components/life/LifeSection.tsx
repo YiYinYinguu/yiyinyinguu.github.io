@@ -2,13 +2,26 @@
 
 import Link from "next/link";
 import JournalGrid from "./JournalGrid";
-import { LangProvider, type Lang } from "@/lib/life-i18n";
+import { LangProvider, type Lang, type Unit } from "@/lib/life-i18n";
 import type { LifePost } from "@/lib/life";
+
+// 跟 life-i18n 里那份一致；这里是服务端拼好的统计行，用不上 hook
+const KIND_EN: Record<string, string> = {
+  中式: "Chinese",
+  西式: "Western",
+  藤编: "Rattan",
+  钩针: "Crochet",
+  羊毛毡: "Needle felting",
+  木工: "Woodwork",
+  刺绣: "Embroidery",
+  手绘: "Drawing",
+};
 
 type Category = {
   id: string;
   name: string;
   nameZh: string;
+  unit: Unit;
   emoji: string;
   description: string;
   descriptionZh: string;
@@ -28,15 +41,17 @@ export default function LifeSection({
   stats: { total: number; from: string; to: string; kinds: Array<[string, number]> };
 }) {
   return (
-    <LangProvider>
+    <LangProvider unit={category.unit}>
       {(lang, setLang) => {
         const zh = lang === "zh";
+        const unit = zh ? category.unit.zh : stats.total === 1 ? category.unit.one : category.unit.many;
         const line = [
-          zh ? `${stats.total} 次` : `${stats.total} bakes`,
+          `${stats.total} ${unit}`,
           `${stats.from} — ${stats.to}`,
-          ...stats.kinds.map(([kind, n]) =>
-            zh ? `${kind} ${n}` : `${kind === "中式" ? "Chinese" : "Western"} ${n}`
-          ),
+          // 分类多了就只报个数，六种手艺一字排开太吵
+          ...(stats.kinds.length > 3
+            ? [zh ? `${stats.kinds.length} 种手艺` : `${stats.kinds.length} techniques`]
+            : stats.kinds.map(([kind, n]) => `${zh ? kind : KIND_EN[kind] ?? kind} ${n}`)),
         ];
 
         return (

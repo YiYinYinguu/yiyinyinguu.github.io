@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LifePost, Recipe } from "@/lib/life";
-import { useCount, useLang, useT, useTitle } from "@/lib/life-i18n";
+import { useCount, useKind, useLang, useT, useTitle } from "@/lib/life-i18n";
 import { readParams, writeParam } from "@/lib/url-state";
 import JournalStack from "./JournalStack";
 import CalendarView from "./CalendarView";
@@ -36,6 +36,7 @@ export default function JournalGrid({
   const t = useT();
   const lang = useLang();
   const title = useTitle();
+  const kindLabel = useKind();
   const [kind, setKind] = useState<string>("");
   const [dir, setDir] = useState<Dir>("new");
   const [often, setOften] = useState(false);
@@ -106,6 +107,12 @@ export default function JournalGrid({
       );
   }, [shown, inkOf]);
 
+  // 没有重复的作品就没什么可「按次数」排的，手作每件都是独一份
+  const hasRepeats = useMemo(
+    () => new Set(posts.map((p) => p.title)).size < posts.length,
+    [posts]
+  );
+
   // 换筛选、换排序时顺手关掉弹窗——那篇可能已经不在列表里了
   const pick = (k: string) => {
     setKind(k);
@@ -135,7 +142,7 @@ export default function JournalGrid({
         </Pill>
         {kinds.map((k) => (
           <Pill key={k} active={kind === k} onClick={() => pick(k)}>
-            {k === "中式" ? t("chinese") : k === "西式" ? t("western") : k}
+            {kindLabel(k)}
           </Pill>
         ))}
         {/* 排序只有列表和时间轴用得上：日历本身就是按时间铺的，
@@ -152,7 +159,7 @@ export default function JournalGrid({
             >
               {dir === "new" ? t("newestFirst") : t("oldestFirst")}
             </Pill>
-            {view === "list" && (
+            {view === "list" && hasRepeats && (
               <Pill
                 active={often}
                 onClick={() => {
@@ -323,6 +330,7 @@ function PostDialog({
   const t = useT();
   const lang = useLang();
   const title = useTitle();
+  const kindLabel = useKind();
   const [i, setI] = useState(0);
   const count = post.photos.length;
   const step = useCallback(
@@ -472,11 +480,7 @@ function PostDialog({
               style={{ color: ink }}
             >
               <span>{post.date.replace(/-/g, ".")}</span>
-              {post.kind && (
-                <span>
-                  · {post.kind === "中式" ? t("chinese") : t("western")}
-                </span>
-              )}
+              {post.kind && <span>· {kindLabel(post.kind)}</span>}
               {count > 1 && (
                 <span className="ml-auto">
                   {i + 1} / {count}

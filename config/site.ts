@@ -103,6 +103,7 @@ export interface SiteConfig {
     id: string;  // 目录名 & URL 段，如 "baking"
     name: string;  // 显示名，如 "Baking"
     nameZh: string;  // 中文模式下的名字
+    unit: { zh: string; one: string; many: string };  // 计数单位：烘焙论「次」，手作论「件」
     emoji: string;
     description: string;  // 一句话简介
     descriptionZh: string;
@@ -548,19 +549,21 @@ My research lies at the intersection of human–AI interaction, visualization, a
       id: "baking",
       name: "Baking",
       nameZh: "烘焙",
+      unit: { zh: "次", one: "bake", many: "bakes" },
       emoji: "🧁",
       description: "Cakes, breads, and sweet experiments from my kitchen.",
       descriptionZh: "厨房里的蛋糕、面包，和各种试验。",
       cover: "/life/baking/cover.jpg",
     },
     {
-      id: "knitting",
-      name: "Knitting",
-      nameZh: "编织",
+      id: "craft",
+      name: "Craft",
+      nameZh: "手作",
+      unit: { zh: "件", one: "piece", many: "pieces" },
       emoji: "🧶",
-      description: "Handmade sweaters, scarves, and yarn projects.",
-      descriptionZh: "手织的毛衣、围巾，和线团。",
-      cover: "/life/knitting/cover.svg",
+      description: "Rattan, crochet, felt, wood — things made by hand.",
+      descriptionZh: "藤编、钩针、羊毛毡、木工，一切用手做出来的东西。",
+      cover: "/life/craft/2025-07-13-sq.jpg",
     },
   ],
 
