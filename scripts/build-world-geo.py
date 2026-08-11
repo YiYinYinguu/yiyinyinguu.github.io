@@ -26,6 +26,10 @@ import urllib.request
 BASE = "https://raw.githubusercontent.com/vvoliucano/world.geo.json/master"
 SOURCE_COUNTRIES = f"{BASE}/countries.geo.json"
 SOURCE_SOUTH_SEA = f"{BASE}/south_china_sea.json"
+# 中国的轮廓单独取 DataV 那一份：它跟「去过的地方」那一层的省市边界同源，
+# 放大之后国境线和城市轮廓才对得上。用 110m 的那份会差两个数量级，
+# 缩着看不出来，一放大城市就明显浮在国境线外面。
+SOURCE_CHINA = "https://geo.datav.aliyun.com/areas_v3/bound/100000.json"
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "public", "routes", "land.json")
@@ -75,21 +79,29 @@ def simplify(points, eps):
     return [p for p, k in zip(points, keep) if k]
 
 
-def area(points):
-    """鞋带公式。只用来判断这个岛值不值得画，不必换算成真实面积。"""
+def signed_area(points):
+    """鞋带公式，带符号。正数是逆时针。"""
     total = 0
     for i in range(len(points) - 1):
         total += points[i][0] * points[i + 1][1] - points[i + 1][0] * points[i][1]
-    return abs(total) / 2
+    return total / 2
 
 
-def clean_ring(ring):
-    points = simplify([p[:2] for p in ring], EPSILON)
-    if len(points) < 4 or area(points) < MIN_AREA:
+def clean_ring(ring, outer=True, eps=EPSILON):
+    points = simplify([p[:2] for p in ring], eps)
+    if len(points) < 4:
         return None
     # 闭合环的首尾必须重合，抽稀之后补一下
     if points[0] != points[-1]:
         points.append(points[0])
+    signed = signed_area(points)
+    if abs(signed) < MIN_AREA:
+        return None
+    # d3-geo 的球面裁剪要求外环顺时针（经纬度平面上鞋带公式为负）、内环逆时针，
+    # 跟 RFC 7946 正好相反。方向反了的话这一块会被理解成
+    # 「除它之外的整个地球」，整个球涂满。两个数据源的绕向不一致，统一掰过来。
+    if (signed > 0) if outer else (signed < 0):
+        points.reverse()
     return [[round(x, PRECISION), round(y, PRECISION)] for x, y in points]
 
 
@@ -100,9 +112,18 @@ def clean_line(line):
 
 def main():
     countries = fetch(SOURCE_COUNTRIES)
+    china = fetch(SOURCE_CHINA)["features"]
 
+    # 换掉 110m 那份粗糙的中国，其余国家不动
+    swapped = [f for f in countries["features"] if f["properties"].get("name") != "China"]
+    swapped += china
+    print(f"中国换成 DataV 的轮廓（{len(countries['features'])} → {len(swapped)} 个要素）")
+
+    china_names = {"中华人民共和国"}
     features, dropped = [], 0
-    for feature in countries["features"]:
+    for feature in swapped:
+        # 中国是这张图的主角，容差给细一点，好跟城市那一层对得上
+        eps = EPSILON / 4 if feature["properties"].get("name") in china_names else EPSILON
         geometry = feature["geometry"]
         if geometry["type"] == "Polygon":
             polygons = [geometry["coordinates"]]
@@ -113,7 +134,7 @@ def main():
 
         kept = []
         for polygon in polygons:
-            rings = [clean_ring(ring) for ring in polygon]
+            rings = [clean_ring(r, i == 0, eps) for i, r in enumerate(polygon)]
             # 外环没了就整块丢掉；内环（湖）没了只是少个洞
             if rings and rings[0]:
                 kept.append([r for r in rings if r])
