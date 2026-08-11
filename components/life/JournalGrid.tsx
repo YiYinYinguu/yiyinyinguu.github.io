@@ -26,12 +26,20 @@ function decorate(posts: LifePost[]) {
   return posts.map((post, i) => ({ post, tilt: TILT[i % TILT.length] }));
 }
 
+const ALL_VIEWS = ["list", "calendar", "timeline"] as const;
+
 export default function JournalGrid({
   posts,
   category,
+  views = ALL_VIEWS,
+  kindFilter = true,
 }: {
   posts: LifePost[];
   category: string;
+  /** 板块可以只要其中几个视图：作品少的时候日历大半是空的 */
+  views?: readonly ("list" | "calendar" | "timeline")[];
+  /** 每件作品各属一类时，筛选按钮筛不出什么，不如不给 */
+  kindFilter?: boolean;
 }) {
   const t = useT();
   const lang = useLang();
@@ -48,9 +56,9 @@ export default function JournalGrid({
   useEffect(() => {
     const q = readParams();
     const v = q.get("view");
-    if (v === "calendar" || v === "timeline") setView(v);
+    if ((v === "calendar" || v === "timeline") && views.includes(v)) setView(v);
     const k = q.get("kind");
-    if (k && KIND[k]) setKind(KIND[k]);
+    if (kindFilter && k && KIND[k]) setKind(KIND[k]);
     const sort = q.get("sort");
     if (sort === "old") setDir("old");
     if (sort === "often") setOften(true);
@@ -68,10 +76,12 @@ export default function JournalGrid({
   // 排一下序，免得筛选按钮的先后跟着「哪篇最新」变来变去
   const kinds = useMemo(
     () =>
-      [
-        ...new Set(posts.map((p) => p.kind).filter((k): k is string => !!k)),
-      ].sort(),
-    [posts],
+      kindFilter
+        ? [
+            ...new Set(posts.map((p) => p.kind).filter((k): k is string => !!k)),
+          ].sort()
+        : [],
+    [posts, kindFilter],
   );
 
   // 每道菜的颜色按它头一次出现的位置定，筛选、排序都不会让它变色
@@ -123,28 +133,36 @@ export default function JournalGrid({
     <>
       <div className="flex flex-wrap items-center gap-2 mb-3">
         {/* 视图和筛选靠左钉住；排序推到右边，这样它出现或消失都不会挤动左边 */}
-        {(["list", "calendar", "timeline"] as const).map((v) => (
-          <Pill
-            key={v}
-            active={view === v}
-            onClick={() => {
-              setView(v);
-              if (v !== "list") setOften(false);
-              setOpen(null);
-            }}
-          >
-            {t(v)}
-          </Pill>
-        ))}
-        <span className="w-px h-5 bg-[#ded3b6] mx-1" />
-        <Pill active={!kind} onClick={() => pick("")}>
-          {t("all")}
-        </Pill>
-        {kinds.map((k) => (
-          <Pill key={k} active={kind === k} onClick={() => pick(k)}>
-            {kindLabel(k)}
-          </Pill>
-        ))}
+        {views.length > 1 &&
+          views.map((v) => (
+            <Pill
+              key={v}
+              active={view === v}
+              onClick={() => {
+                setView(v);
+                if (v !== "list") setOften(false);
+                setOpen(null);
+              }}
+            >
+              {t(v)}
+            </Pill>
+          ))}
+        {/* 只在两组按钮都在时才画分隔线 */}
+        {views.length > 1 && kinds.length > 0 && (
+          <span className="w-px h-5 bg-[#ded3b6] mx-1" />
+        )}
+        {kinds.length > 0 && (
+          <>
+            <Pill active={!kind} onClick={() => pick("")}>
+              {t("all")}
+            </Pill>
+            {kinds.map((k) => (
+              <Pill key={k} active={kind === k} onClick={() => pick(k)}>
+                {kindLabel(k)}
+              </Pill>
+            ))}
+          </>
+        )}
         {/* 排序只有列表和时间轴用得上：日历本身就是按时间铺的，
             「最多次做」更是只有列表在按菜名分组时才有意义 */}
         {view !== "calendar" && (

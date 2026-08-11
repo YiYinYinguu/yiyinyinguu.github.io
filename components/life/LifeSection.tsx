@@ -15,6 +15,7 @@ const KIND_EN: Record<string, string> = {
   木工: "Woodwork",
   刺绣: "Embroidery",
   手绘: "Drawing",
+  三维: "3D",
 };
 
 type Category = {
@@ -22,6 +23,8 @@ type Category = {
   name: string;
   nameZh: string;
   unit: Unit;
+  views?: Array<"list" | "calendar" | "timeline">;
+  kindFilter?: boolean;
   emoji: string;
   description: string;
   descriptionZh: string;
@@ -98,7 +101,12 @@ export default function LifeSection({
             </div>
 
             <div className="mt-6">
-              <JournalGrid posts={posts} category={category.id} />
+              <JournalGrid
+                posts={posts}
+                category={category.id}
+                views={category.views}
+                kindFilter={category.kindFilter}
+              />
             </div>
           </>
         );

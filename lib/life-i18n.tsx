@@ -70,6 +70,7 @@ const KIND_EN: Record<string, string> = {
   木工: "Woodwork",
   刺绣: "Embroidery",
   手绘: "Drawing",
+  三维: "3D",
 };
 
 export function useKind() {

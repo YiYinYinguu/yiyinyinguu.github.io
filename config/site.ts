@@ -104,6 +104,8 @@ export interface SiteConfig {
     name: string;  // 显示名，如 "Baking"
     nameZh: string;  // 中文模式下的名字
     unit: { zh: string; one: string; many: string };  // 计数单位：烘焙论「次」，手作论「件」
+    views?: Array<"list" | "calendar" | "timeline">;  // 不写就是三个都给
+    kindFilter?: boolean;  // 分类筛选按钮，不写就是给
     emoji: string;
     description: string;  // 一句话简介
     descriptionZh: string;
@@ -560,6 +562,9 @@ My research lies at the intersection of human–AI interaction, visualization, a
       name: "Craft",
       nameZh: "手作",
       unit: { zh: "件", one: "piece", many: "pieces" },
+      // 七件作品铺不满日历，六种手艺配七件作品也筛不出什么
+      views: ["list", "timeline"],
+      kindFilter: false,
       emoji: "🧶",
       description: "Rattan, crochet, felt, wood — things made by hand.",
       descriptionZh: "藤编、钩针、羊毛毡、木工，一切用手做出来的东西。",
