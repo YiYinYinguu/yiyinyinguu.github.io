@@ -106,7 +106,7 @@ export default async function LifePostPage({
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="max-w-3xl mx-auto px-6 py-10">
+      <main className="max-w-3xl mx-auto px-4 py-8 sm:px-6 sm:py-10">
         <Link href={`/life/${category}/`} className="text-sm text-gray-500 hover:text-primary">
           ← {cat.name}
         </Link>
@@ -115,7 +115,7 @@ export default async function LifePostPage({
           {cat.emoji} {post.date}
         </p>
         {post.cover && (
-          <div className="relative w-full h-72 mb-8 rounded-xl overflow-hidden bg-gray-50">
+          <div className="relative w-full h-56 sm:h-72 mb-8 rounded-xl overflow-hidden bg-gray-50">
             <Image
               src={post.cover}
               alt={post.title}

@@ -40,7 +40,7 @@ export default function CityMap({
   fitToken,
   children,
 }: Props) {
-  const { box, map, layer, fitTo } = useLeafletMap();
+  const { box, map, layer, fitTo, ready } = useLeafletMap();
   const lines = useRef(new Map<string, L.Polyline>());
   // 最新的回调放进 ref，这样地图上的事件处理器不用跟着重新绑定。
   // kindLabel 也在里面：它每次渲染都是个新函数，进了依赖就会让画线的 effect
@@ -63,7 +63,7 @@ export default function CityMap({
   useEffect(() => {
     const m = map.current;
     const g = layer.current;
-    if (!m || !g) return;
+    if (!ready || !m || !g) return;
 
     g.clearLayers();
     lines.current.clear();
@@ -130,7 +130,7 @@ export default function CityMap({
       fitted.current = fitKey;
       applyFit();
     }
-  }, [tracks, minKm, focus, context, fitKey, applyFit]);
+  }, [tracks, minKm, focus, context, fitKey, applyFit, ready]);
 
   // 「全览」：把用户拖乱的画面拉回这一层该有的范围
   useEffect(() => {

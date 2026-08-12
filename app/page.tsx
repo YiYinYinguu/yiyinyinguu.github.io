@@ -14,7 +14,7 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       <Header />
 
-      <div className="px-4 py-8">
+      <div className="px-4 py-6 sm:py-8">
         <div className="max-w-6xl mx-auto flex gap-8 relative">
           {/* Sidebar */}
           <aside className="w-full md:w-1/5 flex-shrink-0 hidden md:block">
@@ -25,6 +25,10 @@ export default function Home() {
 
           {/* Content Area */}
           <div className="w-full md:w-4/5 space-y-8">
+            {/* 桌面侧栏在手机上收成横向个人卡，关键信息不能跟着侧栏一起消失。 */}
+            <div className="md:hidden">
+              <Sidebar compact />
+            </div>
             {/* About Section */}
             <section id="about" className="scroll-mt-20">
               <AboutSection />

@@ -234,11 +234,11 @@ export default function JournalGrid({
                       e.preventDefault();
                       setOpen(posts.indexOf(post));
                     }}
-                    className="group flex gap-4 items-start"
+                    className="group flex flex-col gap-4 min-[390px]:flex-row items-start"
                   >
                     {img && (
                       <div
-                        className="flex-shrink-0 w-[150px] sm:w-[178px] bg-white rounded-[2px] p-[10px] pb-8 shadow-[0_3px_10px_rgba(90,70,40,0.22)] transition-transform duration-300 group-hover:scale-[1.03] group-hover:rotate-0"
+                        className="mx-auto w-[178px] flex-shrink-0 bg-white rounded-[2px] p-[10px] pb-8 shadow-[0_3px_10px_rgba(90,70,40,0.22)] transition-transform duration-300 group-hover:scale-[1.03] group-hover:rotate-0 min-[390px]:mx-0"
                         style={{ transform: `rotate(${tilt}deg)` }}
                       >
                         <Image
@@ -246,13 +246,13 @@ export default function JournalGrid({
                           alt={post.title}
                           width={700}
                           height={700}
-                          sizes="(max-width: 640px) 45vw, 178px"
+                          sizes="178px"
                           className="block w-full aspect-square object-cover bg-gray-100"
                         />
                       </div>
                     )}
                     {/* 高度对齐拍立得外框：图是正方形，加上 10px 内边距和 32px 下沿 */}
-                    <div className="flex-1 min-w-0 border border-[#e0d3a8] rounded-[3px] px-3.5 py-3.5 min-h-[172px] sm:min-h-[200px] flex flex-col">
+                    <div className="min-h-[150px] w-full flex-1 min-w-0 border border-[#e0d3a8] rounded-[3px] px-3.5 py-3.5 min-[390px]:min-h-[200px] flex flex-col">
                       <div>
                         <span
                           className={`journal-hand inline text-white leading-[1.75] px-2.5 py-[2px] rounded-[3px] box-decoration-clone ${
@@ -429,11 +429,11 @@ function PostDialog({
               <img
                 src={post.photos[i]}
                 alt={`${title(post)} ${i + 1}/${count}`}
-                className="block max-h-[58vh] w-auto max-w-[260px] sm:max-w-[300px] bg-gray-100"
+                className="block max-h-[58vh] w-auto max-w-[calc(100vw-7rem)] bg-gray-100 sm:max-w-[300px]"
               />
             </button>
             {count > 1 && (
-              <div className="flex flex-wrap gap-2 mt-3 max-w-[286px] sm:max-w-[326px]">
+              <div className="flex max-w-[calc(100vw-5.5rem)] flex-wrap gap-2 mt-3 sm:max-w-[326px]">
                 {post.photos.map((p, k) => (
                   <button
                     key={p}

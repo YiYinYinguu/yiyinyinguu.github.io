@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { PINCH_PER_PX } from "./shared";
@@ -15,6 +15,9 @@ export function useLeafletMap(options?: { minZoom?: number; world?: boolean }) {
   const box = useRef<HTMLDivElement>(null);
   const map = useRef<L.Map | null>(null);
   const layer = useRef<L.LayerGroup | null>(null);
+  // ref 写入不会触发调用方重渲染。城市路线可能比 Leaflet 更早到货，
+  // 必须用 state 明确通知「地图和图层都已就绪」，否则那次画线会被永久错过。
+  const [ready, setReady] = useState(false);
   /** 容器尺寸还没稳定时反复用的取景范围。用户一动手就置空，之后不再自动取景 */
   const wanted = useRef<{ b: L.LatLngBounds; p: L.PointTuple } | null>(null);
 
@@ -86,6 +89,7 @@ export function useLeafletMap(options?: { minZoom?: number; world?: boolean }) {
 
     map.current = m;
     layer.current = L.layerGroup().addTo(m);
+    setReady(true);
 
     return () => {
       observer.disconnect();
@@ -93,6 +97,7 @@ export function useLeafletMap(options?: { minZoom?: number; world?: boolean }) {
       m.remove();
       map.current = null;
       layer.current = null;
+      setReady(false);
     };
     // options 只在挂载时读一次，改它不该导致地图重建
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -107,5 +112,5 @@ export function useLeafletMap(options?: { minZoom?: number; world?: boolean }) {
     m.fitBounds(bounds, { padding, animate: false });
   }, []);
 
-  return { box, map, layer, fitTo };
+  return { box, map, layer, fitTo, ready };
 }

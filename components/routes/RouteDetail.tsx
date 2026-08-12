@@ -67,7 +67,7 @@ export default function RouteDetail({
           type="button"
           disabled={!prev}
           onClick={() => prev && onPick(prev)}
-          className="flex-1 justify-center rounded-full border border-gray-200 px-3 py-[3px] text-[12.5px] text-gray-500 transition-colors hover:border-primary hover:text-primary disabled:pointer-events-none disabled:opacity-40"
+          className="min-h-10 flex-1 justify-center rounded-full border border-gray-200 px-3 py-[3px] text-[12.5px] text-gray-500 transition-colors hover:border-primary hover:text-primary disabled:pointer-events-none disabled:opacity-40 sm:min-h-0"
         >
           ‹ {t("prevRoute")}
         </button>
@@ -75,7 +75,7 @@ export default function RouteDetail({
           type="button"
           disabled={!next}
           onClick={() => next && onPick(next)}
-          className="flex-1 justify-center rounded-full border border-gray-200 px-3 py-[3px] text-[12.5px] text-gray-500 transition-colors hover:border-primary hover:text-primary disabled:pointer-events-none disabled:opacity-40"
+          className="min-h-10 flex-1 justify-center rounded-full border border-gray-200 px-3 py-[3px] text-[12.5px] text-gray-500 transition-colors hover:border-primary hover:text-primary disabled:pointer-events-none disabled:opacity-40 sm:min-h-0"
         >
           {t("nextRoute")} ›
         </button>

@@ -112,11 +112,11 @@ export default function JournalStack({
       onClick={() => (single ? onOpen(posts[0]) : setOpen(true))}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}
-      className="flex gap-4 items-start text-left"
+      className="flex w-full flex-col gap-4 text-left min-[390px]:flex-row min-[390px]:items-start"
     >
       {/* 高度留够最深那张错出去的距离，不然摊开时会被裁掉 */}
       <div
-        className="relative flex-shrink-0"
+        className="relative mx-auto flex-shrink-0 min-[390px]:mx-0"
         style={{ width: CARD, height: CARD + 22 + (single ? 0 : HOVER.y * (PEEK - 1)) }}
       >
         {posts.slice(0, PEEK).map((post, i) => (
@@ -144,7 +144,7 @@ export default function JournalStack({
         ))}
       </div>
 
-      <div className="flex-1 min-w-0 border border-[#e0d3a8] rounded-[3px] px-3.5 py-3.5 min-h-[200px] flex flex-col">
+      <div className="min-h-[150px] w-full flex-1 min-w-0 border border-[#e0d3a8] rounded-[3px] px-3.5 py-3.5 min-[390px]:min-h-[200px] flex flex-col">
         <div>{label}</div>
         {!single && (
           <p className="journal-hand text-lg mt-3" style={{ color: ink }}>

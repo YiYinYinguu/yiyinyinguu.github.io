@@ -182,7 +182,7 @@ function Explorer({
 
   return (
     <>
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
         <div>
           {/* 标题本身就是面包屑，每一级都点得回去 */}
           <h1 className="mb-1 flex flex-wrap items-center gap-2 text-2xl font-bold text-gray-900">
@@ -242,7 +242,7 @@ function Explorer({
         </div>
 
         {/* 跟 Life 其他板块同一种写法：当前的深色，另一个是链接 */}
-        <div className="flex-shrink-0 pt-1 text-sm">
+        <div className="flex-shrink-0 text-sm sm:pt-1">
           {(["en", "zh"] as Lang[]).map((l, i) => (
             <span key={l}>
               {i > 0 && <span className="mx-2 text-gray-300">/</span>}
@@ -264,7 +264,7 @@ function Explorer({
       {/* 三层同高，切换时版面不跳。两层都是 Leaflet，瓦片自己会填满容器，
           所以高度直接写死就行——不像之前那张手画的 svg，得让容器去迁就它的比例。 */}
       <div className="mt-5 grid items-stretch gap-[22px] md:grid-cols-[1.45fr_272px]">
-        <div className="flex h-[380px] flex-col md:h-[500px]">
+        <div className="flex h-[350px] flex-col min-[390px]:h-[380px] md:h-[500px]">
           {city ? (
             <CityMap
               tracks={visible}
@@ -279,18 +279,18 @@ function Explorer({
               fitToken={fitToken}
             >
               {/* 右下角是地图的版权文字，按钮都放右上 */}
-              <div className="absolute right-3 top-3 z-[900] flex gap-2">
+              <div className="absolute right-2 top-2 z-[900] flex max-w-[calc(100%-1rem)] flex-wrap justify-end gap-1.5 sm:right-3 sm:top-3 sm:gap-2">
                 <button
                   type="button"
                   onClick={() => setFitToken((n) => n + 1)}
-                  className="rounded-full border border-gray-200 bg-white px-3 py-1 text-[12.5px] text-gray-500 shadow-sm transition-colors hover:border-primary hover:text-primary"
+                  className="min-h-9 rounded-full border border-gray-200 bg-white px-3 py-1 text-[12.5px] text-gray-500 shadow-sm transition-colors hover:border-primary hover:text-primary"
                 >
                   {t("fitAll")}
                 </button>
                 <button
                   type="button"
                   onClick={route ? () => setRouteId(null) : toWorld}
-                  className="rounded-full border border-gray-200 bg-white px-3 py-1 text-[12.5px] text-gray-500 shadow-sm transition-colors hover:border-primary hover:text-primary"
+                  className="min-h-9 rounded-full border border-gray-200 bg-white px-3 py-1 text-[12.5px] text-gray-500 shadow-sm transition-colors hover:border-primary hover:text-primary"
                 >
                   ← {route ? `${t("backTo")}${cityName}` : t("backToWorld")}
                 </button>

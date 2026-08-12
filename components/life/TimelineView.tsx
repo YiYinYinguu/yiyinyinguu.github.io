@@ -52,7 +52,7 @@ export default function TimelineView({
   if (months.length === 0) return null;
 
   return (
-    <div className="journal-paper rounded-lg px-5 py-6 sm:px-7 sm:py-8">
+    <div className="journal-paper rounded-lg px-3 py-5 sm:px-7 sm:py-8">
       {months.map(({ month, list }, i) => {
         // 跟上一行之间隔了几个没做的月份
         const prev = months[i - 1];
@@ -63,8 +63,8 @@ export default function TimelineView({
         return (
           <div key={month}>
             {newYear && (
-              <div className="flex items-center gap-4 pt-6 pb-1 first:pt-0">
-                <div className="w-[86px] flex-shrink-0 text-right">
+              <div className="flex items-center gap-2 pt-6 pb-1 first:pt-0 sm:gap-4">
+                <div className="w-[58px] flex-shrink-0 text-right sm:w-[86px]">
                   <span className="journal-hand text-2xl text-[#7a5f3a]">
                     {month.slice(0, 4)}
                   </span>
@@ -73,8 +73,8 @@ export default function TimelineView({
               </div>
             )}
             {gap > 0 && (
-              <div className="flex gap-4">
-                <div className="w-[86px] flex-shrink-0" />
+              <div className="flex gap-2 sm:gap-4">
+                <div className="w-[58px] flex-shrink-0 sm:w-[86px]" />
                 <div className="w-px border-l border-dashed border-[#d8c48f] min-h-[34px]" />
                 <span className="journal-hand text-sm font-medium text-[#9a8a63] self-center">
                   {gapLabel(gap)}
@@ -82,8 +82,8 @@ export default function TimelineView({
               </div>
             )}
 
-            <div className="flex gap-4 items-start py-2.5">
-              <div className="w-[86px] flex-shrink-0 text-right pt-1.5">
+            <div className="flex gap-2 items-start py-2.5 sm:gap-4">
+              <div className="w-[58px] flex-shrink-0 text-right pt-1.5 sm:w-[86px]">
                 <b className="journal-hand block text-xl font-normal text-[#7a5f3a]">
                   {monthOnly(month)}
                 </b>
@@ -113,7 +113,7 @@ export default function TimelineView({
                       width={700}
                       height={700}
                       sizes="168px"
-                      className="block w-[130px] h-[130px] sm:w-[168px] sm:h-[168px] object-cover bg-gray-100"
+                    className="block w-[112px] h-[112px] min-[390px]:w-[130px] min-[390px]:h-[130px] sm:w-[168px] sm:h-[168px] object-cover bg-gray-100"
                     />
                     <span className="journal-hand absolute inset-x-0 bottom-1 text-sm text-[#8a7355] truncate px-2">
                       {dishName(post)}

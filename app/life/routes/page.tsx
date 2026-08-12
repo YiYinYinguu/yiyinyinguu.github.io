@@ -20,7 +20,7 @@ export default function RoutesPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="px-4 py-10">
+      <main className="px-4 py-8 sm:py-10">
         <div className="mx-auto max-w-6xl">
           {cities.length === 0 ? (
             // 数据是 scripts/build-routes.py 生成的，没跑过脚本就什么都没有

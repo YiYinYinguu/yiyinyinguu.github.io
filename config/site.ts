@@ -20,7 +20,6 @@ export interface SiteConfig {
     department: string;
     university: string;
     profileImage: string;
-    bannerImage: string;
     researchInterests?: string[];
   };
 
@@ -161,7 +160,6 @@ export const siteConfig: SiteConfig = {
     department: "Department of Geography",
     university: "National University of Singapore",
     profileImage: "/images/profile.jpg",
-    bannerImage: "/images/banner.png",
     researchInterests: [
       "Data Visualization 📊",
       "Human-Computer Interaction 🖥",
@@ -568,7 +566,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       emoji: "🧁",
       description: "Cakes, breads, and sweet experiments from my kitchen.",
       descriptionZh: "厨房里的蛋糕、面包，和各种试验。",
-      cover: "/life/baking/cover.jpg",
+      cover: "/life/baking-editorial-cover.png",
     },
     {
       id: "craft",
@@ -581,7 +579,7 @@ My research lies at the intersection of human–AI interaction, visualization, a
       emoji: "🧶",
       description: "Rattan, crochet, felt, wood — things made by hand.",
       descriptionZh: "藤编、钩针、羊毛毡、木工，一切用手做出来的东西。",
-      cover: "/life/craft/2022-11-05-sq.jpg",
+      cover: "/life/craft-editorial-cover.png",
     },
   ],
 

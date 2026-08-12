@@ -13,8 +13,8 @@ export default function NewsSection() {
       <h2 className="text-2xl font-bold text-gray-900 mb-4">📰 News</h2>
       <div className="space-y-3">
         {news.map((item) => (
-          <div key={item.id} className="flex gap-4 items-center">
-            <div className="flex-shrink-0 w-20 text-s text-gray-500 text-right">
+          <div key={item.id} className="flex flex-col gap-1 sm:flex-row sm:gap-4 sm:items-start">
+            <div className="flex-shrink-0 text-xs text-gray-500 sm:w-20 sm:text-right sm:pt-0.5">
               {item.date}
             </div>
             <div className="flex-1 prose prose-sm max-w-none">

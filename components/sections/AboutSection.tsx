@@ -8,8 +8,8 @@ export default function AboutSection() {
   return (
     <div>
       {/* Title */}
-      <div className="mb-6 flex items-baseline gap-2">
-        <h2 className="text-4xl font-alegreya font-semibold text-gray-900">
+      <div className="mb-6 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+        <h2 className="text-3xl sm:text-4xl font-alegreya font-semibold text-gray-900">
           👋🏻 Hi, I am Lu Ying
         </h2>
         <span className="font-pingfang text-gray-500 text-lg">

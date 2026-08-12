@@ -10,7 +10,7 @@ export default function PublicationsPage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="max-w-5xl mx-auto px-6 py-10">
+      <main className="max-w-5xl mx-auto px-4 py-8 sm:px-6 sm:py-10">
         <h1 className="text-2xl font-bold text-gray-900 mb-8 flex items-center gap-2">
           <span>📑</span>
           <span>Publications</span>

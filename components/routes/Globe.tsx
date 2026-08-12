@@ -529,7 +529,7 @@ export default function Globe({
 
       {/* 缩放按钮。触控板捏合当然也行，但鼠标用户没有捏合这个手势，
           而且有明确的按钮，第一次进来才知道这球是能放大的。 */}
-      <div className="absolute left-3 top-3 z-10 flex flex-col overflow-hidden rounded-md border border-gray-200 bg-white shadow-sm">
+      <div className="absolute left-2 top-2 z-10 flex flex-col overflow-hidden rounded-md border border-gray-200 bg-white shadow-sm sm:left-3 sm:top-3">
         {[
           { label: "+", by: 1.5, title: t("zoomIn") },
           { label: "−", by: 1 / 1.5, title: t("zoomOut") },
@@ -546,7 +546,7 @@ export default function Globe({
               );
               draw();
             }}
-            className={`h-7 w-7 text-[15px] leading-none text-gray-500 transition-colors hover:bg-gray-50 hover:text-primary ${
+            className={`h-9 w-9 text-[15px] leading-none text-gray-500 transition-colors hover:bg-gray-50 hover:text-primary sm:h-7 sm:w-7 ${
               i > 0 ? "border-t border-gray-200" : ""
             }`}
           >
@@ -555,7 +555,7 @@ export default function Globe({
         ))}
       </div>
 
-      <div className="absolute right-3 top-3 z-10 flex gap-2">
+      <div className="absolute left-12 right-2 top-2 z-10 flex flex-wrap justify-end gap-1 sm:left-auto sm:right-3 sm:top-3 sm:gap-2">
         {/* 去过的地方看到哪一级 */}
         <div className="flex overflow-hidden rounded-full border border-gray-200 bg-white shadow-sm">
           {([
@@ -567,7 +567,7 @@ export default function Globe({
               type="button"
               onClick={() => setGrain(o.id)}
               aria-pressed={grain === o.id}
-              className={`px-3 py-1 text-[12.5px] transition-colors ${i > 0 ? "border-l border-gray-200" : ""} ${
+              className={`min-h-9 px-2.5 py-1 text-[11.5px] transition-colors sm:min-h-0 sm:px-3 sm:text-[12.5px] ${i > 0 ? "border-l border-gray-200" : ""} ${
                 grain === o.id ? "bg-primary text-white" : "text-gray-500 hover:text-primary"
               }`}
             >
@@ -580,7 +580,7 @@ export default function Globe({
           type="button"
           onClick={() => setShowArcs((on) => !on)}
           aria-pressed={showArcs}
-          className={`rounded-full border px-3 py-1 text-[12.5px] shadow-sm transition-colors ${
+          className={`min-h-9 rounded-full border px-2.5 py-1 text-[11.5px] shadow-sm transition-colors sm:min-h-0 sm:px-3 sm:text-[12.5px] ${
             showArcs
               ? "border-primary bg-primary text-white"
               : "border-gray-200 bg-white text-gray-500 hover:border-primary hover:text-primary"
@@ -591,7 +591,7 @@ export default function Globe({
         <button
           type="button"
           onClick={() => setSpinning((on) => !on)}
-          className="rounded-full border border-gray-200 bg-white px-3 py-1 text-[12.5px] text-gray-500 shadow-sm transition-colors hover:border-primary hover:text-primary"
+          className="min-h-9 rounded-full border border-gray-200 bg-white px-2.5 py-1 text-[11.5px] text-gray-500 shadow-sm transition-colors hover:border-primary hover:text-primary sm:min-h-0 sm:px-3 sm:text-[12.5px]"
         >
           {t("spin")} <span className="text-[11px]">{spinning ? "⏸" : "▶"}</span>
         </button>
@@ -603,7 +603,7 @@ export default function Globe({
             setSpinning(true);
             draw();
           }}
-          className="rounded-full border border-gray-200 bg-white px-3 py-1 text-[12.5px] text-gray-500 shadow-sm transition-colors hover:border-primary hover:text-primary"
+          className="min-h-9 rounded-full border border-gray-200 bg-white px-2.5 py-1 text-[11.5px] text-gray-500 shadow-sm transition-colors hover:border-primary hover:text-primary sm:min-h-0 sm:px-3 sm:text-[12.5px]"
         >
           {t("fitAll")}
         </button>

@@ -88,9 +88,9 @@ export default function EducationExperience() {
         <div className="space-y-6">
           {education.map((edu) => (
             <div key={edu.id} className="pb-6 border-b border-gray-200">
-              <div className="flex gap-4 items-center">
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-2 sm:flex sm:gap-4 sm:items-center">
                 {/* Period & Location (Left) */}
-                <div className="flex-shrink-0 w-36 text-sm text-gray-500 space-y-1">
+                <div className="flex-shrink-0 text-sm text-gray-500 space-y-1 sm:w-36">
                   <div>{edu.period}</div>
                   <div className="flex items-center gap-1">
                     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -102,7 +102,7 @@ export default function EducationExperience() {
                 </div>
 
                 {/* Content (Center) */}
-                <div className="flex-1 min-w-0">
+                <div className="col-span-2 min-w-0 sm:flex-1">
                   <h3 className="text-lg font-semibold text-gray-900 mb-1">
                     {edu.degree}
                   </h3>
@@ -123,7 +123,7 @@ export default function EducationExperience() {
                     alt={edu.institution}
                     width={150}
                     height={150}
-                    className="flex-shrink-0 object-contain"
+                    className="col-start-2 row-start-1 h-12 w-20 flex-shrink-0 object-contain object-right sm:h-[150px] sm:w-[150px] sm:object-center"
                   />
                 )}
               </div>
@@ -140,10 +140,12 @@ export default function EducationExperience() {
         </h2>
 
         <div ref={wrap} className="relative" onMouseLeave={() => connect(null, null)}>
-          <ExperienceGlobe items={experience} active={city} />
+          <div className="hidden sm:block">
+            <ExperienceGlobe items={experience} active={city} />
+          </div>
 
           {/* 引导线画在条目上面，但不接收鼠标，否则会打断悬停 */}
-          <svg className="absolute inset-0 w-full h-full pointer-events-none z-20">
+          <svg className="absolute inset-0 hidden w-full h-full pointer-events-none z-20 sm:block">
             <path
               d={lead}
               fill="none"
@@ -170,10 +172,10 @@ export default function EducationExperience() {
                 on ? "bg-[rgba(250,247,244,0.2)]" : ""
               }`}
             >
-              <div className="flex gap-4 items-center">
+              <div className="grid grid-cols-[minmax(0,1fr)_auto] gap-x-3 gap-y-2 sm:flex sm:gap-4 sm:items-center">
                 {/* Period & Location (Left) */}
                 <div
-                  className={`flex-shrink-0 w-36 text-sm space-y-1 transition-colors ${
+                  className={`flex-shrink-0 text-sm space-y-1 transition-colors sm:w-36 ${
                     on ? "text-primary" : "text-gray-500"
                   }`}
                 >
@@ -188,7 +190,7 @@ export default function EducationExperience() {
                 </div>
 
                 {/* Content (Center) */}
-                <div className="flex-1 min-w-0">
+                <div className="col-span-2 min-w-0 sm:flex-1">
                   <h3
                     className={`text-lg font-semibold mb-1 transition-colors ${
                       on ? "text-primary" : "text-gray-900"
@@ -213,7 +215,7 @@ export default function EducationExperience() {
                     alt={exp.institution}
                     width={100}
                     height={100}
-                    className="flex-shrink-0 object-contain"
+                    className="col-start-2 row-start-1 h-12 w-20 flex-shrink-0 object-contain object-right sm:h-[100px] sm:w-[100px] sm:object-center"
                   />
                 )}
               </div>

@@ -59,7 +59,7 @@ export default function LifeSection({
 
         return (
           <>
-            <div className="flex items-start justify-between gap-4">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
               <div>
                 {/* 标题本身就是面包屑：Life 点回总览，后半截是当前这页 */}
                 <h1 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
@@ -79,7 +79,7 @@ export default function LifeSection({
               </div>
 
               {/* 跟标题里的 Life / Baking 同一种写法：当前的深色，另一个是链接 */}
-              <div className="flex-shrink-0 text-sm pt-1">
+              <div className="flex-shrink-0 text-sm sm:pt-1">
                 {(["en", "zh"] as Lang[]).map((l, i) => (
                   <span key={l}>
                     {i > 0 && <span className="mx-2 text-gray-300">/</span>}

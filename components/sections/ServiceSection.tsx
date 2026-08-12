@@ -41,8 +41,8 @@ export default function ServiceSection() {
         <h3 className="text-xl font-bold text-gray-900 mb-3">Community Service</h3>
         <div className="space-y-3">
           {service.communityService.map((item) => (
-            <div key={item.id} className="flex gap-4 items-start">
-              <div className="flex-shrink-0 w-24 text-sm text-gray-500">
+            <div key={item.id} className="flex flex-col gap-1 sm:flex-row sm:gap-4 sm:items-start">
+              <div className="flex-shrink-0 text-sm text-gray-500 sm:w-24">
                 {item.period}
               </div>
               <div className="flex-1">

@@ -19,7 +19,7 @@ function Chip({
       type="button"
       onClick={onClick}
       aria-pressed={on}
-      className={`inline-flex items-center gap-[5px] rounded-full border px-3 py-[3px] text-[12.5px] transition-colors ${
+      className={`inline-flex min-h-9 items-center gap-[5px] rounded-full border px-3 py-[3px] text-[12.5px] transition-colors sm:min-h-0 ${
         on
           ? "border-primary bg-primary text-white"
           : "border-gray-200 text-gray-500 hover:border-primary hover:text-primary"

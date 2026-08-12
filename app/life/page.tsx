@@ -14,12 +14,6 @@ export const metadata = {
 // 三个角度而不是两个：一行三张的时候，两个值会让首尾歪成一样的，像模板
 const TILT = [-1.2, 1.1, -0.5];
 
-// 三个 Life 板块使用同一套手作编辑封面。
-const EDITORIAL_COVERS: Record<string, string> = {
-  baking: "/life/baking-editorial-cover.png",
-  craft: "/life/craft-editorial-cover.png",
-};
-
 export default function LifePage() {
   const { lifeCategories, lifeLinks } = siteConfig;
   // 跟 Routes 页里的统计口径一致：那一页早就不只是骑行轨迹了
@@ -36,7 +30,7 @@ export default function LifePage() {
         name: cat.name,
         emoji: cat.emoji,
         description: cat.description,
-        cover: EDITORIAL_COVERS[cat.id] ?? cat.cover,
+        cover: cat.cover,
         meta: `${count} ${count === 1 ? "post" : "posts"}`,
       };
     }),
@@ -55,7 +49,7 @@ export default function LifePage() {
   return (
     <div className="min-h-screen bg-white">
       <Header />
-      <main className="px-4 py-10">
+      <main className="px-4 py-8 sm:py-10">
         <div className="max-w-6xl mx-auto">
         <h1 className="text-2xl font-bold text-gray-900 mb-2 flex items-center gap-2">
           <span>🌿</span>
@@ -63,7 +57,7 @@ export default function LifePage() {
         </h1>
         <p className="text-gray-600">Things I make and love outside research.</p>
 
-        <div className="journal-paper rounded-lg p-5 sm:p-7 mt-6">
+        <div className="journal-paper rounded-lg p-4 sm:p-7 mt-6">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 items-stretch">
               {cards.map((card, i) => (
                   <Link key={card.href} href={card.href} className="group block h-full">

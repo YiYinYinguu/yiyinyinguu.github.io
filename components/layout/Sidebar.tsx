@@ -3,8 +3,45 @@
 import Image from "next/image";
 import { siteConfig } from "@/config/site";
 
-export default function Sidebar() {
+export default function Sidebar({ compact = false }: { compact?: boolean }) {
   const { profile, social } = siteConfig;
+
+  if (compact) {
+    return (
+      <aside className="rounded-lg border border-gray-200 bg-gray-50/70 p-4">
+        <div className="flex items-center gap-4">
+          <div className="relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-lg border-2 border-white bg-gray-200 shadow-sm">
+            <Image src={profile.profileImage} alt={profile.name} fill className="object-cover" priority />
+          </div>
+          <div className="min-w-0 text-sm leading-5">
+            <p className="font-semibold text-gray-900">{profile.title}</p>
+            <p className="mt-1 text-gray-600">{profile.department}</p>
+            <p className="text-gray-600">{profile.university}</p>
+            <a href={`mailto:${profile.email}`} className="mt-2 block break-all text-primary hover:underline">
+              {profile.email}
+            </a>
+          </div>
+        </div>
+
+        {profile.researchInterests && (
+          <div className="mt-4 flex flex-wrap gap-1.5">
+            {profile.researchInterests.map((interest) => (
+              <span key={interest} className="rounded-full bg-white px-2.5 py-1 text-xs font-medium text-gray-700 ring-1 ring-gray-200">
+                {interest}
+              </span>
+            ))}
+          </div>
+        )}
+
+        <nav className="mt-4 flex flex-wrap gap-x-5 gap-y-2 border-t border-gray-200 pt-3 text-sm font-medium">
+          <a href={social.googleScholar} target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-primary">Google Scholar ↗</a>
+          <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-primary">Twitter ↗</a>
+          <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-primary">LinkedIn ↗</a>
+          {social.github && <a href={social.github} target="_blank" rel="noopener noreferrer" className="text-gray-700 hover:text-primary">GitHub ↗</a>}
+        </nav>
+      </aside>
+    );
+  }
 
   return (
     <aside className="space-y-6">

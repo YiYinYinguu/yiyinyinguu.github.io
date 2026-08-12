@@ -94,10 +94,10 @@ export default function PublicationList({
             }`}
           >
             {groupedPubs[year].map((pub) => (
-              <div key={pub.id} className="flex gap-4 p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
+              <div key={pub.id} className="flex flex-col gap-4 p-3 sm:flex-row sm:p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition-shadow">
                 {/* Publication Image */}
                 {pub.image && (
-                  <div className="flex-shrink-0 self-center h-40 w-auto bg-white border border-gray-200 rounded flex items-center justify-center overflow-hidden" style={{ maxWidth: '320px' }}>
+                  <div className="h-40 w-full flex-shrink-0 self-center overflow-hidden rounded border border-gray-200 bg-white sm:w-[240px] lg:w-[320px]">
                     <Image
                       src={pub.image}
                       alt={pub.title}

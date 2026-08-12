@@ -90,12 +90,12 @@ export default function Header() {
         />
       </div>
 
-      <div className="flex items-center justify-between gap-8 h-16 px-6 md:px-12 xl:px-40 2xl:px-60">
+      <div className="flex items-center justify-between gap-4 h-16 px-4 sm:px-6 md:px-12 xl:px-40 2xl:px-60">
         {/* Site Title */}
         <div className="flex-shrink-0">
           <button
             onClick={(e) => handleClick(e, "#about")}
-            className="flex items-center gap-2 text-2xl font-extrabold text-gray-900 hover:text-primary transition-colors"
+            className="flex items-center gap-2 text-xl sm:text-2xl font-extrabold text-gray-900 hover:text-primary transition-colors"
             style={{ cursor: 'pointer' }}
           >
             <Image src={site.logo} alt="" width={34} height={34} />
@@ -137,7 +137,7 @@ export default function Header() {
         <div className="md:hidden">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-gray-700 hover:text-primary focus:outline-none"
+            className="flex h-11 w-11 items-center justify-center text-gray-700 hover:text-primary focus:outline-none"
             style={{ cursor: 'pointer' }}
             aria-label="Toggle menu"
           >
@@ -162,13 +162,13 @@ export default function Header() {
 
       {/* Mobile Navigation */}
       {mobileMenuOpen && (
-        <div className="md:hidden py-4 pl-4 space-y-2">
+        <div className="md:hidden border-t border-gray-200 bg-white/90 px-4 py-2">
           {navigation.map((item) => {
             const isPageLink = item.href.startsWith("/");
             const isActive = isPageLink
               ? pathname.startsWith(item.href)
               : isHome && activeSection === item.href.replace("#", "");
-            const cls = `block text-sm py-2 transition-colors ${
+            const cls = `flex min-h-11 items-center text-sm transition-colors ${
               isActive
                 ? "text-primary font-extrabold"
                 : "text-gray-700 hover:text-primary font-medium"

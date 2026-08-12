@@ -15,8 +15,8 @@ export default function AwardsSection() {
       </h2>
       <div className="space-y-3">
         {awards.map((award) => (
-          <div key={award.id} className="flex gap-4 items-center">
-            <div className="flex-shrink-0 w-20 text-s font-semibold text-primary text-center">
+          <div key={award.id} className="grid grid-cols-[3.5rem_1fr] gap-3 sm:grid-cols-[5rem_1fr] sm:gap-4">
+            <div className="text-sm font-semibold text-primary sm:text-center">
               {award.year}
             </div>
             <div className="flex-1">
