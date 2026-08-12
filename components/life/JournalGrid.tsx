@@ -129,20 +129,73 @@ export default function JournalGrid({
     setOpen(null);
   };
 
+  const pickView = (v: View) => {
+    setView(v);
+    if (v !== "list") setOften(false);
+    setOpen(null);
+  };
+
+  const pickDateOrder = () => {
+    if (often) setOften(false);
+    else setDir(dir === "new" ? "old" : "new");
+    setOpen(null);
+  };
+
+  const pickOften = () => {
+    setOften(true);
+    setOpen(null);
+  };
+
   return (
     <>
-      <div className="flex flex-wrap items-center gap-2 mb-3">
+      {/* 手机上按「视图 / 类型 / 排序」分组，但按钮仍按文字取宽，
+          保留手账页轻巧的感觉；桌面空间足够，沿用原来紧凑的一行。 */}
+      <div className="mb-3 space-y-1.5 sm:hidden">
+        {views.length > 1 && (
+          <div className="flex gap-1.5">
+            {views.map((v) => (
+              <Pill key={v} active={view === v} compact onClick={() => pickView(v)}>
+                {t(v)}
+              </Pill>
+            ))}
+          </div>
+        )}
+
+        {kinds.length > 0 && (
+          <div className="flex gap-1.5">
+            <Pill active={!kind} compact onClick={() => pick("")}>
+              {t("all")}
+            </Pill>
+            {kinds.map((k) => (
+              <Pill key={k} active={kind === k} compact onClick={() => pick(k)}>
+                {kindLabel(k)}
+              </Pill>
+            ))}
+          </div>
+        )}
+
+        {view !== "calendar" && (
+          <div className="flex gap-1.5">
+            <Pill active={!often || view !== "list"} compact onClick={pickDateOrder}>
+              {dir === "new" ? t("newestFirst") : t("oldestFirst")}
+            </Pill>
+            {view === "list" && hasRepeats && (
+              <Pill active={often} compact onClick={pickOften}>
+                {t("mostMade")}
+              </Pill>
+            )}
+          </div>
+        )}
+      </div>
+
+      <div className="mb-3 hidden flex-wrap items-center gap-2 sm:flex">
         {/* 视图和筛选靠左钉住；排序推到右边，这样它出现或消失都不会挤动左边 */}
         {views.length > 1 &&
           views.map((v) => (
             <Pill
               key={v}
               active={view === v}
-              onClick={() => {
-                setView(v);
-                if (v !== "list") setOften(false);
-                setOpen(null);
-              }}
+              onClick={() => pickView(v)}
             >
               {t(v)}
             </Pill>
@@ -169,22 +222,12 @@ export default function JournalGrid({
           <div className="flex flex-wrap items-center gap-2 ml-auto">
             <Pill
               active={!often || view !== "list"}
-              onClick={() => {
-                if (often) setOften(false);
-                else setDir(dir === "new" ? "old" : "new");
-                setOpen(null);
-              }}
+              onClick={pickDateOrder}
             >
               {dir === "new" ? t("newestFirst") : t("oldestFirst")}
             </Pill>
             {view === "list" && hasRepeats && (
-              <Pill
-                active={often}
-                onClick={() => {
-                  setOften(true);
-                  setOpen(null);
-                }}
-              >
+              <Pill active={often} onClick={pickOften}>
                 {t("mostMade")}
               </Pill>
             )}
@@ -314,10 +357,12 @@ export default function JournalGrid({
 
 function Pill({
   active,
+  compact = false,
   onClick,
   children,
 }: {
   active: boolean;
+  compact?: boolean;
   onClick: () => void;
   children: React.ReactNode;
 }) {
@@ -325,7 +370,9 @@ function Pill({
     <button
       type="button"
       onClick={onClick}
-      className={`journal-hand text-base px-3.5 py-1 rounded-full border transition-colors ${
+      className={`journal-hand rounded-full border transition-colors ${
+        compact ? "px-3 py-0.5 text-sm" : "px-3.5 py-1 text-base"
+      } ${
         active
           ? "bg-[#9a6b3f] border-[#9a6b3f] text-white"
           : "bg-white/60 border-[#ded3b6] text-[#7d6a4a] hover:bg-white"

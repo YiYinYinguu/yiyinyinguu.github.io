@@ -601,9 +601,9 @@ My research lies at the intersection of human–AI interaction, visualization, a
   // ============================================================
   service: {
     conferenceReviewing: [
-      { name: "IEEE VIS", years: "2022 - 2025" },
-      { name: "PacificVis", years: "2022 - 2025" },
-      { name: "ChinaVis", years: "2022, 2025" },
+      { name: "IEEE VIS", years: "2022 - 2026" },
+      { name: "PacificVis", years: "2022 - 2026" },
+      { name: "ChinaVis", years: "2022 - 2026" },
       { name: "CHI", years: "2023 - 2026" },
     ],
     journalReviewing: [
