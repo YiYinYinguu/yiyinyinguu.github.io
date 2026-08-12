@@ -78,6 +78,11 @@ const DICT = {
   prevRoute: { zh: "上一条", en: "Previous" },
   nextRoute: { zh: "下一条", en: "Next" },
   noRoutes: { zh: "这个条件下没有路线", en: "No routes match" },
+  loadingRoutes: { zh: "正在载入路线…", en: "Loading routes…" },
+  routeLoadError: { zh: "路线数据没有载入成功", en: "Route data could not be loaded" },
+  mapLoadError: { zh: "地图底图暂时不可用，路线仍可查看", en: "Map tiles are unavailable; routes are still visible" },
+  worldLoadError: { zh: "世界地图数据没有载入成功", en: "World map data could not be loaded" },
+  retry: { zh: "重试", en: "Retry" },
   cityHint: {
     zh: "点城市看具体路线",
     en: "Pick a city to see its routes",

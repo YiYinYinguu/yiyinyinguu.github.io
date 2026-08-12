@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef } from "react";
 import L from "leaflet";
 import type { Track } from "@/lib/routes";
+import { useT } from "@/lib/life-i18n";
 import { color, fmtDate } from "./shared";
 import { useLeafletMap } from "./useLeafletMap";
 
@@ -40,7 +41,8 @@ export default function CityMap({
   fitToken,
   children,
 }: Props) {
-  const { box, map, layer, fitTo, ready } = useLeafletMap();
+  const t = useT();
+  const { box, map, layer, fitTo, ready, tileError, retryTiles } = useLeafletMap();
   const lines = useRef(new Map<string, L.Polyline>());
   // 最新的回调放进 ref，这样地图上的事件处理器不用跟着重新绑定。
   // kindLabel 也在里面：它每次渲染都是个新函数，进了依赖就会让画线的 effect
@@ -130,7 +132,7 @@ export default function CityMap({
       fitted.current = fitKey;
       applyFit();
     }
-  }, [tracks, minKm, focus, context, fitKey, applyFit, ready]);
+  }, [tracks, minKm, focus, context, fitKey, applyFit, ready, map, layer]);
 
   // 「全览」：把用户拖乱的画面拉回这一层该有的范围
   useEffect(() => {
@@ -149,6 +151,14 @@ export default function CityMap({
   return (
     <div className="relative flex-1 min-h-0">
       <div ref={box} className="absolute inset-0 rounded-md border border-gray-200" />
+      {tileError && (
+        <div className="absolute bottom-7 left-2 right-2 z-[900] flex items-center justify-between gap-3 rounded-md border border-amber-200 bg-amber-50/95 px-3 py-2 text-xs text-amber-900 shadow-sm sm:left-3 sm:right-auto">
+          <span>{t("mapLoadError")}</span>
+          <button type="button" onClick={retryTiles} className="shrink-0 font-semibold underline">
+            {t("retry")}
+          </button>
+        </div>
+      )}
       {children}
     </div>
   );

@@ -21,12 +21,10 @@ function dot(date: string) {
 
 /** 同一道菜的所有作品：收起来是一叠拍立得，点开摊成一排。 */
 export default function JournalStack({
-  title,
   posts,
   ink,
   onOpen,
 }: {
-  title: string;
   posts: LifePost[];
   ink: string;
   onOpen: (post: LifePost) => void;

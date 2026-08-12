@@ -7,7 +7,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "check:content": "node scripts/check-content.mjs",
+    "test:responsive": "playwright test",
+    "check": "npm run check:content && npm run lint && npm run typecheck && npm run build && npm run test:responsive"
   },
   "dependencies": {
     "d3-geo": "^3.1.1",
@@ -20,6 +24,7 @@
     "remark-gfm": "^4.0.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.62.1",
     "@types/d3-geo": "^3.1.1",
     "@types/leaflet": "^1.9.22",
     "@types/node": "^20",

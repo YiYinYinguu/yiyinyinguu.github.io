@@ -6,10 +6,8 @@ import dynamic from "next/dynamic";
 import type { RouteCity, Track } from "@/lib/routes";
 import {
   LangProvider,
-  useCityCount,
   useCount,
   useKind,
-  useLang,
   useT,
   type Lang,
 } from "@/lib/life-i18n";
@@ -68,7 +66,6 @@ function Explorer({
   const t = useT();
   const kindName = useKind();
   const count = useCount();
-  const cityCount = useCityCount();
 
   const [cityId, setCityId] = useState<string | null>(null);
   const [routeId, setRouteId] = useState<string | null>(null);
@@ -80,6 +77,8 @@ function Explorer({
   const [hover, setHover] = useState<string | null>(null);
   const [fitToken, setFitToken] = useState(0);
   const [tracks, setTracks] = useState<Track[]>([]);
+  const [loadState, setLoadState] = useState<"idle" | "loading" | "error">("idle");
+  const [loadToken, setLoadToken] = useState(0);
 
   const city = cities.find((c) => c.id === cityId) ?? null;
 
@@ -89,26 +88,38 @@ function Explorer({
   useEffect(() => {
     if (!cityId) {
       setTracks([]);
+      setLoadState("idle");
       return;
     }
     const cached = cache.current.get(cityId);
     if (cached) {
       setTracks(cached);
+      setLoadState("idle");
       return;
     }
     let alive = true;
+    setLoadState("loading");
     fetch(`/routes/${cityId}.json`)
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`);
+        return r.json();
+      })
       .then((data: { tracks: Track[] }) => {
         if (!alive) return;
+        if (!Array.isArray(data.tracks)) throw new Error("Invalid route data");
         cache.current.set(cityId, data.tracks);
         setTracks(data.tracks);
+        setLoadState("idle");
       })
-      .catch(() => alive && setTracks([]));
+      .catch(() => {
+        if (!alive) return;
+        setTracks([]);
+        setLoadState("error");
+      });
     return () => {
       alive = false;
     };
-  }, [cityId]);
+  }, [cityId, loadToken]);
 
   // 地址栏里的状态优先——那是别人发过来的链接，应该按发的人看到的样子打开
   const ready = useRef(false);
@@ -266,18 +277,19 @@ function Explorer({
       <div className="mt-5 grid items-stretch gap-[22px] md:grid-cols-[1.45fr_272px]">
         <div className="flex h-[350px] flex-col min-[390px]:h-[380px] md:h-[500px]">
           {city ? (
-            <CityMap
-              tracks={visible}
-              minKm={minKm}
-              focus={route}
-              context={tracks}
-              hot={hot}
-              onHot={setHot}
-              onPick={toRoute}
-              kindLabel={kindName}
-              fitKey={`${cityId}|${routeId}|${kind}|${year}|${minKm}`}
-              fitToken={fitToken}
-            >
+            <div className="relative flex min-h-0 flex-1">
+              <CityMap
+                tracks={visible}
+                minKm={minKm}
+                focus={route}
+                context={tracks}
+                hot={hot}
+                onHot={setHot}
+                onPick={toRoute}
+                kindLabel={kindName}
+                fitKey={`${cityId}|${routeId}|${kind}|${year}|${minKm}`}
+                fitToken={fitToken}
+              >
               {/* 右下角是地图的版权文字，按钮都放右上 */}
               <div className="absolute right-2 top-2 z-[900] flex max-w-[calc(100%-1rem)] flex-wrap justify-end gap-1.5 sm:right-3 sm:top-3 sm:gap-2">
                 <button
@@ -296,7 +308,26 @@ function Explorer({
                 </button>
               </div>
 
-            </CityMap>
+              </CityMap>
+              {loadState !== "idle" && (
+                <div className="absolute inset-0 z-[950] flex items-center justify-center rounded-md bg-white/85 px-6 text-center backdrop-blur-[1px]">
+                  {loadState === "loading" ? (
+                    <p className="text-sm text-gray-500">{t("loadingRoutes")}</p>
+                  ) : (
+                    <div>
+                      <p className="text-sm font-medium text-gray-700">{t("routeLoadError")}</p>
+                      <button
+                        type="button"
+                        onClick={() => setLoadToken((n) => n + 1)}
+                        className="mt-3 rounded-full border border-primary px-4 py-1.5 text-sm text-primary hover:bg-red-50"
+                      >
+                        {t("retry")}
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           ) : (
             <Globe cities={cities} active={hover} onHover={setHover} onPick={toCity} />
           )}

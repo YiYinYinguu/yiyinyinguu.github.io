@@ -86,8 +86,8 @@ const markdownComponents = {
   ),
   hr: ({ node, ...props }: any) => <hr className="my-8 border-gray-200" {...props} />,
   // alt 兜底必须放在 spread 之后，否则会被 props 里的 undefined 覆盖
-  // eslint-disable-next-line @next/next/no-img-element
   img: ({ node, ...props }: any) => (
+    // eslint-disable-next-line @next/next/no-img-element
     <img className="rounded-lg my-6 max-w-full" {...props} alt={props.alt ?? ""} />
   ),
   a: ({ node, ...props }: any) => <a className="text-primary hover:underline" {...props} />,

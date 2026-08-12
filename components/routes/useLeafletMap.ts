@@ -18,6 +18,8 @@ export function useLeafletMap(options?: { minZoom?: number; world?: boolean }) {
   // ref 写入不会触发调用方重渲染。城市路线可能比 Leaflet 更早到货，
   // 必须用 state 明确通知「地图和图层都已就绪」，否则那次画线会被永久错过。
   const [ready, setReady] = useState(false);
+  const [tileError, setTileError] = useState(false);
+  const tiles = useRef<L.TileLayer | null>(null);
   /** 容器尺寸还没稳定时反复用的取景范围。用户一动手就置空，之后不再自动取景 */
   const wanted = useRef<{ b: L.LatLngBounds; p: L.PointTuple } | null>(null);
 
@@ -35,7 +37,7 @@ export function useLeafletMap(options?: { minZoom?: number; world?: boolean }) {
     // 世界层用不带地名的底图：那一层该有名字的只有她自己去过的城市，
     // 满屏的「KYRGYZSTAN」是噪音。城市层反过来，路名地名正是要看的东西。
     const world = options?.world ?? false;
-    L.tileLayer(
+    const tileLayer = L.tileLayer(
       `https://{s}.basemaps.cartocdn.com/${world ? "light_nolabels" : "light_all"}/{z}/{x}/{y}{r}.png`,
       {
         maxZoom: 19,
@@ -43,7 +45,19 @@ export function useLeafletMap(options?: { minZoom?: number; world?: boolean }) {
         // 世界层不横向重复，否则缩到最小会看到好几个地球排成一排
         noWrap: world,
       }
-    ).addTo(m);
+    );
+    let failedTiles = 0;
+    tileLayer.on("tileerror", () => {
+      failedTiles += 1;
+      // 单张瓦片偶发失败不遮住地图；连续失败才提示底图不可用。
+      if (failedTiles >= 3) setTileError(true);
+    });
+    tileLayer.on("load", () => {
+      failedTiles = 0;
+      setTileError(false);
+    });
+    tileLayer.addTo(m);
+    tiles.current = tileLayer;
     if (world) {
       m.setMaxBounds([
         [-85, -180],
@@ -97,7 +111,9 @@ export function useLeafletMap(options?: { minZoom?: number; world?: boolean }) {
       m.remove();
       map.current = null;
       layer.current = null;
+      tiles.current = null;
       setReady(false);
+      setTileError(false);
     };
     // options 只在挂载时读一次，改它不该导致地图重建
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -112,5 +128,10 @@ export function useLeafletMap(options?: { minZoom?: number; world?: boolean }) {
     m.fitBounds(bounds, { padding, animate: false });
   }, []);
 
-  return { box, map, layer, fitTo, ready };
+  const retryTiles = useCallback(() => {
+    setTileError(false);
+    tiles.current?.redraw();
+  }, []);
+
+  return { box, map, layer, fitTo, ready, tileError, retryTiles };
 }

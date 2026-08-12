@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LifePost, Recipe } from "@/lib/life";
-import { useCount, useKind, useLang, useT, useTitle } from "@/lib/life-i18n";
+import { useKind, useLang, useT, useTitle } from "@/lib/life-i18n";
 import { readParams, writeParam } from "@/lib/url-state";
 import JournalStack from "./JournalStack";
 import CalendarView from "./CalendarView";
@@ -63,7 +63,7 @@ export default function JournalGrid({
     if (sort === "old") setDir("old");
     if (sort === "often") setOften(true);
     ready.current = true;
-  }, []);
+  }, [kindFilter, views]);
 
   useEffect(() => {
     if (!ready.current) return;
@@ -257,7 +257,6 @@ export default function JournalGrid({
               groups.map((g) => (
                 <JournalStack
                   key={g.title}
-                  title={g.title}
                   posts={g.posts}
                   ink={g.ink}
                   onOpen={(post) => setOpen(posts.indexOf(post))}

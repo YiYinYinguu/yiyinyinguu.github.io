@@ -11,6 +11,7 @@ const HOME: [number, number] = [-105, -18];
 const SPIN_PER_MS = 0.004;
 const MIN_SCALE = 0.85;
 const MAX_SCALE = 8;
+const WITH_TRACKS = new Set(["杭州", "北京", "新加坡"]);
 
 type Collection = { type: "FeatureCollection"; features: unknown[] };
 /** 飞过的城市和航线，来自航旅纵横的历史行程 */
@@ -67,6 +68,8 @@ export default function Globe({
   const [world, setWorld] = useState<World | null>(null);
   const [flights, setFlights] = useState<Flights | null>(null);
   const [visited, setVisited] = useState<Visited | null>(null);
+  const [loadError, setLoadError] = useState(false);
+  const [loadToken, setLoadToken] = useState(0);
   // 航线默认关着：一进来先看清去过哪儿，想看怎么飞的再打开
   const [showArcs, setShowArcs] = useState(false);
   /** 去过的地方看到哪一级：整个国家一块色，还是拆到城市 */
@@ -91,31 +94,38 @@ export default function Globe({
 
   useEffect(() => {
     let alive = true;
-    fetch("/routes/land.json")
-      .then((r) => r.json())
-      .then((data) => alive && setWorld(data));
-    fetch("/routes/flights.json")
-      .then((r) => r.json())
-      .then((data) => alive && setFlights(data));
-    fetch("/routes/visited.json")
-      .then((r) => r.json())
-      .then((data) => alive && setVisited(data));
+    setLoadError(false);
+    const load = async <T,>(path: string) => {
+      const response = await fetch(path);
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      return response.json() as Promise<T>;
+    };
+    Promise.all([
+      load<World>("/routes/land.json"),
+      load<Flights>("/routes/flights.json"),
+      load<Visited>("/routes/visited.json"),
+    ])
+      .then(([worldData, flightData, visitedData]) => {
+        if (!alive) return;
+        setWorld(worldData);
+        setFlights(flightData);
+        setVisited(visitedData);
+      })
+      .catch(() => alive && setLoadError(true));
     return () => {
       alive = false;
     };
-  }, []);
+  }, [loadToken]);
 
   // 国家模式下也要看得见去过哪些城市，所以在整片底色上再点一层空心圈。
   // 位置直接取城市轮廓的球面重心——坐标是现成的，不用另配一份城市经纬度表。
   // 有轨迹的那几座已经有实心点了，这里跳过，免得一个位置两个圈。
-  const withTracks = new Set(["杭州", "北京", "新加坡"]);
   const dots = useMemo(
     () =>
       (visited?.fine.features ?? [])
-        .filter((f) => !withTracks.has(f.properties.zh))
+        .filter((f) => !WITH_TRACKS.has(f.properties.zh))
         .map((f) => ({ ...f.properties, at: geoCentroid(f as never) })),
     [visited]
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   );
 
   /** 每帧重画。只改属性，不动节点。 */
@@ -525,6 +535,20 @@ export default function Globe({
             </text>
           )}
         </svg>
+        {loadError && (
+          <div className="absolute inset-0 flex items-center justify-center rounded-md bg-white/90 px-6 text-center">
+            <div>
+              <p className="text-sm font-medium text-gray-700">{t("worldLoadError")}</p>
+              <button
+                type="button"
+                onClick={() => setLoadToken((n) => n + 1)}
+                className="mt-3 rounded-full border border-primary px-4 py-1.5 text-sm text-primary hover:bg-red-50"
+              >
+                {t("retry")}
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* 缩放按钮。触控板捏合当然也行，但鼠标用户没有捏合这个手势，
