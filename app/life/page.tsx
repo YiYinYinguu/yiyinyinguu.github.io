@@ -2,8 +2,6 @@ import Link from "next/link";
 import Image from "next/image";
 import Header from "@/components/layout/Header";
 import { siteConfig } from "@/config/site";
-import fs from "fs";
-import path from "path";
 import { getPostsByCategory } from "@/lib/life";
 import { getPlacesSummary } from "@/lib/routes";
 
@@ -16,6 +14,12 @@ export const metadata = {
 // 三个角度而不是两个：一行三张的时候，两个值会让首尾歪成一样的，像模板
 const TILT = [-1.2, 1.1, -0.5];
 
+// 三个 Life 板块使用同一套手作编辑封面。
+const EDITORIAL_COVERS: Record<string, string> = {
+  baking: "/life/baking-editorial-cover.png",
+  craft: "/life/craft-editorial-cover.png",
+};
+
 export default function LifePage() {
   const { lifeCategories, lifeLinks } = siteConfig;
   // 跟 Routes 页里的统计口径一致：那一页早就不只是骑行轨迹了
@@ -27,16 +31,12 @@ export default function LifePage() {
   const cards = [
     ...lifeCategories.map((cat) => {
       const count = getPostsByCategory(cat.id).length;
-      // scripts/build-life-mosaics.py 拼的 3×3 九宫格。一张封面只代表一件作品，
-      // 拼图能一眼看出这个板块攒了些什么。没跑过脚本就退回配置里的单张封面。
-      const mosaic = `/life/${cat.id}-mosaic.jpg`;
-      const hasMosaic = fs.existsSync(path.join(process.cwd(), "public", mosaic));
       return {
         href: `/life/${cat.id}/`,
         name: cat.name,
         emoji: cat.emoji,
         description: cat.description,
-        cover: hasMosaic ? mosaic : cat.cover,
+        cover: EDITORIAL_COVERS[cat.id] ?? cat.cover,
         meta: `${count} ${count === 1 ? "post" : "posts"}`,
       };
     }),
