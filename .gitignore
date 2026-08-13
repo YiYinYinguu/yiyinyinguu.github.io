@@ -42,3 +42,8 @@ next-env.d.ts
 # 构建时 .next/ 被占用（多半 dev server 开着），Next 会把旧的改名成
 # .next.stale-<时间戳> 扔在一边。是垃圾，别再进版本控制。
 /.next.stale-*/
+
+# Baking editorial 的本地源图与生成草稿；网站只提交优化后的 WebP。
+/public/life/baking/editorial/*.png
+/public/life/baking/editorial/original-nine/
+/artifacts/baking-editorial-drafts/
