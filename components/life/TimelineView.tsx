@@ -21,10 +21,14 @@ function monthIndex(month: string) {
 export default function TimelineView({
   posts,
   newestFirst,
+  editorial = false,
+  inks,
   onOpen,
 }: {
   posts: LifePost[];
   newestFirst: boolean;
+  editorial?: boolean;
+  inks?: ReadonlyMap<string, string>;
   onOpen: (post: LifePost) => void;
 }) {
   const lang = useLang();
@@ -97,29 +101,63 @@ export default function TimelineView({
                 <span className="absolute -left-[3px] top-3.5 w-[7px] h-[7px] rounded-full bg-[#c0a86c]" />
               </div>
 
-              <div className="flex flex-wrap gap-3.5 pb-1">
-                {list.map((post, k) => (
-                  <button
+              <div className={`flex flex-wrap pb-1 ${editorial ? "gap-5 sm:gap-7" : "gap-3.5"}`}>
+                {list.map((post, k) => {
+                  const ink = inks?.get(post.title) ?? "#8a7355";
+                  return (
+                    <button
                     key={post.slug}
                     type="button"
                     onClick={() => onOpen(post)}
                     title={`${post.date}　${dishName(post)}`}
-                    className="bg-white rounded-[2px] p-2 pb-7 shadow-[0_3px_10px_rgba(90,70,40,0.24)] transition-transform duration-200 hover:scale-[1.12] hover:rotate-0 hover:z-10 relative"
+                    className={`bg-white rounded-[2px] p-2 shadow-[0_3px_10px_rgba(90,70,40,0.24)] transition-transform duration-200 hover:scale-[1.08] hover:rotate-0 hover:z-10 relative ${
+                      editorial ? "pb-2" : "pb-7"
+                    }`}
                     style={{ transform: `rotate(${TILT[k % TILT.length]}deg)` }}
                   >
                     <Image
-                      src={post.square ?? post.cover ?? ""}
+                      src={
+                        editorial
+                          ? `/life/baking/editorial/${post.slug}-editorial.webp`
+                          : post.square ?? post.cover ?? ""
+                      }
                       alt={dishName(post)}
-                      width={700}
-                      height={700}
-                      sizes="168px"
-                    className="block w-[112px] h-[112px] min-[390px]:w-[130px] min-[390px]:h-[130px] sm:w-[168px] sm:h-[168px] object-cover bg-gray-100"
+                      width={editorial ? 1024 : 700}
+                      height={editorial ? 1536 : 700}
+                      sizes={editorial ? "200px" : "168px"}
+                      className={`block object-cover bg-gray-100 ${
+                        editorial
+                          ? "aspect-[2/3] w-[128px] min-[390px]:w-[150px] sm:w-[180px] lg:w-[200px]"
+                          : "w-[112px] h-[112px] min-[390px]:w-[130px] min-[390px]:h-[130px] sm:w-[168px] sm:h-[168px]"
+                      }`}
                     />
-                    <span className="journal-hand absolute inset-x-0 bottom-1 text-sm text-[#8a7355] truncate px-2">
-                      {dishName(post)}
-                    </span>
-                  </button>
-                ))}
+                    {editorial ? (
+                      <span className="journal-hand flex min-h-[68px] flex-col px-1 pt-2.5 text-left">
+                        <span>
+                          <span
+                            className="inline rounded-[2px] px-1.5 py-0.5 text-xs leading-[1.45] text-white box-decoration-clone sm:text-sm"
+                            style={{
+                              background: `color-mix(in srgb, ${ink} 40%, transparent)`,
+                            }}
+                          >
+                            #{dishName(post)}
+                          </span>
+                        </span>
+                        <span
+                          className="mt-auto self-end pt-1.5 text-[10px] opacity-70"
+                          style={{ color: ink }}
+                        >
+                          {post.date.replace(/-/g, ".")}
+                        </span>
+                      </span>
+                    ) : (
+                      <span className="journal-hand absolute inset-x-0 bottom-1 text-sm text-[#8a7355] truncate px-2">
+                        {dishName(post)}
+                      </span>
+                    )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
           </div>

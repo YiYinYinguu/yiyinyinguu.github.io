@@ -114,6 +114,15 @@ export default async function LifePostPage({
         <p className="text-sm text-gray-400 mb-6">
           {cat.emoji} {post.date}
         </p>
+        {post.note && (
+          <p className="journal-hand mb-6 border-l-2 border-[#d8c48f] pl-4 text-lg leading-[1.9] text-[#7a5f3a]">
+            {post.note.split("|").map((line, index) => (
+              <span key={index} className="block">
+                {line.trim()}
+              </span>
+            ))}
+          </p>
+        )}
         {post.cover && (
           <div className="relative w-full h-56 sm:h-72 mb-8 rounded-xl overflow-hidden bg-gray-50">
             <Image

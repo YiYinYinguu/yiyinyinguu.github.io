@@ -36,9 +36,11 @@ function monthCells(year: number, month: number): (number | null)[] {
  */
 export default function CalendarView({
   posts,
+  editorial = false,
   onOpen,
 }: {
   posts: LifePost[];
+  editorial?: boolean;
   onOpen: (post: LifePost) => void;
 }) {
   const t = useT();
@@ -180,15 +182,23 @@ export default function CalendarView({
                   onOpen(made[0]);
                 }}
                 title={`${date} ${made.map(dishName).join(lang === "zh" ? "、" : ", ")}`}
-                className={`absolute cursor-pointer group ${big ? "inset-[3px]" : "inset-0"}`}
+                className={`absolute cursor-pointer group overflow-hidden ${big ? "inset-[3px]" : "inset-0"}`}
               >
                 <Image
-                  src={made[0].square ?? made[0].cover ?? ""}
+                  src={
+                    editorial
+                      ? `/life/baking/editorial/${made[0].slug}-editorial.webp`
+                      : made[0].square ?? made[0].cover ?? ""
+                  }
                   alt={dishName(made[0])}
-                  width={700}
-                  height={700}
+                  width={editorial ? 1024 : 700}
+                  height={editorial ? 1536 : 700}
                   sizes={big ? "120px" : "24px"}
-                  className={`w-full h-full object-cover ${
+                  className={`${
+                    editorial
+                      ? "absolute bottom-0 left-1/2 h-auto w-[150%] max-w-none -translate-x-1/2"
+                      : "h-full w-full object-cover"
+                  } ${
                     big
                       ? "rounded-[2px] shadow-[0_1px_4px_rgba(90,70,40,0.3)] transition-transform duration-200 group-hover:scale-[1.06]"
                       : "rounded-[1px]"
@@ -276,7 +286,11 @@ export default function CalendarView({
               <span className="w-[38px] text-[13px] text-[#a2916f] tabular-nums">{y}</span>
               {MONTHS.map((m) => {
                 const list = byMonth.get(key(y, m)) ?? [];
-                const cover = list[0]?.square ?? list[0]?.cover;
+                const cover = list[0]
+                  ? editorial
+                    ? `/life/baking/editorial/${list[0].slug}-editorial.webp`
+                    : list[0].square ?? list[0].cover
+                  : undefined;
                 return (
                   <button
                     key={m}
@@ -287,14 +301,13 @@ export default function CalendarView({
                       setAt({ year: y, month: m });
                       setLevel(1);
                     }}
-                    title={list.length ? `${monthLabel(y, m)} · ${times(list.length)}` : undefined}
                     aria-label={`${monthLabel(y, m)} ${times(list.length)}`}
                     ref={(el) => {
                       if (y === at.year && m === at.month) focused.current = el;
                     }}
-                    className={`relative flex-1 aspect-square rounded-[2px] overflow-hidden ${
+                    className={`group/month relative flex-1 aspect-square rounded-[2px] ${
                       list.length
-                        ? "shadow-[0_1px_3px_rgba(90,70,40,0.25)] hover:scale-110 transition-transform"
+                        ? "z-0 hover:z-30 focus-visible:z-30 shadow-[0_1px_3px_rgba(90,70,40,0.25)] hover:scale-110 transition-transform"
                         : "border border-[#e6dcc0]"
                     } ${
                       y === at.year && m === at.month
@@ -303,19 +316,63 @@ export default function CalendarView({
                     }`}
                   >
                     {cover && (
-                      <Image
-                        src={cover}
-                        alt=""
-                        width={700}
-                        height={700}
-                        sizes="48px"
-                        className="w-full h-full object-cover"
-                      />
+                      <span className="absolute inset-0 overflow-hidden rounded-[2px]">
+                        <Image
+                          src={cover}
+                          alt=""
+                          width={editorial ? 1024 : 700}
+                          height={editorial ? 1536 : 700}
+                          sizes="48px"
+                          className={
+                            editorial
+                              ? "absolute bottom-0 left-1/2 h-auto w-[150%] max-w-none -translate-x-1/2"
+                              : "h-full w-full object-cover"
+                          }
+                        />
+                      </span>
                     )}
                     {list.length > 1 && (
-                      <span className="absolute right-0 bottom-0 bg-white/85 px-[3px] text-[11px] leading-[1.4] text-[#7a5f3a]">
-                        {list.length}
-                      </span>
+                      <>
+                        <span className="absolute right-0 bottom-0 z-10 bg-white/85 px-[3px] text-[11px] leading-[1.4] text-[#7a5f3a]">
+                          {list.length}
+                        </span>
+                        {editorial && (
+                          <span
+                            aria-hidden="true"
+                            className={`pointer-events-none absolute bottom-[calc(100%+7px)] z-40 flex items-end gap-1.5 rounded-[5px] bg-white/30 p-1.5 opacity-0 transition-all duration-200 group-hover/month:translate-y-0 group-hover/month:opacity-100 group-focus-visible/month:translate-y-0 group-focus-visible/month:opacity-100 ${
+                              m <= 2
+                                ? "left-0 translate-y-1"
+                                : m >= 11
+                                  ? "right-0 translate-y-1"
+                                  : "left-1/2 -translate-x-1/2 translate-y-1 group-hover/month:-translate-x-1/2 group-focus-visible/month:-translate-x-1/2"
+                            }`}
+                          >
+                            {list.slice(0, 5).map((post, index) => (
+                              <span
+                                key={post.slug}
+                                className="relative block h-16 w-16 shrink-0 overflow-hidden rounded-[2px] bg-[#f7f0df] shadow-[0_1px_4px_rgba(80,55,25,0.2)] transition-transform duration-200 group-hover/month:translate-y-0"
+                                style={{
+                                  transform: `translateY(${Math.abs(index - Math.min(2, list.length - 1)) * 2}px) rotate(${(index - 2) * 1.5}deg)`,
+                                }}
+                              >
+                                <Image
+                                  src={`/life/baking/editorial/${post.slug}-editorial.webp`}
+                                  alt=""
+                                  width={1024}
+                                  height={1536}
+                                  sizes="64px"
+                                  className="absolute bottom-0 left-1/2 h-auto w-[150%] max-w-none -translate-x-1/2"
+                                />
+                              </span>
+                            ))}
+                            {list.length > 5 && (
+                              <span className="journal-hand flex h-16 min-w-9 items-center justify-center px-1 text-sm text-[#7a5f3a]">
+                                +{list.length - 5}
+                              </span>
+                            )}
+                          </span>
+                        )}
+                      </>
                     )}
                   </button>
                 );

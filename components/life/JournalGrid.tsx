@@ -238,6 +238,7 @@ export default function JournalGrid({
       {view === "calendar" && (
         <CalendarView
           posts={shown.map((d) => d.post)}
+          editorial={category === "baking"}
           onOpen={(p) => setOpen(posts.indexOf(p))}
         />
       )}
@@ -246,19 +247,28 @@ export default function JournalGrid({
         <TimelineView
           posts={shown.map((d) => d.post)}
           newestFirst={dir === "new"}
+          editorial={category === "baking"}
+          inks={inkOf}
           onOpen={(p) => setOpen(posts.indexOf(p))}
         />
       )}
 
       {view === "list" && (
         <div className="journal-paper rounded-lg p-5 sm:p-7">
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 items-start">
+          <div
+            className={`grid items-start ${
+              category === "baking"
+                ? "grid-cols-1 justify-items-center gap-x-7 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+                : "grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
+            }`}
+          >
             {often &&
               groups.map((g) => (
                 <JournalStack
                   key={g.title}
                   posts={g.posts}
                   ink={g.ink}
+                  editorial={category === "baking"}
                   onOpen={(post) => setOpen(posts.indexOf(post))}
                 />
               ))}
@@ -266,16 +276,65 @@ export default function JournalGrid({
               shown.map(({ post, tilt }) => {
                 const ink = inkOf.get(post.title) ?? INK[0];
                 const img = post.square ?? post.cover;
+                const editorial = `/life/baking/editorial/${post.slug}-editorial.webp`;
+                const openPost = (e: React.MouseEvent<HTMLAnchorElement>) => {
+                  // 保留真链接，中键和右键另存为照常，左键才拦下来开弹窗
+                  if (e.metaKey || e.ctrlKey || e.shiftKey) return;
+                  e.preventDefault();
+                  setOpen(posts.indexOf(post));
+                };
+
+                if (category === "baking") {
+                  return (
+                    <a
+                      key={post.slug}
+                      href={`/life/${category}/${post.slug}/`}
+                      onClick={openPost}
+                      className="group block w-full max-w-[276px]"
+                    >
+                      <div
+                        className="w-full rounded-[2px] bg-white p-3 pb-3 shadow-[0_3px_10px_rgba(90,70,40,0.22)] transition-transform duration-300 group-hover:scale-[1.03] group-hover:rotate-0"
+                        style={{ transform: `rotate(${tilt}deg)` }}
+                      >
+                        <Image
+                          src={editorial}
+                          alt={post.title}
+                          width={1024}
+                          height={1536}
+                          sizes="(max-width: 640px) 252px, (max-width: 1024px) 42vw, 252px"
+                          className="block aspect-[2/3] w-full bg-gray-100 object-contain"
+                        />
+                        <div className="flex min-h-[72px] flex-col px-1 pb-1 pt-3">
+                          <div>
+                            <span
+                              className={`journal-hand inline rounded-[3px] px-2 py-[1px] leading-[1.65] text-white box-decoration-clone ${
+                                lang === "zh" ? "text-lg" : "text-[17px]"
+                              }`}
+                              style={{
+                                background: `color-mix(in srgb, ${ink} 40%, transparent)`,
+                              }}
+                            >
+                              #{title(post)}
+                            </span>
+                          </div>
+                          <span
+                            className="journal-hand mt-auto self-end pt-1.5 text-xs opacity-70"
+                            style={{ color: ink }}
+                          >
+                            {post.recipes.length > 0 && <span className="mr-1.5">✎</span>}
+                            {post.date.replace(/-/g, ".")}
+                          </span>
+                        </div>
+                      </div>
+                    </a>
+                  );
+                }
+
                 return (
                   <a
                     key={post.slug}
                     href={`/life/${category}/${post.slug}/`}
-                    onClick={(e) => {
-                      // 保留真链接，中键和右键另存为照常，左键才拦下来开弹窗
-                      if (e.metaKey || e.ctrlKey || e.shiftKey) return;
-                      e.preventDefault();
-                      setOpen(posts.indexOf(post));
-                    }}
+                    onClick={openPost}
                     className="group flex flex-col gap-4 min-[390px]:flex-row items-start"
                   >
                     {img && (
@@ -347,6 +406,7 @@ export default function JournalGrid({
         <PostDialog
           post={posts[open]}
           ink={inkOf.get(posts[open].title) ?? INK[0]}
+          editorial={category === "baking"}
           onClose={() => setOpen(null)}
         />
       )}
@@ -385,10 +445,12 @@ function Pill({
 function PostDialog({
   post,
   ink,
+  editorial = false,
   onClose,
 }: {
   post: LifePost;
   ink: string;
+  editorial?: boolean;
   onClose: () => void;
 }) {
   const t = useT();
@@ -449,20 +511,72 @@ function PostDialog({
       className="fixed inset-0 z-50 bg-black/55 flex items-center justify-center p-4 sm:p-8 overflow-y-auto"
     >
       <div
-        onClick={(e) => e.stopPropagation()}
-        className="journal-paper rounded-lg max-w-2xl w-full p-5 sm:p-7 my-auto relative"
+        onClick={editorial ? undefined : (e) => e.stopPropagation()}
+        className={`relative my-auto w-full ${
+          editorial
+            ? "max-w-6xl"
+            : "journal-paper max-w-2xl rounded-lg p-5 sm:p-7"
+        }`}
       >
-        <button
-          type="button"
-          onClick={onClose}
-          aria-label={t("close")}
-          className="absolute right-3 top-2 text-2xl leading-none text-[#8a7a5c] hover:text-[#5a4a2c]"
-        >
-          ×
-        </button>
+        {!editorial && (
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label={t("close")}
+            className="absolute right-3 top-2 text-2xl leading-none text-[#8a7a5c] hover:text-[#5a4a2c]"
+          >
+            ×
+          </button>
+        )}
 
-        <div className="flex flex-col sm:flex-row gap-6">
-          <div className="flex-shrink-0 mx-auto sm:mx-0">
+        <div
+          className={
+            editorial
+              ? "grid items-center gap-4 lg:grid-cols-[minmax(300px,0.82fr)_minmax(0,1.18fr)] lg:gap-5"
+              : ""
+          }
+        >
+          {editorial && (
+            <section className="flex items-center justify-center px-2 py-4 sm:px-5 sm:py-6 lg:px-7">
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="w-full max-w-[390px] rotate-[-0.7deg] rounded-[2px] bg-white p-3 pb-10 shadow-[0_4px_14px_rgba(90,70,40,0.26)]"
+              >
+                <Image
+                  src={`/life/baking/editorial/${post.slug}-editorial.webp`}
+                  alt={`${title(post)} editorial cover`}
+                  width={1024}
+                  height={1536}
+                  sizes="(max-width: 1024px) 78vw, 390px"
+                  className="block aspect-[2/3] w-full bg-gray-100 object-contain"
+                />
+                <span className="journal-hand mt-3 block text-center text-sm tracking-wide text-[#9a8767]">
+                  {lang === "zh" ? "编辑封面" : "Editorial cover"}
+                </span>
+              </div>
+            </section>
+          )}
+
+          <section
+            onClick={editorial ? (e) => e.stopPropagation() : undefined}
+            className={
+              editorial
+                ? "journal-paper relative rounded-lg p-5 shadow-[0_8px_30px_rgba(50,35,15,0.18)] sm:p-7 lg:px-9 lg:py-10"
+                : ""
+            }
+          >
+            {editorial && (
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label={t("close")}
+                className="absolute right-3 top-2 z-10 text-2xl leading-none text-[#8a7a5c] hover:text-[#5a4a2c]"
+              >
+                ×
+              </button>
+            )}
+            <div className="flex flex-col gap-6 sm:flex-row">
+              <div className="mx-auto flex-shrink-0 sm:mx-0">
             <button
               type="button"
               onClick={() => step(1)}
@@ -505,9 +619,9 @@ function PostDialog({
                 ))}
               </div>
             )}
-          </div>
+              </div>
 
-          <div className="flex-1 min-w-0 flex flex-col">
+              <div className="flex min-w-0 flex-1 flex-col">
             <div>
               <span
                 className={`journal-hand inline text-white leading-[1.8] px-3 py-[2px] rounded-[3px] box-decoration-clone ${
@@ -551,7 +665,9 @@ function PostDialog({
                 </span>
               )}
             </div>
-          </div>
+              </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>
