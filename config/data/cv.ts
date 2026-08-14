@@ -1,4 +1,5 @@
 import type { SiteConfig } from "../types";
+import { SHOW_UNIVERSITY_OF_VIENNA } from "./profile";
 
 export const education: SiteConfig["education"] = [
   {
@@ -21,7 +22,7 @@ export const education: SiteConfig["education"] = [
   },
 ];
 
-export const experience: SiteConfig["experience"] = [
+const allExperience: SiteConfig["experience"] = [
   {
     id: "exp-univie",
     period: "09/2026 -",
@@ -81,3 +82,6 @@ export const experience: SiteConfig["experience"] = [
   },
 ];
 
+export const experience: SiteConfig["experience"] = allExperience.filter(
+  (item) => SHOW_UNIVERSITY_OF_VIENNA || item.id !== "exp-univie",
+);

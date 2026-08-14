@@ -1,5 +1,10 @@
 import type { SiteConfig } from "../types";
 
+export const SHOW_UNIVERSITY_OF_VIENNA = false;
+
+const universityOfViennaAbout =
+  "In September 2026, I will join the University of Vienna as a postdoctoral researcher, working with [Prof. Torsten Möller](https://www.cs.univie.ac.at/torsten.moeller/).";
+
 export const site: SiteConfig["site"] = {
   name: "Lu Ying",
   title: "Hi! I am Lu Ying",
@@ -38,14 +43,14 @@ export const navigation: SiteConfig["navigation"] = [
 ];
 
 export const aboutDescription: SiteConfig["aboutDescription"] = `
-  I am a Postdoctoral Fellow at the [Department of Geography](https://fass.nus.edu.sg/geog/), Faculty of Arts and Social Sciences, National University of Singapore, working with [Prof. Wei Luo](https://fass.nus.edu.sg/geog/people/luo-wei/). In September 2026, I will join the University of Vienna as a postdoctoral researcher, working with [Prof. Torsten Möller](https://www.cs.univie.ac.at/torsten.moeller/).
+  I am a Postdoctoral Fellow at the [Department of Geography](https://fass.nus.edu.sg/geog/), Faculty of Arts and Social Sciences, National University of Singapore, working with [Prof. Wei Luo](https://fass.nus.edu.sg/geog/people/luo-wei/).${SHOW_UNIVERSITY_OF_VIENNA ? ` ${universityOfViennaAbout}` : ""}
 
 I received my Ph.D. in Computer Science from the [State Key Lab of CAD&CG, Zhejiang University](http://www.cad.zju.edu.cn), where I was advised by [Prof. Yingcai Wu](http://ycwu.org) and was a member of [ZJUIDG](http://zjuidg.org). And I was a visiting student at [Université Paris-Saclay](https://www.universite-paris-saclay.fr/en) and a member of the [AVIZ team](https://www.aviz.fr/) at [Inria](https://www.inria.fr/en), supervised by [Jean-Daniel Fekete](http://www.aviz.fr/~fekete/).
 
 My research lies at the intersection of human–AI interaction, visualization, and machine learning, where I design human-centered AI systems that empower people in sensemaking and decision-making. Collaborating with experts in areas like climate change and social media, I pursue interdisciplinary solutions that respond to complex and impactful real-world challenges.
   `;
 
-export const news: SiteConfig["news"] = [
+const allNews: SiteConfig["news"] = [
   {
     id: "news-2026-08",
     date: "08/2026",
@@ -83,3 +88,7 @@ export const news: SiteConfig["news"] = [
     content: "Our paper [VAID: Indexing View Designs in Visual Analytics System](https://doi.org/10.1145/3613904.3642237) was accepted to CHI 2024! See you in Hawaii! 🌺",
   },
 ];
+
+export const news: SiteConfig["news"] = allNews.filter(
+  (item) => SHOW_UNIVERSITY_OF_VIENNA || item.id !== "news-2026-08",
+);
