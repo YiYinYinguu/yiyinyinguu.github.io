@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useMemo } from "react";
 import type { LifePost } from "@/lib/life";
+import { editorialCover } from "@/lib/life-editorial";
 import { useCount, useGapLabel, useLang, useTitle } from "@/lib/life-i18n";
 
 // 每张照片歪一点，循环使用，避免一排全是端端正正的
@@ -21,19 +22,21 @@ function monthIndex(month: string) {
 export default function TimelineView({
   posts,
   newestFirst,
-  editorial = false,
+  editorialCategory,
   inks,
   onOpen,
 }: {
   posts: LifePost[];
   newestFirst: boolean;
-  editorial?: boolean;
+  editorialCategory?: string;
   inks?: ReadonlyMap<string, string>;
   onOpen: (post: LifePost) => void;
 }) {
   const lang = useLang();
   const dishName = useTitle();
   const times = useCount();
+  const editorial = Boolean(editorialCategory);
+  const squareEditorial = editorialCategory === "craft";
   // 只写月份，年份单独起一行分段
   const MONTH_EN = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
   const monthOnly = (m: string) =>
@@ -117,17 +120,19 @@ export default function TimelineView({
                   >
                     <Image
                       src={
-                        editorial
-                          ? `/life/baking/editorial/${post.slug}-editorial.webp`
+                        editorialCategory
+                          ? editorialCover(editorialCategory, post.slug)
                           : post.square ?? post.cover ?? ""
                       }
                       alt={dishName(post)}
                       width={editorial ? 1024 : 700}
-                      height={editorial ? 1536 : 700}
+                      height={editorial ? (squareEditorial ? 1024 : 1536) : 700}
                       sizes={editorial ? "200px" : "168px"}
                       className={`block object-cover bg-gray-100 ${
                         editorial
-                          ? "aspect-[2/3] w-[128px] min-[390px]:w-[150px] sm:w-[180px] lg:w-[200px]"
+                          ? `${
+                              squareEditorial ? "aspect-square" : "aspect-[2/3]"
+                            } w-[128px] min-[390px]:w-[150px] sm:w-[180px] lg:w-[200px]`
                           : "w-[112px] h-[112px] min-[390px]:w-[130px] min-[390px]:h-[130px] sm:w-[168px] sm:h-[168px]"
                       }`}
                     />

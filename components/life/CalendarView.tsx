@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LifePost } from "@/lib/life";
+import { editorialCover } from "@/lib/life-editorial";
 import { readParams, writeParam } from "@/lib/url-state";
 import { useCount, useLang, useMonthLabel, useMonthOnly, useT, useTitle } from "@/lib/life-i18n";
 
@@ -36,11 +37,11 @@ function monthCells(year: number, month: number): (number | null)[] {
  */
 export default function CalendarView({
   posts,
-  editorial = false,
+  editorialCategory,
   onOpen,
 }: {
   posts: LifePost[];
-  editorial?: boolean;
+  editorialCategory?: string;
   onOpen: (post: LifePost) => void;
 }) {
   const t = useT();
@@ -49,6 +50,8 @@ export default function CalendarView({
   const monthLabel = useMonthLabel();
   const monthOnly = useMonthOnly();
   const times = useCount();
+  const editorial = Boolean(editorialCategory);
+  const squareEditorial = editorialCategory === "craft";
   const [level, setLevel] = useState(0);
   const [at, setAt] = useState({ year: 0, month: 1 });
   // 鼠标底下是哪一格，捏合放大时以它为落点
@@ -186,16 +189,16 @@ export default function CalendarView({
               >
                 <Image
                   src={
-                    editorial
-                      ? `/life/baking/editorial/${made[0].slug}-editorial.webp`
+                    editorialCategory
+                      ? editorialCover(editorialCategory, made[0].slug)
                       : made[0].square ?? made[0].cover ?? ""
                   }
                   alt={dishName(made[0])}
                   width={editorial ? 1024 : 700}
-                  height={editorial ? 1536 : 700}
+                  height={editorial ? (squareEditorial ? 1024 : 1536) : 700}
                   sizes={big ? "120px" : "24px"}
                   className={`${
-                    editorial
+                    editorial && !squareEditorial
                       ? "absolute bottom-0 left-1/2 h-auto w-[150%] max-w-none -translate-x-1/2"
                       : "h-full w-full object-cover"
                   } ${
@@ -287,8 +290,8 @@ export default function CalendarView({
               {MONTHS.map((m) => {
                 const list = byMonth.get(key(y, m)) ?? [];
                 const cover = list[0]
-                  ? editorial
-                    ? `/life/baking/editorial/${list[0].slug}-editorial.webp`
+                  ? editorialCategory
+                    ? editorialCover(editorialCategory, list[0].slug)
                     : list[0].square ?? list[0].cover
                   : undefined;
                 return (
@@ -321,10 +324,10 @@ export default function CalendarView({
                           src={cover}
                           alt=""
                           width={editorial ? 1024 : 700}
-                          height={editorial ? 1536 : 700}
+                          height={editorial ? (squareEditorial ? 1024 : 1536) : 700}
                           sizes="48px"
                           className={
-                            editorial
+                            editorial && !squareEditorial
                               ? "absolute bottom-0 left-1/2 h-auto w-[150%] max-w-none -translate-x-1/2"
                               : "h-full w-full object-cover"
                           }
@@ -356,12 +359,16 @@ export default function CalendarView({
                                 }}
                               >
                                 <Image
-                                  src={`/life/baking/editorial/${post.slug}-editorial.webp`}
+                                  src={editorialCover(editorialCategory!, post.slug)}
                                   alt=""
                                   width={1024}
-                                  height={1536}
+                                  height={squareEditorial ? 1024 : 1536}
                                   sizes="64px"
-                                  className="absolute bottom-0 left-1/2 h-auto w-[150%] max-w-none -translate-x-1/2"
+                                  className={
+                                    squareEditorial
+                                      ? "h-full w-full object-cover"
+                                      : "absolute bottom-0 left-1/2 h-auto w-[150%] max-w-none -translate-x-1/2"
+                                  }
                                 />
                               </span>
                             ))}

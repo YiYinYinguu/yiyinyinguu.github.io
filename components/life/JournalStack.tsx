@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import type { LifePost } from "@/lib/life";
+import { editorialCover } from "@/lib/life-editorial";
 import { useCount, useT, useTitle } from "@/lib/life-i18n";
 
 // 照片一律和单张卡片同宽，所以错开主要靠往下压，横向只挪一点点——
@@ -24,12 +25,12 @@ function dot(date: string) {
 export default function JournalStack({
   posts,
   ink,
-  editorial = false,
+  editorialCategory,
   onOpen,
 }: {
   posts: LifePost[];
   ink: string;
-  editorial?: boolean;
+  editorialCategory?: string;
   onOpen: (post: LifePost) => void;
 }) {
   const t = useT();
@@ -37,11 +38,13 @@ export default function JournalStack({
   const count = useCount();
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(false);
+  const editorial = Boolean(editorialCategory);
+  const squareEditorial = editorialCategory === "craft";
   // 只做过一次的没什么可展开的，点了直接进弹窗
   const single = posts.length === 1;
   const imageOf = (post: LifePost) =>
-    editorial
-      ? `/life/baking/editorial/${post.slug}-editorial.webp`
+    editorialCategory
+      ? editorialCover(editorialCategory, post.slug)
       : post.square ?? post.cover ?? "";
 
   const label = (
@@ -93,9 +96,11 @@ export default function JournalStack({
                     src={imageOf(post)}
                     alt={`${dishName(post)} ${dot(post.date)}`}
                     width={1024}
-                    height={1536}
+                    height={squareEditorial ? 1024 : 1536}
                     sizes="252px"
-                    className="block aspect-[2/3] w-full bg-gray-100 object-contain"
+                    className={`block w-full bg-gray-100 object-contain ${
+                      squareEditorial ? "aspect-square" : "aspect-[2/3]"
+                    }`}
                   />
                   <div className="flex min-h-[72px] flex-col px-1 pb-1 pt-3">
                     <div>{label}</div>
@@ -117,7 +122,7 @@ export default function JournalStack({
 
     const off = hover ? HOVER : STEP;
     const visible = posts.slice(0, PEEK);
-    const stackHeight = 474 + (visible.length - 1) * HOVER.y;
+    const stackHeight = (squareEditorial ? 348 : 474) + (visible.length - 1) * HOVER.y;
 
     return (
       <button
@@ -146,9 +151,11 @@ export default function JournalStack({
                 src={imageOf(post)}
                 alt={i === 0 ? dishName(post) : ""}
                 width={1024}
-                height={1536}
+                height={squareEditorial ? 1024 : 1536}
                 sizes="252px"
-                className="block aspect-[2/3] w-full bg-gray-100 object-contain"
+                className={`block w-full bg-gray-100 object-contain ${
+                  squareEditorial ? "aspect-square" : "aspect-[2/3]"
+                }`}
               />
               <div className="flex min-h-[72px] flex-col px-1 pb-1 pt-3">
                 <div>{label}</div>

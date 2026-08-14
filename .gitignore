@@ -47,3 +47,7 @@ next-env.d.ts
 /public/life/baking/editorial/*.png
 /public/life/baking/editorial/original-nine/
 /artifacts/baking-editorial-drafts/
+
+# Craft editorial 的候选封面、抽象面板与工作历史；确认后只提交网站使用的 WebP。
+/public/life/craft/editorial/*.png
+/artifacts/craft-editorial/

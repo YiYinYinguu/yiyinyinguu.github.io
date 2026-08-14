@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { LifePost, Recipe } from "@/lib/life";
+import { editorialCover, hasEditorialCovers } from "@/lib/life-editorial";
 import { useKind, useLang, useT, useTitle } from "@/lib/life-i18n";
 import { readParams, writeParam } from "@/lib/url-state";
 import JournalStack from "./JournalStack";
@@ -50,6 +51,9 @@ export default function JournalGrid({
   const [often, setOften] = useState(false);
   const [view, setView] = useState<View>("list");
   const [open, setOpen] = useState<number | null>(null);
+  const editorialCategory = hasEditorialCovers(category) ? category : undefined;
+  const editorial = Boolean(editorialCategory);
+  const squareEditorial = editorialCategory === "craft";
   // 先从地址栏读，读完才开始往回写，免得挂载时把别人的参数冲掉
   const ready = useRef(false);
 
@@ -238,7 +242,7 @@ export default function JournalGrid({
       {view === "calendar" && (
         <CalendarView
           posts={shown.map((d) => d.post)}
-          editorial={category === "baking"}
+          editorialCategory={editorialCategory}
           onOpen={(p) => setOpen(posts.indexOf(p))}
         />
       )}
@@ -247,7 +251,7 @@ export default function JournalGrid({
         <TimelineView
           posts={shown.map((d) => d.post)}
           newestFirst={dir === "new"}
-          editorial={category === "baking"}
+          editorialCategory={editorialCategory}
           inks={inkOf}
           onOpen={(p) => setOpen(posts.indexOf(p))}
         />
@@ -257,7 +261,7 @@ export default function JournalGrid({
         <div className="journal-paper rounded-lg p-5 sm:p-7">
           <div
             className={`grid items-start ${
-              category === "baking"
+              editorial
                 ? "grid-cols-1 justify-items-center gap-x-7 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
                 : "grid-cols-1 gap-6 lg:grid-cols-2 xl:grid-cols-3"
             }`}
@@ -268,7 +272,7 @@ export default function JournalGrid({
                   key={g.title}
                   posts={g.posts}
                   ink={g.ink}
-                  editorial={category === "baking"}
+                  editorialCategory={editorialCategory}
                   onOpen={(post) => setOpen(posts.indexOf(post))}
                 />
               ))}
@@ -276,7 +280,9 @@ export default function JournalGrid({
               shown.map(({ post, tilt }) => {
                 const ink = inkOf.get(post.title) ?? INK[0];
                 const img = post.square ?? post.cover;
-                const editorial = `/life/baking/editorial/${post.slug}-editorial.webp`;
+                const editorialImage = editorialCategory
+                  ? editorialCover(editorialCategory, post.slug)
+                  : "";
                 const openPost = (e: React.MouseEvent<HTMLAnchorElement>) => {
                   // 保留真链接，中键和右键另存为照常，左键才拦下来开弹窗
                   if (e.metaKey || e.ctrlKey || e.shiftKey) return;
@@ -284,7 +290,7 @@ export default function JournalGrid({
                   setOpen(posts.indexOf(post));
                 };
 
-                if (category === "baking") {
+                if (editorialCategory) {
                   return (
                     <a
                       key={post.slug}
@@ -297,12 +303,14 @@ export default function JournalGrid({
                         style={{ transform: `rotate(${tilt}deg)` }}
                       >
                         <Image
-                          src={editorial}
+                          src={editorialImage}
                           alt={post.title}
                           width={1024}
-                          height={1536}
+                          height={squareEditorial ? 1024 : 1536}
                           sizes="(max-width: 640px) 252px, (max-width: 1024px) 42vw, 252px"
-                          className="block aspect-[2/3] w-full bg-gray-100 object-contain"
+                          className={`block w-full bg-gray-100 object-contain ${
+                            squareEditorial ? "aspect-square" : "aspect-[2/3]"
+                          }`}
                         />
                         <div className="flex min-h-[72px] flex-col px-1 pb-1 pt-3">
                           <div>
