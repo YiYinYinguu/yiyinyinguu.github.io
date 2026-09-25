@@ -1,5 +1,4 @@
 import type { SiteConfig } from "../types";
-import { SHOW_UNIVERSITY_OF_VIENNA } from "./profile";
 
 export const education: SiteConfig["education"] = [
   {
@@ -22,13 +21,13 @@ export const education: SiteConfig["education"] = [
   },
 ];
 
-const allExperience: SiteConfig["experience"] = [
+export const experience: SiteConfig["experience"] = [
   {
     id: "exp-univie",
     period: "09/2026 -",
     location: "Vienna, Austria",
     coords: [16.37, 48.21],
-    position: "Postdoctoral Researcher (Incoming)",
+    position: "Postdoctoral Researcher",
     institution: "University of Vienna",
     supervisor: "Working with Prof. Torsten Möller",
     logo: "/logos/univie.png",
@@ -81,7 +80,3 @@ const allExperience: SiteConfig["experience"] = [
     logo: "/logos/alibaba.png",
   },
 ];
-
-export const experience: SiteConfig["experience"] = allExperience.filter(
-  (item) => SHOW_UNIVERSITY_OF_VIENNA || item.id !== "exp-univie",
-);

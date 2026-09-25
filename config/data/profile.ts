@@ -1,24 +1,19 @@
 import type { SiteConfig } from "../types";
 
-export const SHOW_UNIVERSITY_OF_VIENNA = false;
-
-const universityOfViennaAbout =
-  "In September 2026, I will join the University of Vienna as a postdoctoral researcher, working with [Prof. Torsten Möller](https://www.cs.univie.ac.at/torsten.moeller/).";
-
 export const site: SiteConfig["site"] = {
   name: "Lu Ying",
   title: "Hi! I am Lu Ying",
   description:
-    "Lu Ying (应璐) — Postdoctoral Fellow at the National University of Singapore. Research on data visualization, human-computer interaction, and data-driven storytelling.",
+    "Lu Ying (应璐) — Postdoctoral Researcher at the University of Vienna. Research on data visualization, human-computer interaction, and data-driven storytelling.",
   logo: "/logo.png",
 };
 
 export const profile: SiteConfig["profile"] = {
   name: "Lu Ying",
-  title: "Postdoctoral Fellow",
+  title: "Postdoctoral Researcher",
   email: "yiyinyingl@outlook.com",
-  department: "Department of Geography",
-  university: "National University of Singapore",
+  department: "Research Group Visualization and Data Analysis",
+  university: "University of Vienna",
   profileImage: "/images/profile.jpg",
   researchInterests: [
     "Data Visualization 📊",
@@ -43,18 +38,18 @@ export const navigation: SiteConfig["navigation"] = [
 ];
 
 export const aboutDescription: SiteConfig["aboutDescription"] = `
-  I am a Postdoctoral Fellow at the [Department of Geography](https://fass.nus.edu.sg/geog/), Faculty of Arts and Social Sciences, National University of Singapore, working with [Prof. Wei Luo](https://fass.nus.edu.sg/geog/people/luo-wei/).${SHOW_UNIVERSITY_OF_VIENNA ? ` ${universityOfViennaAbout}` : ""}
+  I am a Postdoctoral Researcher in the [Research Group Visualization and Data Analysis](https://vda.cs.univie.ac.at/) at the [University of Vienna](https://www.univie.ac.at/en/), working with [Prof. Torsten Möller](https://www.cs.univie.ac.at/torsten.moeller/).
 
-I received my Ph.D. in Computer Science from the [State Key Lab of CAD&CG, Zhejiang University](http://www.cad.zju.edu.cn), where I was advised by [Prof. Yingcai Wu](http://ycwu.org) and was a member of [ZJUIDG](http://zjuidg.org). And I was a visiting student at [Université Paris-Saclay](https://www.universite-paris-saclay.fr/en) and a member of the [AVIZ team](https://www.aviz.fr/) at [Inria](https://www.inria.fr/en), supervised by [Jean-Daniel Fekete](http://www.aviz.fr/~fekete/).
+I received my Ph.D. in Computer Science from the [State Key Lab of CAD&CG, Zhejiang University](http://www.cad.zju.edu.cn), where I was advised by [Prof. Yingcai Wu](https://person.zju.edu.cn/en/ycwu) and was a member of [ZJUIDG](http://zjuidg.org). And I was a visiting student at [Université Paris-Saclay](https://www.universite-paris-saclay.fr/en) and a member of the [AVIZ team](https://www.aviz.fr/) at [Inria](https://www.inria.fr/en), supervised by [Jean-Daniel Fekete](http://www.aviz.fr/~fekete/).
 
 My research lies at the intersection of human–AI interaction, visualization, and machine learning, where I design human-centered AI systems that empower people in sensemaking and decision-making. Collaborating with experts in areas like climate change and social media, I pursue interdisciplinary solutions that respond to complex and impactful real-world challenges.
   `;
 
-const allNews: SiteConfig["news"] = [
+export const news: SiteConfig["news"] = [
   {
-    id: "news-2026-08",
-    date: "08/2026",
-    content: "🇦🇹 In September, I will join the University of Vienna as a postdoctoral researcher, working with [Prof. Torsten Möller](https://www.cs.univie.ac.at/torsten.moeller/). See you in Vienna!",
+    id: "news-2026-09",
+    date: "09/2026",
+    content: "🇦🇹 I started my postdoc at the University of Vienna, working with [Prof. Torsten Möller](https://www.cs.univie.ac.at/torsten.moeller/). Hello from Vienna!",
   },
   {
     id: "news-2026-01",
@@ -89,6 +84,3 @@ const allNews: SiteConfig["news"] = [
   },
 ];
 
-export const news: SiteConfig["news"] = allNews.filter(
-  (item) => SHOW_UNIVERSITY_OF_VIENNA || item.id !== "news-2026-08",
-);
