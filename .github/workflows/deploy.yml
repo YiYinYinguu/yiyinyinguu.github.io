@@ -40,6 +40,8 @@ jobs:
 
       - name: 检查并构建项目
         run: npm run check
+        env:
+          NEXT_PUBLIC_CARTO_KEY: ${{ secrets.CARTO_KEY }}
 
       - name: 设置 Pages 部署
         uses: actions/configure-pages@v6

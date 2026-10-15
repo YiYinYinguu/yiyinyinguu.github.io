@@ -37,11 +37,14 @@ export function useLeafletMap(options?: { minZoom?: number; world?: boolean }) {
     // 世界层用不带地名的底图：那一层该有名字的只有她自己去过的城市，
     // 满屏的「KYRGYZSTAN」是噪音。城市层反过来，路名地名正是要看的东西。
     const world = options?.world ?? false;
+    // CARTO 自 2026 年 9 月起要求 key，没带 key 的瓦片会变成「API KEY REQUIRED」水印图。
+    // key 在构建时注入（本地 .env.local，线上 GitHub Secret），会出现在前端请求里，
+    // 靠 CARTO 后台的域名限制防盗用。
     const tileLayer = L.tileLayer(
-      `https://{s}.basemaps.cartocdn.com/${world ? "light_nolabels" : "light_all"}/{z}/{x}/{y}{r}.png`,
+      `https://basemaps.cartocdn.com/rastertiles/${world ? "light_nolabels" : "light_all"}/{z}/{x}/{y}{r}.png?key=${process.env.NEXT_PUBLIC_CARTO_KEY ?? ""}`,
       {
         maxZoom: 19,
-        attribution: "© OpenStreetMap, © CARTO",
+        attribution: "© OpenStreetMap contributors, © CARTO",
         // 世界层不横向重复，否则缩到最小会看到好几个地球排成一排
         noWrap: world,
       }
